@@ -935,12 +935,12 @@ const services = [
   {cat:'Laboratorios', name:'Frotis de Garganta / Faringe', price:15800},
   {cat:'Laboratorios', name:'KOH de Uñas', price:13500},
   {cat:'Laboratorios', name:'Cuadro Hemático (Hemograma)', price:15900},
-  {cat:'Laboratorios', name:'Panel de Drogas x5', price:70000},
+  {cat:'Laboratorios', name:'Panel de Drogas x5', price:80000},
   {cat:'Laboratorios', name:'Panel de Drogas x2 (Marihuana y Cocaína)', price:40000},
   {cat:'Laboratorios', name:'Alcohol Etílico en Sangre', price:60000},
   {cat:'Laboratorios', name:'Electrocardiograma (mayores de 40 años)', price:50000},
   {cat:'Laboratorios', name:'Rx de Tórax', price:45000},
-  {cat:'Laboratorios', name:'Hemoclasificación', price:28000},
+  {cat:'Laboratorios', name:'Hemoclasificación', price:22000},
   {cat:'Vacunas', name:'Triple Viral', price:140000},
   {cat:'Vacunas', name:'Tetraxim', price:257000},
   /* Portafolio Laboratorio Médico Echavarría 2026 — precios de venta sugeridos (editables en Tarifas) */
@@ -1013,6 +1013,9 @@ function setDeleted(a){try{localStorage.setItem(DEL_LS_KEY,JSON.stringify(a));}c
   /* Servicios nuevos del catálogo base que aún no estén en la lista guardada (y que no se hayan eliminado a propósito) */
   const del=getDeleted();const have=new Set(services.map(s=>s.name.trim().toLowerCase()));
   defaults.forEach(d=>{const k=d.name.trim().toLowerCase();if(!have.has(k)&&del.indexOf(k)<0){services.push(Object.assign({},d));have.add(k);}});
+  /* Cambios de precio oficiales: se aplican una sola vez sobre catálogos ya guardados */
+  const PRICE_UPDATES={id:'2026-10-14',prices:{'panel de drogas x5':80000,'hemoclasificación':22000}};
+  if(localStorage.getItem('sothy_precios_aplicados')!==PRICE_UPDATES.id){services.forEach(s=>{const np=PRICE_UPDATES.prices[s.name.trim().toLowerCase()];if(np)s.price=np;});localStorage.setItem('sothy_precios_aplicados',PRICE_UPDATES.id);localStorage.setItem(PRICE_LS_KEY,JSON.stringify(services));}
   sortServicesByCat();}}}catch(e){}})();
 function sortServicesByCat(){const order=[];services.forEach(s=>{if(order.indexOf(s.cat)<0)order.push(s.cat);});const tmp=services.slice();services.length=0;order.forEach(c=>tmp.filter(s=>s.cat===c).forEach(s=>services.push(s)));}
 function saveServices(){try{localStorage.setItem(PRICE_LS_KEY,JSON.stringify(services));}catch(e){}}
