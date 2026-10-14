@@ -102,6 +102,18 @@ label{display:block;font-size:11.2px;text-transform:uppercase;letter-spacing:.7p
 .loose-block{margin-top:0}
 .pkg-quote-pw{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:3px}
 .muted-row{opacity:.6}.muted-row em{font-size:11px}
+.pkg-workers{display:flex;gap:6px;align-items:center;margin-top:5px;font-size:11px;font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0}
+.pkg-workers input{width:70px;padding:3px 6px;font-size:12px}
+.pkg-modal-workers{display:flex;gap:10px;align-items:center;margin:8px 0}.pkg-modal-workers label{margin:0}.pkg-modal-workers input{width:100px}
+.workers-check{font-size:12px;padding:9px 12px;margin:8px 0}
+.rb-group{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--blue);font-weight:800;margin-top:12px}
+.role-badge{font-size:11px;font-weight:800;border-radius:999px;padding:5px 11px;margin-right:8px;background:#eef2f7;color:var(--muted)}
+body.is-admin .role-badge{background:#fff1d2;color:var(--warn)}
+body.is-comercial .admin-only{display:none!important}
+body.is-admin .comercial-only{display:none!important}
+body.is-comercial .service-price-input{background:#f4f7fb!important;border-color:transparent!important;pointer-events:none}
+body.is-comercial #escalas-body input{pointer-events:none;background:#f4f7fb}
+body.is-comercial #escalas-body .tarifa-del,body.is-comercial #convenios-body .tarifa-del,body.is-comercial #price-table-body .tarifa-del{display:none}
 .mg{display:inline-block;border-radius:999px;padding:1px 6px;font-size:10px;font-weight:800;margin-left:3px;vertical-align:1px}
 .mg-good{background:#dff4e8;color:var(--success)}.mg-warn{background:#fff1d2;color:var(--warn)}.mg-danger{background:#ffe2e5;color:var(--danger)}.mg-none{background:#eef2f7;color:var(--muted)}
 .mg-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
@@ -426,7 +438,7 @@ label{color:#5b6d84 !important;}
 <main class="main">
   <div class="topbar">
     <div class="page-title" id="page-title">Panel Ejecutivo</div>
-    <span class="page-badge" id="page-badge">Dirección Comercial</span>
+    <span id="role-badge" class="role-badge" onclick="showSection('tarifas')" title="Cambiar de rol en Tarifas">Comercial</span><span class="page-badge" id="page-badge">Dirección Comercial</span>
   </div>
   <div class="content">
 
@@ -538,7 +550,8 @@ label{color:#5b6d84 !important;}
       <div class="card">
         <div class="card-title">Tarifas base 2026 · <span style="color:var(--blue)">editable</span></div>
         <div class="card-sub">Edita el nombre o el valor de cada servicio y presiona <b>Guardar tarifas</b>. Los cambios se aplican al Cotizador y al PDF, y quedan guardados en este navegador.</div>
-        <div class="tarifa-toolbar"><button class="btn" onclick="saveTarifas()">💾 Guardar tarifas</button><button class="btn secondary" onclick="addTarifaRow()">＋ Agregar servicio</button><button class="btn secondary" onclick="resetTarifas()">↺ Restablecer</button></div>
+        <div class="alert info comercial-only" style="font-size:12.5px">La base tarifaria la define el administrador. En cada cotización puedes ajustar el precio de una línea; si queda por debajo de la tarifa, se marca para visto bueno.</div>
+        <div class="tarifa-toolbar admin-only"><button class="btn" onclick="saveTarifas()">💾 Guardar tarifas</button><button class="btn secondary" onclick="addTarifaRow()">＋ Agregar servicio</button><button class="btn secondary" onclick="resetTarifas()">↺ Restablecer</button></div>
         <table class="table"><thead><tr><th>Servicio</th><th class="price">Valor</th><th></th></tr></thead><tbody id="price-table-body"></tbody></table>
       </div>
       <div class="grid-2 admin-grid">
@@ -546,7 +559,7 @@ label{color:#5b6d84 !important;}
           <div class="card-title">📉 Descuento por volumen</div>
           <div class="card-sub">El cotizador propone el descuento según el número de trabajadores (máximo 15 %). El asesor puede cambiarlo en cada cotización.</div>
           <table class="table"><thead><tr><th>Desde (trabajadores)</th><th>Descuento %</th><th></th></tr></thead><tbody id="escalas-body"></tbody></table>
-          <div class="btn-row"><button class="btn" onclick="saveEscalas()">Guardar escalas</button><button class="btn secondary" onclick="addEscala()">＋ Escala</button></div>
+          <div class="btn-row admin-only"><button class="btn" onclick="saveEscalas()">Guardar escalas</button><button class="btn secondary" onclick="addEscala()">＋ Escala</button></div>
         </div>
         <div class="card">
           <div class="card-title">🤝 Convenios por empresa</div>
@@ -612,7 +625,7 @@ label{color:#5b6d84 !important;}
             <div id="quote-items-list"><div class="alert info">Agrega servicios desde el panel izquierdo.</div></div>
             <div id="quote-packages-list"></div>
             <div id="quote-totals" style="display:none;margin-top:12px"></div>
-            <div class="btn-row"><button class="btn" onclick="generateQuote()">Generar propuesta</button><button class="btn secondary" onclick="registrarCotizacion()">💾 Guardar</button><button class="btn secondary" onclick="saveConvenio()">🤝 Guardar como convenio</button><button class="btn secondary" onclick="nuevaCotizacion()">Nueva</button></div>
+            <div class="btn-row"><button class="btn" onclick="generateQuote()">Generar propuesta</button><button class="btn secondary" onclick="registrarCotizacion()">💾 Guardar</button><button class="btn secondary admin-only" onclick="saveConvenio()">🤝 Guardar como convenio</button><button class="btn secondary" onclick="nuevaCotizacion()">Nueva</button></div>
           </div>
         </div>
       </div>
@@ -669,9 +682,12 @@ label{color:#5b6d84 !important;}
         <div class="card-sub">Pensados para cargos con exposiciones específicas. Igual que los anteriores, se abren para ajustar antes de sumarlos.</div>
         <div class="grid-3" id="risk-pkg-grid"></div>
         <div class="card risk-builder" style="margin-top:16px;margin-bottom:0">
-          <div class="card-title">🧭 Armar paquete según los riesgos del cargo</div>
-          <div class="card-sub">Marca a qué está expuesto el cargo (según el profesiograma o lo que cuente el cliente) y el cotizador arma el paquete con la valoración médica de base.</div>
-          <label>Nombre del cargo</label><input id="rb-cargo" placeholder="Ej.: Operario de pintura">
+          <div class="card-title">🧭 Armar un cargo con uno o varios énfasis</div>
+          <div class="card-sub">Para un trabajador que tiene varios énfasis (por ejemplo conducción + alturas + manipulación de alimentos): se cobra <b>una sola valoración médica</b> con todos los énfasis, y los paraclínicos de cada énfasis sin repetir.</div>
+          <div class="form-row"><div><label>Nombre del cargo</label><input id="rb-cargo" placeholder="Ej.: Conductor repartidor"></div><div><label>Trabajadores de este cargo</label><input id="rb-workers" type="number" min="1" placeholder="10"></div></div>
+          <div class="rb-group">Énfasis del cargo</div>
+          <div id="risk-builder-enfasis" class="exp-grid"></div>
+          <div class="rb-group">Exposiciones adicionales</div>
           <div id="risk-builder-checks" class="exp-grid"></div>
           <div class="btn-row"><button class="btn" onclick="buildRiskPackage()">Armar paquete</button></div>
         </div>
@@ -878,6 +894,7 @@ label{color:#5b6d84 !important;}
     <button class="close" onclick="closePackageModal()">×</button>
     <h2 id="pkg-modal-title" style="font-family:Syne;color:var(--navy);margin-bottom:6px">Paquete</h2>
     <p class="card-sub">Marca o desmarca los exámenes antes de agregarlos al cotizador. También puedes añadir exámenes extra a este paquete.</p>
+    <div class="pkg-modal-workers"><label for="pkg-modal-workers">Trabajadores de este cargo</label><input id="pkg-modal-workers" type="number" min="1" value="1"></div>
     <div id="pkg-modal-list" style="margin:10px 0"></div>
     <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;align-items:center">
       <select id="pkg-modal-addselect" style="flex:1;min-width:220px;padding:9px;border-radius:8px;border:1px solid #dfe4ec;font-size:13px"></select>
@@ -1020,10 +1037,10 @@ function setDeleted(a){try{localStorage.setItem(DEL_LS_KEY,JSON.stringify(a));}c
 function sortServicesByCat(){const order=[];services.forEach(s=>{if(order.indexOf(s.cat)<0)order.push(s.cat);});const tmp=services.slice();services.length=0;order.forEach(c=>tmp.filter(s=>s.cat===c).forEach(s=>services.push(s)));}
 function saveServices(){try{localStorage.setItem(PRICE_LS_KEY,JSON.stringify(services));}catch(e){}}
 function refreshQuoterViews(){var el=document.getElementById('service-search');buildServiceList(el?el.value:'');updateTotals();}
-function addTarifaRow(){services.push({cat:'Otros Servicios',name:'Nuevo servicio',price:0});buildPriceTable();}
-function deleteService(i){if(confirm('¿Eliminar este servicio de la lista de tarifas?')){const k=String(services[i].name).trim().toLowerCase();const del=getDeleted();if(del.indexOf(k)<0){del.push(k);setDeleted(del);}services.splice(i,1);saveServices();buildPriceTable();refreshQuoterViews();}}
-function saveTarifas(){saveServices();refreshQuoterViews();buildPriceTable();sothyToast('Tarifas guardadas ✓');}
-function resetTarifas(){if(confirm('Esto restaura las tarifas originales y descarta tus cambios guardados. ¿Continuar?')){localStorage.removeItem(PRICE_LS_KEY);localStorage.removeItem(DEL_LS_KEY);location.reload();}}
+function addTarifaRow(){if(!_adm())return;services.push({cat:'Otros Servicios',name:'Nuevo servicio',price:0});buildPriceTable();}
+function deleteService(i){if(!_adm())return;if(confirm('¿Eliminar este servicio de la lista de tarifas?')){const k=String(services[i].name).trim().toLowerCase();const del=getDeleted();if(del.indexOf(k)<0){del.push(k);setDeleted(del);}services.splice(i,1);saveServices();buildPriceTable();refreshQuoterViews();}}
+function saveTarifas(){if(!_adm()){sothyToast('Solo el administrador modifica la base tarifaria');return;}saveServices();refreshQuoterViews();buildPriceTable();sothyToast('Tarifas guardadas ✓');}
+function resetTarifas(){if(!_adm())return;if(confirm('Esto restaura las tarifas originales y descarta tus cambios guardados. ¿Continuar?')){localStorage.removeItem(PRICE_LS_KEY);localStorage.removeItem(DEL_LS_KEY);location.reload();}}
 function sothyToast(m){var t=document.getElementById('sothy-toast');if(!t){t=document.createElement('div');t.id='sothy-toast';document.body.appendChild(t);}t.textContent=m;t.className='show';clearTimeout(window.__sothyT);window.__sothyT=setTimeout(function(){t.className='';},2600);}
 
 function addServiceToCatalog(){
@@ -1031,6 +1048,11 @@ function addServiceToCatalog(){
   const name=(n.value||'').trim(),cat=(c.value||'').trim()||'Otros Servicios',price=parseInt(pr.value)||0;
   if(!name){sothyToast('Escribe el nombre del servicio');n.focus();return;}
   if(price<=0){sothyToast('Escribe el precio de venta');pr.focus();return;}
+  if(!_adm()){
+    if(quoteItems.some(function(q){return q.name.toLowerCase()===name.toLowerCase();})){sothyToast('Ese servicio ya está en la cotización');return;}
+    quoteItems.push({name:name,price:price,cat:cat,qty:parseInt(document.getElementById('q-workers')?.value)||1,nuevo:true});
+    n.value='';pr.value='';updateQuoteItems();updateTotals();sothyToast('Servicio agregado solo a esta cotización. Pide al administrador incluirlo en el catálogo.');return;
+  }
   if(services.some(s=>s.name.trim().toLowerCase()===name.toLowerCase())){sothyToast('Ese servicio ya existe en el catálogo');return;}
   services.push({cat:cat,name:name,price:price});sortServicesByCat();
   const del=getDeleted().filter(k=>k!==name.toLowerCase());setDeleted(del);
@@ -1046,6 +1068,9 @@ function _adm(){return !!(window.isAdmin&&window.isAdmin());}
 function _mb(n,p){return window.marginBadge?window.marginBadge(n,p):'';}
 function _ml(items){return window.marginLine?window.marginLine(items,Math.min(parseFloat(document.getElementById('q-discount')?.value)||0,15)):'';}
 function _pf(n,p){return window.priceFor?window.priceFor(n,p):p;}
+function baseTarifa(it){if(it.base!=null)return it.base;const s=services.find(function(x){return x.name===it.name;});return s?_pf(s.name,s.price):null;}
+function _bt(it){const b=baseTarifa(it);return (b!=null&&it.price<b)?' <span class="mg mg-warn" title="Tarifa base '+fmt(b)+'">bajo tarifa</span>':'';}
+function bajoTarifaItems(){const out=[];quoteItems.forEach(function(it){const b=baseTarifa(it);if(b!=null&&it.price<b)out.push(it.name+' ('+fmt(it.price)+' vs '+fmt(b)+')');});selectedPackages.forEach(function(p){p.items.forEach(function(it){const b=baseTarifa(it);if(b!=null&&it.price<b)out.push(it.name+' ('+fmt(it.price)+' vs '+fmt(b)+')');});});return out;}
 let quoteItems=[];
 function buildPriceTable(){
   const tb=document.getElementById('price-table-body'); if(!tb) return; tb.innerHTML='';
@@ -1054,7 +1079,7 @@ function buildPriceTable(){
   services.forEach((s,idx)=>{
     if(s.cat!==last){tb.innerHTML+=`<tr class="cat-row"><td colspan="${_adm()?5:3}">${s.cat}</td></tr>`; last=s.cat;}
     var safe=String(s.name).replace(/"/g,'&quot;');
-    tb.innerHTML+=`<tr><td><input class="tarifa-name" value="${safe}" onchange="services[${idx}].name=this.value"></td><td class="price"><input class="tarifa-price" type="number" min="0" step="100" value="${s.price}" onchange="services[${idx}].price=parseInt(this.value)||0;refreshQuoterViews()"></td>${_adm()?`<td class="price"><input class="tarifa-price tarifa-cost" type="number" min="0" step="50" placeholder="—" value="${window.getCost&&getCost(s.name)!=null?getCost(s.name):''}" onchange="setCost(services[${idx}].name,this.value)"></td><td class="tarifa-mg">${_mb(s.name,s.price)}</td>`:''}<td class="tarifa-actions"><button class="tarifa-del" title="Eliminar" onclick="deleteService(${idx})">×</button></td></tr>`;
+    tb.innerHTML+=`<tr><td><input class="tarifa-name" value="${safe}" ${_adm()?'':'readonly'} onchange="services[${idx}].name=this.value"></td><td class="price"><input class="tarifa-price" type="number" min="0" step="100" value="${s.price}" ${_adm()?'':'readonly'} onchange="services[${idx}].price=parseInt(this.value)||0;refreshQuoterViews()"></td>${_adm()?`<td class="price"><input class="tarifa-price tarifa-cost" type="number" min="0" step="50" placeholder="—" value="${window.getCost&&getCost(s.name)!=null?getCost(s.name):''}" onchange="setCost(services[${idx}].name,this.value)"></td><td class="tarifa-mg">${_mb(s.name,s.price)}</td>`:''}<td class="tarifa-actions"><button class="tarifa-del" title="Eliminar" onclick="deleteService(${idx})">×</button></td></tr>`;
   });
 }
 function buildServiceList(filter=''){
@@ -1067,7 +1092,7 @@ function buildServiceList(filter=''){
   });
 }
 function filterServices(){buildServiceList(document.getElementById('service-search').value)}
-function addService(i){const s=services[i]; if(quoteItems.find(x=>x.name===s.name)){ sothyToast('Ese servicio ya está en la lista'); return; } quoteItems.push({name:s.name, price:_pf(s.name,s.price), cat:s.cat, qty:parseInt(document.getElementById('q-workers')?.value)||1}); updateQuoteItems(); updateTotals();}
+function addService(i){const s=services[i]; if(quoteItems.find(x=>x.name===s.name)){ sothyToast('Ese servicio ya está en la lista'); return; } quoteItems.push({name:s.name, price:_pf(s.name,s.price), base:_pf(s.name,s.price), cat:s.cat, qty:parseInt(document.getElementById('q-workers')?.value)||1}); updateQuoteItems(); updateTotals();}
 const PAQUETES_COTIZADOR = {
   administrativo: {label:'Administrativo', exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Visiometría','Optometría']},
   operativo: {label:'Operativo (planta / industrial)', exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Audiometría Tonal','Visiometría','Cuadro Hemático (Hemograma)','Perfil Lipídico','Glicemia','Espirometría']},
@@ -1078,14 +1103,20 @@ const PAQUETES_COTIZADOR = {
   vip: {label:'VIP Ejecutivo', exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)'], note:'Paquete pensado para minimizar el tiempo del directivo: solo incluye un examen médico osteomuscular sencillo. Si la empresa lo solicita, podemos ampliarlo con chequeo ejecutivo completo (medicina general, laboratorio, cardiovascular, etc.), usando el botón "+ Añadir examen" — nunca es obligatorio.'}
 };
 let selectedPackages=[];
-function addPackageToQuote(key, examList){
+function pkgServicePrice(pkg,n){
+  const svc = services.find(function(s){ return s.name===n; });
+  if(svc) return _pf(svc.name,svc.price);
+  if(pkg && pkg.custom && pkg.custom[n]!=null) return _pf(n,pkg.custom[n]);
+  return null;
+}
+function addPackageToQuote(key, examList, workersOverride){
   const pkg = PAQUETES_COTIZADOR[key]; if(!pkg) return;
   const list = examList || pkg.exams;
-  const workers = parseInt(document.getElementById('q-workers')?.value)||1;
+  const workers = parseInt(workersOverride)||parseInt(document.getElementById('q-workers')?.value)||1;
   const items = [];
   list.forEach(function(n){
-    const svc = services.find(function(s){ return s.name===n; });
-    if(svc) items.push({name:svc.name, price:_pf(svc.name,svc.price), qty:workers});
+    const pr = pkgServicePrice(pkg,n);
+    if(pr!=null) items.push({name:n, price:pr, base:pr, qty:workers});
   });
   if(!items.length){ alert('Selecciona al menos un examen para agregar.'); return; }
   const existing=selectedPackages.find(function(p){return p.key===key;});
@@ -1093,8 +1124,9 @@ function addPackageToQuote(key, examList){
     items.forEach(function(it){
       if(!existing.items.some(function(x){return x.name===it.name;})) existing.items.push(it);
     });
+    existing.workers=workers; existing.items.forEach(function(it){it.qty=workers;});
   } else {
-    selectedPackages.push({key:key, label:pkg.label, items:items});
+    selectedPackages.push({key:key, label:pkg.label, items:items, workers:workers, enfasis:pkg.enfasis||null});
   }
   sothyToast('Paquete '+pkg.label+' agregado ✓ ('+items.length+' exámenes)');
   updateQuoteItems();
@@ -1111,9 +1143,10 @@ function openPackageModal(key){
   pkgModalKey=key;
   document.getElementById('pkg-modal-title').textContent='📦 '+pkg.label;
   const list=document.getElementById('pkg-modal-list');
+  const wEl=document.getElementById('pkg-modal-workers'); if(wEl) wEl.value=parseInt(document.getElementById('q-workers')?.value)||1;
   list.innerHTML=pkg.exams.map(function(name){
-    const svc=services.find(function(s){return s.name===name;});
-    const price=svc?fmt(svc.price):'';
+    const pr=pkgServicePrice(pkg,name);
+    const price=pr!=null?fmt(pr):'';
     const safe=name.replace(/"/g,'&quot;');
     return '<label class="pkg-exam-row"><input type="checkbox" data-exam="'+safe+'" checked><span>'+name+'</span><em>'+price+'</em></label>';
   }).join('');
@@ -1145,7 +1178,7 @@ function confirmAddPackage(){
   const checks=list.querySelectorAll('input[type=checkbox]:checked');
   const names=Array.prototype.map.call(checks,function(cb){return cb.dataset.exam;});
   if(!names.length){alert('Selecciona al menos un examen para agregar.');return;}
-  addPackageToQuote(pkgModalKey, names);
+  addPackageToQuote(pkgModalKey, names, document.getElementById('pkg-modal-workers')?.value);
   closePackageModal();
 }
 let looseInclude=true;
@@ -1160,16 +1193,18 @@ function computeQuote(){
   const log=parseFloat(document.getElementById('q-logistic')?.value)||0;
   const discount=Math.min(parseFloat(document.getElementById('q-discount')?.value)||0,15);
   const blocks=[];
-  selectedPackages.forEach(function(p,pi){if(p.items&&p.items.length)blocks.push({kind:'pkg',pi:pi,label:'Paquete '+p.label,items:p.items,sub:blockSub(p.items),include:p.include!==false});});
-  if(quoteItems.length)blocks.push({kind:'loose',label:'Servicios individuales',items:quoteItems,sub:blockSub(quoteItems),include:looseInclude});
-  blocks.forEach(function(bk){bk.disc=bk.sub*discount/100;bk.net=bk.sub-bk.disc;bk.perWorker=bk.sub/workers;});
+  selectedPackages.forEach(function(p,pi){if(p.items&&p.items.length)blocks.push({kind:'pkg',pi:pi,label:'Paquete '+p.label,items:p.items,sub:blockSub(p.items),include:p.include!==false,workers:p.workers||workers});});
+  if(quoteItems.length)blocks.push({kind:'loose',label:'Servicios individuales',items:quoteItems,sub:blockSub(quoteItems),include:looseInclude,workers:workers});
+  blocks.forEach(function(bk){bk.disc=bk.sub*discount/100;bk.net=bk.sub-bk.disc;bk.perWorker=bk.sub/bk.workers;});
+  const pkgWorkers=blocks.filter(function(bk){return bk.kind==='pkg'&&bk.include;}).reduce(function(a,bk){return a+bk.workers;},0);
   const inc=blocks.filter(function(bk){return bk.include;});
   const subtotal=inc.reduce(function(a,bk){return a+bk.sub;},0);
   const gross=subtotal+log, disc=gross*discount/100, total=gross-disc;
-  return {workers:workers,log:log,discount:discount,blocks:blocks,included:inc,subtotal:subtotal,disc:disc,total:total,perWorker:total/workers,grand:showGrandTotal&&inc.length>0};
+  return {workers:workers,pkgWorkers:pkgWorkers,log:log,discount:discount,blocks:blocks,included:inc,subtotal:subtotal,disc:disc,total:total,perWorker:total/workers,grand:showGrandTotal&&inc.length>0};
 }
-function blockHead(title,kind,pi,include,removeHtml){
-  return '<div class="pkg-quote-head"><span>'+title+'</span><span class="pkg-head-actions">'
+function setPkgWorkers(pi,v){const p=selectedPackages[pi];if(!p)return;const n=Math.max(1,parseInt(v)||1);p.workers=n;p.items.forEach(function(it){it.qty=n;});setTimeout(function(){updateQuoteItems();updateTotals();},0);}
+function blockHead(title,kind,pi,include,removeHtml,extra){
+  return '<div class="pkg-quote-head"><span>'+title+(extra||'')+'</span><span class="pkg-head-actions">'
     +'<label class="inc-toggle" title="Si lo desmarcas, este bloque se muestra con su propio total pero no entra al gran total"><input type="checkbox" '+(include?'checked':'')+' onchange="toggleBlockInclude(\''+kind+'\','+pi+',this.checked)"> Sumar al gran total</label>'
     +removeHtml+'</span></div>'
     +'<div class="quote-item quote-item-head"><div>Servicio</div><div>Unit.</div><div>Cant.</div><div>Total</div><div></div></div>';
@@ -1187,7 +1222,7 @@ function updateQuoteItems(){
     c.innerHTML='';
   } else {
     let rows='<div class="pkg-quote-block loose-block'+(looseInclude?'':' excluded')+'">'+blockHead('🧪 Servicios individuales','loose',0,looseInclude,'<span class="pkg-remove" onclick="quoteItems=[];updateQuoteItems();updateTotals()">Quitar todos ×</span>');
-    rows+=quoteItems.map((it,i)=>`<div class="quote-item"><div>${it.name}${_mb(it.name,it.price)}</div><input class="qprice" type="number" min="0" step="100" value="${it.price}" title="Precio editable solo para esta cotización" onchange="setRefPrice(${i},this.value)"><input class="qty" type="number" min="1" value="${itemQty(it)}" onchange="setRefQty(${i},this.value)"><div>${fmt(it.price*itemQty(it))}</div><div class="del" onclick="quoteItems.splice(${i},1);updateQuoteItems();updateTotals()">×</div></div>`).join('');
+    rows+=quoteItems.map((it,i)=>`<div class="quote-item"><div>${it.name}${_mb(it.name,it.price)}${_bt(it)}${it.nuevo?' <span class="mg mg-none">nuevo</span>':''}</div><input class="qprice" type="number" min="0" step="100" value="${it.price}" title="Precio editable solo para esta cotización" onchange="setRefPrice(${i},this.value)"><input class="qty" type="number" min="1" value="${itemQty(it)}" onchange="setRefQty(${i},this.value)"><div>${fmt(it.price*itemQty(it))}</div><div class="del" onclick="quoteItems.splice(${i},1);updateQuoteItems();updateTotals()">×</div></div>`).join('');
     rows+=blockFoot('servicios individuales',blockSub(quoteItems),workers)+_ml(quoteItems)+'</div>';
     c.innerHTML=rows;
   }
@@ -1200,11 +1235,11 @@ function renderPackagesList(){
   c.innerHTML=selectedPackages.map(function(pkg,pi){
     const inc=pkg.include!==false;
     const rows=pkg.items.map(function(it,ii){
-      return '<div class="quote-item"><div>'+it.name+_mb(it.name,it.price)+'</div><input class="qprice" type="number" min="0" step="100" value="'+it.price+'" title="Precio editable solo para esta cotización" onchange="setPkgPrice('+pi+','+ii+',this.value)"><input class="qty" type="number" min="1" value="'+it.qty+'" onchange="selectedPackages['+pi+'].items['+ii+'].qty=parseInt(this.value)||1;updateQuoteItems();updateTotals()"><div>'+fmt(it.price*it.qty)+'</div><div class="del" onclick="selectedPackages['+pi+'].items.splice('+ii+',1);if(!selectedPackages['+pi+'].items.length)selectedPackages.splice('+pi+',1);updateQuoteItems();updateTotals()">×</div></div>';
+      return '<div class="quote-item"><div>'+it.name+_mb(it.name,it.price)+_bt(it)+'</div><input class="qprice" type="number" min="0" step="100" value="'+it.price+'" title="Precio editable solo para esta cotización" onchange="setPkgPrice('+pi+','+ii+',this.value)"><input class="qty" type="number" min="1" value="'+it.qty+'" onchange="selectedPackages['+pi+'].items['+ii+'].qty=parseInt(this.value)||1;updateQuoteItems();updateTotals()"><div>'+fmt(it.price*it.qty)+'</div><div class="del" onclick="selectedPackages['+pi+'].items.splice('+ii+',1);if(!selectedPackages['+pi+'].items.length)selectedPackages.splice('+pi+',1);updateQuoteItems();updateTotals()">×</div></div>';
     }).join('');
     return '<div class="pkg-quote-block'+(inc?'':' excluded')+'">'
-      +blockHead('📦 Paquete: '+pkg.label,'pkg',pi,inc,'<span class="pkg-remove" onclick="removePackageFromQuote(\''+pkg.key+'\')">Quitar ×</span>')
-      +rows+blockFoot(pkg.label,blockSub(pkg.items),workers)+_ml(pkg.items)+'</div>';
+      +blockHead('📦 Paquete: '+pkg.label,'pkg',pi,inc,'<span class="pkg-remove" onclick="removePackageFromQuote(\''+pkg.key+'\')">Quitar ×</span>','<label class="pkg-workers">Trabajadores de este cargo <input type="number" min="1" value="'+(pkg.workers||workers)+'" onchange="setPkgWorkers('+pi+',this.value)"></label>')
+      +rows+blockFoot(pkg.label,blockSub(pkg.items),pkg.workers||workers)+_ml(pkg.items)+'</div>';
   }).join('');
 }
 function modalitySuggestedLogistic(mod, workers){
@@ -1225,8 +1260,10 @@ function updateTotals(){
   if(!q.blocks.length){box.innerHTML='';return;}
   let h='<label class="grand-toggle"><input type="checkbox" '+(showGrandTotal?'checked':'')+' onchange="showGrandTotal=this.checked;updateTotals()"> Mostrar gran total (sumar los bloques marcados)</label>';
   h+='<div class="blocks-summary">'+q.blocks.map(function(bk){
-    return '<div class="total-row'+(bk.include?'':' muted-row')+'"><span>'+bk.label+(bk.include||!showGrandTotal?'':' <em>(no suma)</em>')+'</span><span>'+fmt(bk.sub)+'</span></div>';
+    return '<div class="total-row'+(bk.include?'':' muted-row')+'"><span>'+bk.label+(bk.kind==='pkg'?' · '+bk.workers+' trab.':'')+(bk.include||!showGrandTotal?'':' <em>(no suma)</em>')+'</span><span>'+fmt(bk.sub)+'</span></div>';
   }).join('')+'</div>';
+  if(q.grand&&q.pkgWorkers&&q.pkgWorkers!==q.workers){h+='<div class="alert warn workers-check">Los paquetes incluidos suman <b>'+q.pkgWorkers+'</b> trabajadores y el total de la empresa dice <b>'+q.workers+'</b>. El valor por trabajador se calcula sobre '+q.workers+'. <a href="#" onclick="igualarTrabajadores('+q.pkgWorkers+');return false">Usar '+q.pkgWorkers+' como total</a></div>';}
+  const bt=bajoTarifaItems(); if(bt.length){h+='<div class="alert warn workers-check">⚠ <b>Precios por debajo de la tarifa base</b> ('+bt.length+'): requiere visto bueno del administrador. Queda marcado en Seguimiento.</div>';}
   if(q.grand){
     h+='<div class="total-row"><span>Subtotal bloques incluidos</span><span id="t-subtotal">'+fmt(q.subtotal)+'</span></div>'
      +'<div class="total-row"><span>Logística / operación</span><span id="t-logistic">'+fmt(q.log)+'</span></div>'
@@ -1236,11 +1273,12 @@ function updateTotals(){
     if(_adm()){const all=[];q.included.forEach(function(bk){bk.items.forEach(function(it){all.push(it);});});h+='<div class="mg-total">🔒 '+_ml(all).replace(/<\/?div[^>]*>/g,'')+'</div>';}
   } else {
     h+='<div class="alert info" style="font-size:11.5px;margin-top:8px">Sin gran total: cada bloque se presenta como opción independiente'+(q.discount?' (descuento '+q.discount+'% aplicado a cada uno)':'')+'.'+(q.log?' La logística ('+fmt(q.log)+') se suma a la opción que elija la empresa.':'')+'</div>'
-     +q.blocks.map(function(bk){return '<div class="total-row main option-row"><span>'+bk.label+'<small>'+fmt(bk.net/workers)+' por trabajador</small></span><span>'+fmt(bk.net)+'</span></div>';}).join('')
+     +q.blocks.map(function(bk){return '<div class="total-row main option-row"><span>'+bk.label+'<small>'+bk.workers+' trab. · '+fmt(bk.net/bk.workers)+' por trabajador</small></span><span>'+fmt(bk.net)+'</span></div>';}).join('')
      +'<span id="t-subtotal" hidden></span><span id="t-logistic" hidden>'+fmt(q.log)+'</span><span id="t-discount" hidden></span><span id="t-per-worker" hidden></span><span id="t-total" hidden></span>';
   }
   box.innerHTML=h;
 }
+function igualarTrabajadores(n){const w=document.getElementById('q-workers');w.value=n;if(window.__setLastWorkers)window.__setLastWorkers(n);if(window.applyVolume)applyVolume();updateQuoteItems();updateTotals();}
 function clearQuote(){quoteItems=[];selectedPackages=[];looseInclude=true;updateQuoteItems();updateTotals();}
 function generateQuote(){
   const company=document.getElementById('q-company').value||'la empresa';
@@ -1251,12 +1289,12 @@ function generateQuote(){
   const q=computeQuote();
   const body0=q.blocks.map(function(bk){
     const lines=bk.items.map(function(it){return `   - ${it.name} — Valor unit.: ${fmt(it.price)} · Cant.: ${itemQty(it)} · Total: ${fmt(it.price*itemQty(it))}`;}).join('\n');
-    return `• ${bk.label} — Total: ${fmt(bk.sub)} (${fmt(bk.perWorker)} por trabajador)${q.grand&&!bk.include?' — opcional, no incluido en el gran total':''}\n${lines}`;
+    return `• ${bk.label}${bk.kind==='pkg'?' · '+bk.workers+' trabajador(es)':''} — Total: ${fmt(bk.sub)} (${fmt(bk.perWorker)} por trabajador)${q.grand&&!bk.include?' — opcional, no incluido en el gran total':''}\n${lines}`;
   }).join('\n\n');
   let body=body0?body0+'\n\n':'';
   if(!body) body='Servicios por definir\n\n';
   const tele = document.getElementById('q-modality').value==='telemedicina' ? '\n\nNota: telemedicina sujeta a validación de perfil administrativo de bajo riesgo, objeto social, cargo y ausencia de apoyos diagnósticos.' : '';
-  const txt=`Cordial saludo,\n\nDe acuerdo con la necesidad de ${company}, presentamos propuesta para ${workers} trabajador(es) bajo modalidad ${mod}.\n\n${body}${q.grand?`Logística / operación: ${fmt(q.log)}\nDescuento: ${q.discount}%\nValor por trabajador: ${fmt(q.perWorker)}\nGran total estimado: ${fmt(q.total)}\n\n`:`Cada bloque se presenta como opción independiente${q.discount?' (descuento '+q.discount+'% aplicado)':''}:\n${q.blocks.map(function(bk){return '   - '+bk.label+': '+fmt(bk.net)+' ('+fmt(bk.net/q.workers)+' por trabajador)';}).join('\n')}${q.log?'\nLogística / operación (se suma a la opción elegida): '+fmt(q.log):''}\n\n`}Antes de agendar, agradecemos compartir profesiograma o matriz de riesgos. Si no cuentan con estos documentos, podemos orientar la estructuración por cargos y riesgos.${tele}\n\nQuedamos atentos para coordinar agenda, documentación y proceso de vinculación.\n\nSothysalud IPS`;
+  const txt=`Cordial saludo,\n\nDe acuerdo con la necesidad de ${company}, presentamos propuesta para ${workers} trabajador(es) bajo modalidad ${mod}.\n\n${body}${q.grand?`Logística / operación: ${fmt(q.log)}\nDescuento: ${q.discount}%\nValor por trabajador: ${fmt(q.perWorker)}\nGran total estimado: ${fmt(q.total)}\n\n`:`Cada bloque se presenta como opción independiente${q.discount?' (descuento '+q.discount+'% aplicado)':''}:\n${q.blocks.map(function(bk){return '   - '+bk.label+': '+fmt(bk.net)+' ('+fmt(bk.net/bk.workers)+' por trabajador)';}).join('\n')}${q.log?'\nLogística / operación (se suma a la opción elegida): '+fmt(q.log):''}\n\n`}Antes de agendar, agradecemos compartir profesiograma o matriz de riesgos. Si no cuentan con estos documentos, podemos orientar la estructuración por cargos y riesgos.${tele}\n\nQuedamos atentos para coordinar agenda, documentación y proceso de vinculación.\n\nSothysalud IPS`;
   document.getElementById('modal-quote-content').textContent=txt;
   document.getElementById('quote-modal').classList.add('open');
 }
@@ -1469,6 +1507,7 @@ function whatsappQuote(){
 <script id="sothy-mejora-2">
 /* === Mejora Sothysalud: precios editables en el cotizador + PDF con diseño del portafolio === */
 function setServicePrice(idx,val){
+  if(!_adm()){sothyToast('Solo el administrador modifica la base tarifaria');buildServiceList(document.getElementById('service-search')?.value||'');return;}
   services[idx].price=parseInt(val)||0;
   var q=quoteItems.find(function(x){return x.name===services[idx].name;});
   if(q)q.price=services[idx].price;
@@ -1482,7 +1521,7 @@ function buildServiceList(filter){
   services.filter(function(s){return s.name.toLowerCase().includes(filter.toLowerCase())||s.cat.toLowerCase().includes(filter.toLowerCase());}).forEach(function(s){
     if(s.cat!==last){list.innerHTML+='<div class="service-cat">'+s.cat+'</div>'; last=s.cat;}
     var idx=services.indexOf(s);
-    list.innerHTML+='<div class="service-item"><div class="service-name" onclick="addService('+idx+')" title="Clic para agregar a la cotización">'+(window.marginDot?marginDot(s.name,s.price):'')+s.name+'</div><input class="service-price-input" type="number" min="0" step="100" value="'+s.price+'" title="Edita el valor de este examen" onclick="event.stopPropagation()" onchange="setServicePrice('+idx+',this.value)"><button class="add" onclick="addService('+idx+')">+</button></div>';
+    list.innerHTML+='<div class="service-item"><div class="service-name" onclick="addService('+idx+')" title="Clic para agregar a la cotización">'+(window.marginDot?marginDot(s.name,s.price):'')+s.name+'</div><input class="service-price-input" type="number" min="0" step="100" value="'+s.price+'" '+(_adm()?'':'readonly tabindex="-1"')+' title="'+(_adm()?'Edita el valor de este examen':'Tarifa base (solo el administrador la cambia)')+'" onclick="event.stopPropagation()" onchange="setServicePrice('+idx+',this.value)"><button class="add" onclick="addService('+idx+')">+</button></div>';
   });
 }
 function generatePDF(){
@@ -1536,14 +1575,16 @@ function generatePDF(){
   y+=4;
   function svcHead(label){doc.setFillColor(BLUE[0],BLUE[1],BLUE[2]);doc.rect(ML,y,CW,7,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(label,ML+2,y+4.7);doc.text('VALOR UNIT.',ML+CW-62,y+4.7,{align:'right'});doc.text('CANT.',ML+CW-34,y+4.7,{align:'right'});doc.text('VALOR TOTAL',ML+CW-2,y+4.7,{align:'right'});y+=7;}
   function svcRow(it,i){
-    if(need(6.8))svcHead('SERVICIO');
-    if(i%2===1){doc.setFillColor(247,250,252);doc.rect(ML,y,CW,6.8,'F');}
+    doc.setFont('helvetica','normal');doc.setFontSize(9.2);
+    var nl=doc.splitTextToSize(it.name,CW-88);var rh=Math.max(6.8,nl.length*4.1+2.7);
+    if(need(rh))svcHead('SERVICIO');
+    if(i%2===1){doc.setFillColor(247,250,252);doc.rect(ML,y,CW,rh,'F');}
     doc.setTextColor(INK[0],INK[1],INK[2]);doc.setFont('helvetica','normal');doc.setFontSize(9.2);
-    doc.text(doc.splitTextToSize(it.name,CW-70)[0],ML+2,y+4.6);
+    nl.forEach(function(l,k){doc.text(l,ML+2,y+4.6+k*4.1);});
     doc.text(fmt(it.price),ML+CW-62,y+4.6,{align:'right'});
     doc.text(String(it.qty),ML+CW-34,y+4.6,{align:'right'});
     doc.text(fmt(it.price*it.qty),ML+CW-2,y+4.6,{align:'right'});
-    y+=6.8;
+    y+=rh;
   }
   function refHead(){doc.setFillColor(BLUE[0],BLUE[1],BLUE[2]);doc.rect(ML,y,CW,7,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text('SERVICIO',ML+2,y+4.7);doc.text('VALOR UNITARIO',ML+CW-2,y+4.7,{align:'right'});y+=7;}
   para('Nota: Los servicios ofertados corresponden a actividades en Seguridad y Salud en el Trabajo, prestados por IPS habilitada, por lo cual se encuentran excluidos de IVA conforme a la normatividad vigente en Colombia.',{size:8.5,color:GRAY,gap:5});
@@ -1554,7 +1595,7 @@ function generatePDF(){
     Q.blocks.forEach(function(bk){
       need(13);
       doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(BLUED[0],BLUED[1],BLUED[2]);
-      doc.text(bk.label.toUpperCase()+(Q.grand&&!bk.include?'  (OPCIONAL)':''),ML,y); y+=6;
+      doc.text(bk.label.toUpperCase()+(bk.kind==='pkg'?' · '+bk.workers+' TRABAJADOR'+(bk.workers===1?'':'ES'):'')+(Q.grand&&!bk.include?'  (OPCIONAL)':''),ML,y); y+=6;
       need(7);svcHead(bk.kind==='pkg'?'EXAMEN':'SERVICIO');
       bk.items.forEach(function(it,i){ svcRow({name:it.name,price:it.price,qty:itemQty(it)},i); });
       if(need(13))svcHead('SERVICIO');
@@ -1571,18 +1612,18 @@ function generatePDF(){
   secTitle('Resumen de valores');
   function sumLine(label,val,o){o=o||{};need(o.gap!=null?o.gap+3:8);doc.setFont('helvetica',o.bold?'bold':'normal');doc.setFontSize(o.size||10);var c=o.color||INK;doc.setTextColor(c[0],c[1],c[2]);doc.text(label,ML,y);doc.text(val,ML+CW,y,{align:'right'});y+=(o.gap!=null?o.gap:6.5);}
   if(Q.grand){
-    Q.blocks.forEach(function(bk){sumLine(bk.label+(bk.include?'':' (opcional, no suma)'),fmt(bk.sub),{color:bk.include?INK:GRAY});});
+    Q.blocks.forEach(function(bk){sumLine(bk.label+(bk.kind==='pkg'?' · '+bk.workers+' trab.':'')+(bk.include?'':' (opcional, no suma)'),fmt(bk.sub),{color:bk.include?INK:GRAY});});
     need(9);doc.setDrawColor(LINE[0],LINE[1],LINE[2]);doc.setLineWidth(0.3);doc.line(ML,y,ML+CW,y);y+=6;
     sumLine('Subtotal',fmt(Q.subtotal));
     sumLine('Logística / operación',fmt(Q.log));
     sumLine('Descuento ('+Q.discount+'%)','-'+fmt(Q.disc));
     need(9);doc.line(ML,y,ML+CW,y);y+=6;
     sumLine('GRAN TOTAL COTIZACIÓN',fmt(Q.total),{bold:true,size:13,color:BLUED,gap:7});
-    sumLine('Valor por trabajador',fmt(Q.perWorker),{color:GRAY,size:9,gap:8});
+    sumLine('Valor promedio por trabajador ('+Q.workers+' trab.)',fmt(Q.perWorker),{color:GRAY,size:9,gap:8});
   } else {
     Q.blocks.forEach(function(bk){
       sumLine(bk.label,fmt(bk.net),{bold:true,color:BLUED,gap:5});
-      sumLine('   Valor por trabajador',fmt(bk.net/Q.workers),{color:GRAY,size:9,gap:6});
+      sumLine('   Valor por trabajador ('+bk.workers+' trab.)',fmt(bk.net/bk.workers),{color:GRAY,size:9,gap:6});
     });
     if(Q.discount)para('Valores con descuento del '+Q.discount+'% aplicado.',{size:8.5,color:GRAY,gap:2});
     if(Q.log)sumLine('Logística / operación (se suma a la opción elegida)',fmt(Q.log),{gap:8});
@@ -1617,22 +1658,17 @@ var COST_KEY='sothy_costos_v1', PIN_KEY='sothy_admin_pin_v1', MIN_KEY='sothy_mar
 window.getCost=function(name){var m=ls(COST_KEY,{});var c=m[key(name)];return (c===undefined||c===null||c==='')?null:Number(c);};
 window.setCost=function(name,v){var m=ls(COST_KEY,{});var n=parseInt(v);if(isNaN(n)||n<=0)delete m[key(name)];else m[key(name)]=n;lsSet(COST_KEY,m);refreshAll();};
 window.margenMin=function(){return Number(ls(MIN_KEY,30));};
-window.isAdmin=function(){try{return sessionStorage.getItem('sothy_admin_on')==='1';}catch(e){return false;}};
+var ADMIN_KEY={salt:'4b854ccc074492347a4c227221b8606e',it:200000,hash:'c62e3d3c30d2daa37baae496d54eefcd295f81f2c72d51811cbd616cfe55ba46'};
+window.isAdmin=function(){try{return sessionStorage.getItem('sothy_admin_on')===ADMIN_KEY.hash||localStorage.getItem('sothy_admin_device')===ADMIN_KEY.hash;}catch(e){return false;}};
+async function deriveKey(k){var enc=new TextEncoder();var base=await crypto.subtle.importKey('raw',enc.encode(k),'PBKDF2',false,['deriveBits']);var salt=new Uint8Array(ADMIN_KEY.salt.match(/../g).map(function(h){return parseInt(h,16);}));var bits=await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:salt,iterations:ADMIN_KEY.it},base,256);return Array.from(new Uint8Array(bits)).map(function(x){return x.toString(16).padStart(2,'0');}).join('');}
 async function sha(t){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('sothy|'+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0');}).join('');}
 window.toggleAdmin=async function(){
-  if(isAdmin()){try{sessionStorage.removeItem('sothy_admin_on');}catch(e){} refreshAll();sothyToast('Modo administrador desactivado');return;}
-  var saved=ls(PIN_KEY,null);
-  if(!saved){
-    var p1=prompt('Crea un PIN de administrador para este navegador (mínimo 4 caracteres). Protege la vista de costos y márgenes.');
-    if(!p1||p1.length<4){sothyToast('PIN no creado');return;}
-    var p2=prompt('Repite el PIN');if(p1!==p2){sothyToast('Los PIN no coinciden');return;}
-    lsSet(PIN_KEY,await sha(p1));
-  } else {
-    var p=prompt('PIN de administrador');if(!p)return;
-    if(await sha(p)!==saved){sothyToast('PIN incorrecto');return;}
-  }
-  try{sessionStorage.setItem('sothy_admin_on','1');}catch(e){}
-  refreshAll();sothyToast('Modo administrador activo: se ven costos y márgenes');
+  if(isAdmin()){try{sessionStorage.removeItem('sothy_admin_on');localStorage.removeItem('sothy_admin_device');}catch(e){} refreshAll();applyRoleUI();sothyToast('Modo administrador desactivado');return;}
+  var k=prompt('Llave de administrador');if(!k)return;
+  var h=await deriveKey(k.trim());
+  if(h!==ADMIN_KEY.hash){sothyToast('Llave incorrecta');return;}
+  try{sessionStorage.setItem('sothy_admin_on',h);if(confirm('¿Recordar el modo administrador en este computador? (solo en tu equipo personal)'))localStorage.setItem('sothy_admin_device',h);}catch(e){}
+  refreshAll();applyRoleUI();sothyToast('Modo administrador activo');
 };
 function marginInfo(price,cost){if(cost==null||!price)return null;var m=(price-cost)/price*100;var cls=m<0?'danger':m<margenMin()?'warn':'good';return {m:m,cls:cls};}
 window.marginBadge=function(name,price){if(!isAdmin())return '';var mi=marginInfo(price,getCost(name));if(!mi)return ' <span class="mg mg-none" title="Sin costo registrado">s/c</span>';return ' <span class="mg mg-'+mi.cls+'" title="Costo '+fmt(getCost(name))+'">'+Math.round(mi.m)+'%</span>';};
@@ -1698,7 +1734,7 @@ var ESC_KEY='sothy_escalas_v1', CONV_KEY='sothy_convenios_v1';
 var ESC_DEF=[{min:1,dto:0},{min:20,dto:3},{min:50,dto:5},{min:100,dto:8},{min:300,dto:10}];
 window.getEscalas=function(){var e=ls(ESC_KEY,null);return (Array.isArray(e)&&e.length?e:ESC_DEF).slice().sort(function(a,b){return a.min-b.min;});};
 window.volumeDto=function(w){var d=0;getEscalas().forEach(function(e){if(w>=e.min)d=e.dto;});return Math.min(15,d);};
-window.saveEscalas=function(){
+window.saveEscalas=function(){if(!isAdmin())return;
   var rows=document.querySelectorAll('#escalas-body tr');var arr=[];
   rows.forEach(function(tr){var mn=parseInt(tr.querySelector('.esc-min').value);var dt=parseFloat(tr.querySelector('.esc-dto').value);if(mn>0&&!isNaN(dt))arr.push({min:mn,dto:Math.min(15,Math.max(0,dt))});});
   if(!arr.length){sothyToast('Agrega al menos una escala');return;}
@@ -1718,6 +1754,7 @@ window.getConvenios=function(){return ls(CONV_KEY,{});};
 window.convenioActual=function(){var c=getConvenios()[key(val('q-company'))];return c||null;};
 window.priceFor=function(name,base){var c=convenioActual();if(c&&c.prices&&c.prices[name]!=null)return c.prices[name];return base;};
 window.saveConvenio=function(){
+  if(!isAdmin()){sothyToast('Los convenios los crea el administrador. Guarda la cotización y pídele que la convierta en convenio.');return;}
   var company=val('q-company').trim();if(!company){sothyToast('Escribe primero el nombre de la empresa');return;}
   var prices={};
   quoteItems.forEach(function(it){prices[it.name]=it.price;});
@@ -1733,7 +1770,7 @@ window.applyConvenio=function(){
   selectedPackages.forEach(function(p){p.items.forEach(function(it){if(c.prices[it.name]!=null){it.price=c.prices[it.name];n++;}});});
   updateQuoteItems();updateTotals();sothyToast(n+' tarifas del convenio aplicadas');
 };
-window.delConvenio=function(k){if(!confirm('¿Eliminar este convenio?'))return;var all=getConvenios();delete all[k];lsSet(CONV_KEY,all);renderAdminPanels();renderConvenioHint();};
+window.delConvenio=function(k){if(!isAdmin())return;if(!confirm('¿Eliminar este convenio?'))return;var all=getConvenios();delete all[k];lsSet(CONV_KEY,all);renderAdminPanels();renderConvenioHint();};
 window.renderConvenioHint=function(){
   var h=document.getElementById('convenio-hint');if(!h)return;var c=convenioActual();
   h.innerHTML=c?'🤝 <b>'+esc(c.name)+'</b> tiene convenio ('+Object.keys(c.prices).length+' tarifas pactadas, '+esc(c.fecha)+'). Se usan al agregar servicios. <a href="#" onclick="applyConvenio();return false">Aplicar a la cotización actual</a>':'';
@@ -1772,7 +1809,39 @@ window.renderRiskPackages=function(){
   var b=document.getElementById('risk-builder-checks');
   if(b)b.innerHTML=EXPOSICIONES.map(function(e){return '<label class="exp-check"><input type="checkbox" value="'+e[0]+'"> '+esc(e[1])+'</label>';}).join('');
 };
+var ENFASIS={operativo:'operativo / planta',conductores:'conducción',alturas:'trabajo en alturas',electrica:'riesgo eléctrico',alimentos:'manipulación de alimentos (incluye dermatológico)',administrativo:'administrativo',r_solventes:'solventes',r_plaguicidas:'plaguicidas',r_metales:'metales y soldadura',r_biologico:'riesgo biológico',r_confinados:'espacios confinados',r_vigilancia:'seguridad y vigilancia'};
+var EXP_ENF={ruido:'ruido',pvd:'pantallas',alturas:'trabajo en alturas',conduccion:'conducción',polvos:'material particulado',solventes:'solventes',plaguicidas:'plaguicidas',plomo:'metales',biologico:'riesgo biológico',alimentos:'manipulación de alimentos (incluye dermatológico)',electrico:'riesgo eléctrico',psicosocial:'psicosocial',drogas:'alcohol y drogas'};
+function isMedico(n){return /^(Valoración|Val\.) Médica Osteomuscular/.test(n);}
+window.renderEnfasisChecks=function(){var b=document.getElementById('risk-builder-enfasis');if(!b)return;b.innerHTML=Object.keys(ENFASIS).filter(function(k){return PAQUETES_COTIZADOR[k];}).map(function(k){return '<label class="exp-check"><input type="checkbox" value="'+k+'"> '+esc(PAQUETES_COTIZADOR[k].label)+'</label>';}).join('');};
+/* Une exámenes de varios énfasis: una sola valoración médica + paraclínicos sin repetir */
+window.combinarEnfasis=function(pkgKeys,expKeys){
+  var exams=[],labels=[],medPrices=[];
+  var add=function(list){list.forEach(function(x){if(isMedico(x)){var s=services.find(function(v){return v.name===x;});if(s)medPrices.push(priceFor(s.name,s.price));}else if(exams.indexOf(x)<0)exams.push(x);});};
+  pkgKeys.forEach(function(k){var p=PAQUETES_COTIZADOR[k];if(!p)return;add(p.exams);var l=ENFASIS[k]||p.label.toLowerCase();if(labels.indexOf(l)<0)labels.push(l);});
+  EXPOSICIONES.forEach(function(e){if(expKeys.indexOf(e[0])>=0){add(e[2]);var l=EXP_ENF[e[0]];if(l&&labels.indexOf(l)<0&&['ruido','pantallas','material particulado','psicosocial','alcohol y drogas'].indexOf(l)<0)labels.push(l);}});
+  var base=services.find(function(v){return v.name==='Valoración Médica Osteomuscular (ingreso/periódico/retiro)';});
+  if(base)medPrices.push(priceFor(base.name,base.price));
+  var medPrice=medPrices.length?Math.max.apply(null,medPrices):34000;
+  var medName;
+  if(!labels.length||(labels.length===1&&['operativo / planta','administrativo'].indexOf(labels[0])>=0))medName='Valoración Médica Osteomuscular (ingreso/periódico/retiro)';
+  else if(labels.length===1&&labels[0]==='trabajo en alturas')medName='Val. Médica Osteomuscular + Trabajo en Alturas';
+  else if(labels.length===1&&labels[0].indexOf('manipulación de alimentos')===0)medName='Val. Médica Osteomuscular + Dermatológico + Manip. Alimentos';
+  else{var ls2=labels.filter(function(l){return ['operativo / planta','administrativo'].indexOf(l)<0;});medName='Valoración Médica Osteomuscular con énfasis en '+(ls2.length>1?ls2.slice(0,-1).join(', ')+' y '+ls2[ls2.length-1]:ls2[0]);}
+  var custom={};custom[medName]=medPrice;
+  return {exams:[medName].concat(exams),custom:custom,enfasis:labels};
+};
 window.buildRiskPackage=function(){
+  var pk=Array.prototype.map.call(document.querySelectorAll('#risk-builder-enfasis input:checked'),function(i){return i.value;});
+  var ex=Array.prototype.map.call(document.querySelectorAll('#risk-builder-checks input:checked'),function(i){return i.value;});
+  if(!pk.length&&!ex.length){sothyToast('Marca al menos un énfasis o una exposición del cargo');return;}
+  var cargo=val('rb-cargo').trim()||(pk.length?pk.map(function(k){return PAQUETES_COTIZADOR[k].label;}).join(' + '):'Cargo por riesgos');
+  var r=combinarEnfasis(pk,ex);
+  var k='c_'+key(cargo).replace(/[^a-z0-9]+/g,'_');
+  PAQUETES_COTIZADOR[k]={label:cargo,exams:r.exams.filter(function(x){return r.custom[x]!=null||services.some(function(s){return s.name===x;});}),custom:r.custom,enfasis:r.enfasis,note:'Una sola valoración médica cubre todos los énfasis del cargo'+(r.enfasis.length?' ('+r.enfasis.join(', ')+')':'')+'; los paraclínicos se incluyen una vez. Confírmalo con el profesiograma del cliente.'};
+  openPackageModal(k);
+  var w=parseInt(val('rb-workers'));var wEl=document.getElementById('pkg-modal-workers');if(w&&wEl)wEl.value=w;
+};
+window.__oldBuildRiskPackage=function(){
   var cargo=val('rb-cargo').trim()||'Cargo por riesgos';
   var sel=Array.prototype.map.call(document.querySelectorAll('#risk-builder-checks input:checked'),function(i){return i.value;});
   if(!sel.length){sothyToast('Marca al menos una exposición del cargo');return;}
@@ -1796,7 +1865,7 @@ function snapshot(){return {company:val('q-company'),contact:val('q-contact'),em
 window.registrarCotizacion=function(estado,silent){
   var q=computeQuote();if(!q.blocks.length){if(!silent)sothyToast('Agrega servicios o paquetes antes de guardar');return null;}
   var all=getCots();var rec=cotActual?all.find(function(c){return c.id===cotActual;}):null;
-  var base={empresa:val('q-company').trim()||'(sin nombre)',contacto:val('q-contact'),correo:val('q-email'),telefono:val('q-phone'),trabajadores:q.workers,modalidad:(document.getElementById('q-modality').selectedOptions[0]||{}).text||'',total:q.grand?q.total:q.blocks.reduce(function(a,b){return Math.max(a,b.net);},0),granTotal:q.grand,bloques:q.blocks.map(function(b){return b.label;}),snapshot:snapshot(),actualizada:todayISO(),asesor:ls('sothy_asesor','')};
+  var base={empresa:val('q-company').trim()||'(sin nombre)',contacto:val('q-contact'),correo:val('q-email'),telefono:val('q-phone'),trabajadores:q.workers,modalidad:(document.getElementById('q-modality').selectedOptions[0]||{}).text||'',total:q.grand?q.total:q.blocks.reduce(function(a,b){return Math.max(a,b.net);},0),granTotal:q.grand,bloques:q.blocks.map(function(b){return b.label;}),snapshot:snapshot(),actualizada:todayISO(),asesor:ls('sothy_asesor',''),bajoTarifa:bajoTarifaItems()};
   if(rec){Object.assign(rec,base);rec.version=(rec.version||1)+1;if(estado&&rank(estado)>rank(rec.estado))rec.estado=estado;}
   else{rec=Object.assign({id:nextId(),fecha:todayISO(),estado:estado||'borrador',proximo:addDaysISO(3),motivo:'',notas:'',version:1},base);all.unshift(rec);}
   if(estado==='enviada'&&(!rec.proximo||rec.proximo<todayISO()))rec.proximo=addDaysISO(3);
@@ -1823,15 +1892,17 @@ window.exportCotsCSV=function(){
   getCots().forEach(function(c){rows.push([c.id,c.fecha,c.empresa,c.contacto,c.correo,c.telefono,c.trabajadores,c.modalidad,Math.round(c.total),c.estado,c.proximo,c.motivo,c.asesor,c.notas]);});
   downloadText('seguimiento_cotizaciones_'+todayISO()+'.csv',rows.map(function(r){return r.map(function(x){return '"'+String(x==null?'':x).replace(/"/g,'""')+'"';}).join(',');}).join('\n'));
 };
-window.exportBackup=function(){downloadText('respaldo_cotizador_'+todayISO()+'.json',JSON.stringify({cotizaciones:getCots(),convenios:getConvenios(),escalas:getEscalas(),servicios:services},null,1),'application/json');};
+window.exportBackup=function(){var adm=isAdmin();downloadText((adm?'tarifas_y_respaldo_':'respaldo_cotizador_')+todayISO()+'.json',JSON.stringify({oficial:adm,fecha:todayISO(),cotizaciones:getCots(),convenios:getConvenios(),escalas:getEscalas(),servicios:services},null,1),'application/json');};
 window.importBackup=function(input){
   var f=input.files&&input.files[0];if(!f)return;var r=new FileReader();
   r.onload=function(){try{var d=JSON.parse(String(r.result).replace(/^﻿/,''));
     var mine=getCots();var ids=new Set(mine.map(function(c){return c.id;}));var n=0;
     (d.cotizaciones||[]).forEach(function(c){if(c&&c.id&&!ids.has(c.id)){mine.push(c);n++;}});
     mine.sort(function(a,b){return a.id<b.id?1:-1;});saveCots(mine);
-    if(d.convenios){var cv=getConvenios();Object.keys(d.convenios).forEach(function(k){if(!cv[k])cv[k]=d.convenios[k];});lsSet(CONV_KEY,cv);}
-    input.value='';renderSeguimiento();renderAdminPanels();sothyToast(n+' cotizaciones importadas');
+    var oficial=d.oficial===true&&Array.isArray(d.servicios)&&d.servicios.length;
+    if(oficial){services.length=0;d.servicios.forEach(function(x){services.push({cat:x.cat,name:x.name,price:parseInt(x.price)||0});});saveServices();lsSet('sothy_servicios_eliminados_v1',[]);if(Array.isArray(d.escalas))lsSet(ESC_KEY,d.escalas);if(d.convenios)lsSet(CONV_KEY,d.convenios);}
+    else if(d.convenios&&isAdmin()){var cv=getConvenios();Object.keys(d.convenios).forEach(function(k){if(!cv[k])cv[k]=d.convenios[k];});lsSet(CONV_KEY,cv);}
+    input.value='';renderSeguimiento();renderAdminPanels();refreshAll();sothyToast((oficial?'Tarifas oficiales del '+(d.fecha||'')+' aplicadas · ':'')+n+' cotizaciones importadas');
   }catch(e){sothyToast('Archivo de respaldo no válido');}};
   r.readAsText(f,'utf-8');
 };
@@ -1863,7 +1934,7 @@ window.renderSeguimiento=function(){
     var late=['borrador','enviada','negociacion'].indexOf(c.estado)>=0&&c.proximo&&c.proximo<=hoy;
     return '<tr class="'+(late?'seg-late':'')+'"><td style="white-space:nowrap"><b>'+esc(c.id)+'</b><div class="seg-sub">'+esc(c.fecha)+(c.version>1?' · v'+c.version:'')+'</div></td>'
       +'<td><b>'+esc(c.empresa)+'</b><div class="seg-sub">'+esc([c.contacto,c.telefono,c.correo].filter(Boolean).join(' · '))+'</div><div class="seg-sub">'+esc(c.trabajadores+' trab. · '+c.modalidad)+'</div></td>'
-      +'<td style="text-align:right;white-space:nowrap"><b>'+fmt(c.total)+'</b><div class="seg-sub">'+(c.granTotal?'Gran total':'Opciones')+'</div></td>'
+      +'<td style="text-align:right;white-space:nowrap"><b>'+fmt(c.total)+'</b><div class="seg-sub">'+(c.granTotal?'Gran total':'Opciones')+'</div>'+(c.bajoTarifa&&c.bajoTarifa.length?'<div class="seg-sub" title="'+esc(c.bajoTarifa.join(' · '))+'" style="color:var(--warn);font-weight:700">⚠ '+c.bajoTarifa.length+' bajo tarifa</div>':'')+'</td>'
       +'<td><select onchange="setCotField(\''+c.id+'\',\'estado\',this.value)">'+ESTADOS.map(function(e){return '<option value="'+e[0]+'"'+(c.estado===e[0]?' selected':'')+'>'+e[1]+'</option>';}).join('')+'</select>'
       +(c.estado==='perdida'?'<select style="margin-top:4px" onchange="setCotField(\''+c.id+'\',\'motivo\',this.value)"><option value="">Motivo…</option>'+MOTIVOS.map(function(m){return '<option'+(c.motivo===m?' selected':'')+'>'+m+'</option>';}).join('')+'</select>':'')+'</td>'
       +'<td><input type="date" value="'+esc(c.proximo||'')+'" onchange="setCotField(\''+c.id+'\',\'proximo\',this.value)">'+(late?'<div class="seg-sub" style="color:var(--danger);font-weight:700">Pendiente</div>':'')+'</td>'
@@ -1920,10 +1991,18 @@ window.renderAdminPanels=function(){
   }
   var ab=document.getElementById('admin-toggle-btn');if(ab)ab.textContent=isAdmin()?'🔓 Salir de modo administrador':'🔒 Modo administrador (costos y márgenes)';
 };
+window.applyRoleUI=function(){
+  var adm=isAdmin();document.body.classList.toggle('is-admin',adm);document.body.classList.toggle('is-comercial',!adm);
+  var t=document.querySelector('.new-service-toggle');if(t)t.textContent=adm?'＋ Añadir servicio nuevo al catálogo':'＋ Añadir un servicio que no está en la lista';
+  var sb=document.querySelector('#new-service-box .btn');if(sb)sb.textContent=adm?'Guardar en el catálogo':'Agregar a esta cotización';
+  var nq=document.getElementById('ns-quote');if(nq&&nq.parentNode)nq.parentNode.style.display=adm?'':'none';
+  var rb=document.getElementById('role-badge');if(rb)rb.innerHTML=adm?'🔓 Administrador':'Comercial';
+};
 window.refreshAll=function(){try{buildPriceTable();}catch(e){}try{refreshQuoterViews();}catch(e){}try{updateQuoteItems();updateTotals();}catch(e){}renderAdminPanels();};
 
 /* ---------- Cableado inicial ---------- */
 var lastWorkers=parseInt(val('q-workers'))||1;
+window.__setLastWorkers=function(n){lastWorkers=n;};
 document.addEventListener('DOMContentLoaded',init);if(document.readyState!=='loading')init();
 var inited=false;
 function init(){
@@ -1934,11 +2013,11 @@ function init(){
   if(w)w.addEventListener('input',function(){
     var nw=parseInt(w.value)||1;
     quoteItems.forEach(function(it){if(itemQty(it)===lastWorkers)it.qty=nw;});
-    selectedPackages.forEach(function(p){p.items.forEach(function(it){if(it.qty===lastWorkers)it.qty=nw;});});
+    selectedPackages.forEach(function(p){if((p.workers||lastWorkers)===lastWorkers&&selectedPackages.length===1){p.workers=nw;p.items.forEach(function(it){if(it.qty===lastWorkers)it.qty=nw;});}});
     lastWorkers=nw;applyVolume();updateQuoteItems();updateTotals();});
   var c=document.getElementById('q-company');if(c)c.addEventListener('input',renderConvenioHint);
   var a=document.getElementById('seg-asesor');if(a)a.value=ls('sothy_asesor','');
-  renderRiskPackages();applyVolume();renderCotLabel();renderConvenioHint();renderAdminPanels();renderSeguimiento();
+  applyRoleUI();renderRiskPackages();renderEnfasisChecks();applyVolume();renderCotLabel();renderConvenioHint();renderAdminPanels();renderSeguimiento();
   try{buildPriceTable();refreshQuoterViews();}catch(e){}
 }
 })();
