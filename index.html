@@ -92,7 +92,17 @@ label{display:block;font-size:11.2px;text-transform:uppercase;letter-spacing:.7p
 #new-service-box .ns-check input{width:auto}.del{color:var(--danger);cursor:pointer;font-weight:800;text-align:center}
 .pkg-quote-block{margin-top:14px;padding:12px;border:1px solid #dde7f3;border-radius:12px;background:#f7fafd}
 .pkg-quote-head{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:var(--navy);font-size:13px;margin-bottom:6px}
-.pkg-remove{color:var(--danger);font-weight:700;font-size:11.5px;cursor:pointer}
+.pkg-remove{color:var(--danger);font-weight:700;font-size:11.5px;cursor:pointer;white-space:nowrap}
+.pkg-head-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.inc-toggle,.grand-toggle{display:inline-flex;gap:5px;align-items:center;font-size:11.5px;font-weight:600;color:var(--blue);cursor:pointer;text-transform:none;letter-spacing:0;margin:0}
+.inc-toggle input,.grand-toggle input{width:auto;margin:0}
+.grand-toggle{display:flex;padding:8px 10px;background:var(--accent);border-radius:10px;margin-bottom:8px;font-size:12.5px}
+.pkg-quote-block.excluded{opacity:.62;border-style:dashed}
+.loose-block{margin-top:0}
+.pkg-quote-pw{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:3px}
+.muted-row{opacity:.6}.muted-row em{font-size:11px}
+.blocks-summary{border-bottom:1px dashed #c6d4e6;margin-bottom:6px;padding-bottom:4px}
+.option-row small{display:block;font-size:11px;font-weight:500;color:var(--muted)}
 .pkg-quote-sub{display:flex;justify-content:space-between;margin-top:6px;padding-top:6px;border-top:1px dashed #c6d4e6;font-weight:800;color:var(--blue);font-size:12.5px}
 .total-row{display:flex;justify-content:space-between;margin:7px 0;font-size:13px;color:var(--muted)}
 .total-row.main{font-family:'Syne';font-size:18px;font-weight:800;color:var(--navy);border-top:2px solid var(--border);padding-top:12px;margin-top:10px}
@@ -536,13 +546,7 @@ label{color:#5b6d84 !important;}
             <div class="alert warn" id="tele-warning" style="display:none"><b>Telemedicina:</b> validar riesgo I, perfil administrativo y ausencia de apoyos diagnósticos antes de ofertar.</div>
             <div id="quote-items-list"><div class="alert info">Agrega servicios desde el panel izquierdo.</div></div>
             <div id="quote-packages-list"></div>
-            <div id="quote-totals" style="display:none;margin-top:12px">
-              <div class="total-row"><span>Subtotal paquetes</span><span id="t-subtotal">$0</span></div>
-              <div class="total-row"><span>Logística / operación</span><span id="t-logistic">$0</span></div>
-              <div class="total-row"><span>Descuento</span><span id="t-discount">$0</span></div>
-              <div class="total-row"><span>Valor por trabajador</span><span id="t-per-worker">$0</span></div>
-              <div class="total-row main"><span>Total cotización</span><span id="t-total">$0</span></div>
-            </div>
+            <div id="quote-totals" style="display:none;margin-top:12px"></div>
             <div class="btn-row"><button class="btn" onclick="generateQuote()">Generar propuesta</button><button class="btn secondary" onclick="clearQuote()">Limpiar</button></div>
           </div>
         </div>
@@ -965,7 +969,7 @@ function buildServiceList(filter=''){
   });
 }
 function filterServices(){buildServiceList(document.getElementById('service-search').value)}
-function addService(i){const s=services[i]; if(quoteItems.find(x=>x.name===s.name)){ sothyToast('Ese servicio ya está en la lista'); return; } quoteItems.push({name:s.name, price:s.price, cat:s.cat}); updateQuoteItems(); updateTotals();}
+function addService(i){const s=services[i]; if(quoteItems.find(x=>x.name===s.name)){ sothyToast('Ese servicio ya está en la lista'); return; } quoteItems.push({name:s.name, price:s.price, cat:s.cat, qty:parseInt(document.getElementById('q-workers')?.value)||1}); updateQuoteItems(); updateTotals();}
 const PAQUETES_COTIZADOR = {
   administrativo: {label:'Administrativo', exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Visiometría','Optometría']},
   operativo: {label:'Operativo (planta / industrial)', exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Audiometría Tonal','Visiometría','Cuadro Hemático (Hemograma)','Perfil Lipídico','Glicemia','Espirometría']},
@@ -1046,14 +1050,47 @@ function confirmAddPackage(){
   addPackageToQuote(pkgModalKey, names);
   closePackageModal();
 }
+let looseInclude=true;
+let showGrandTotal=true;
+function setRefQty(i,v){if(!quoteItems[i])return;quoteItems[i].qty=Math.max(1,parseInt(v)||1);setTimeout(function(){updateQuoteItems();updateTotals();},0);}
+function toggleBlockInclude(kind,pi,on){if(kind==='loose')looseInclude=on;else if(selectedPackages[pi])selectedPackages[pi].include=on;updateTotals();}
+function itemQty(it){return Math.max(1,parseInt(it.qty)||1);}
+function blockSub(items){return items.reduce(function(a,it){return a+it.price*itemQty(it);},0);}
+/* Cálculo único de la cotización: lo usan pantalla, texto y PDF */
+function computeQuote(){
+  const workers=parseInt(document.getElementById('q-workers')?.value)||1;
+  const log=parseFloat(document.getElementById('q-logistic')?.value)||0;
+  const discount=Math.min(parseFloat(document.getElementById('q-discount')?.value)||0,15);
+  const blocks=[];
+  selectedPackages.forEach(function(p,pi){if(p.items&&p.items.length)blocks.push({kind:'pkg',pi:pi,label:'Paquete '+p.label,items:p.items,sub:blockSub(p.items),include:p.include!==false});});
+  if(quoteItems.length)blocks.push({kind:'loose',label:'Servicios individuales',items:quoteItems,sub:blockSub(quoteItems),include:looseInclude});
+  blocks.forEach(function(bk){bk.disc=bk.sub*discount/100;bk.net=bk.sub-bk.disc;bk.perWorker=bk.sub/workers;});
+  const inc=blocks.filter(function(bk){return bk.include;});
+  const subtotal=inc.reduce(function(a,bk){return a+bk.sub;},0);
+  const gross=subtotal+log, disc=gross*discount/100, total=gross-disc;
+  return {workers:workers,log:log,discount:discount,blocks:blocks,included:inc,subtotal:subtotal,disc:disc,total:total,perWorker:total/workers,grand:showGrandTotal&&inc.length>0};
+}
+function blockHead(title,kind,pi,include,removeHtml){
+  return '<div class="pkg-quote-head"><span>'+title+'</span><span class="pkg-head-actions">'
+    +'<label class="inc-toggle" title="Si lo desmarcas, este bloque se muestra con su propio total pero no entra al gran total"><input type="checkbox" '+(include?'checked':'')+' onchange="toggleBlockInclude(\''+kind+'\','+pi+',this.checked)"> Sumar al gran total</label>'
+    +removeHtml+'</span></div>'
+    +'<div class="quote-item quote-item-head"><div>Servicio</div><div>Unit.</div><div>Cant.</div><div>Total</div><div></div></div>';
+}
+function blockFoot(label,sub,workers){
+  return '<div class="pkg-quote-sub"><span>Total '+label+'</span><span>'+fmt(sub)+'</span></div>'
+    +'<div class="pkg-quote-pw"><span>Valor por trabajador</span><span>'+fmt(sub/workers)+'</span></div>';
+}
 function updateQuoteItems(){
   const c=document.getElementById('quote-items-list');
-  if(!quoteItems.length){
-    c.innerHTML='<div class="alert info">Agrega servicios desde el panel izquierdo.</div>';
+  const workers=parseInt(document.getElementById('q-workers')?.value)||1;
+  if(!quoteItems.length && !selectedPackages.length){
+    c.innerHTML='<div class="alert info">Agrega servicios desde el panel izquierdo o un paquete por perfil de cargo.</div>';
+  } else if(!quoteItems.length){
+    c.innerHTML='';
   } else {
-    let rows='<div class="alert info" style="font-size:11.5px;margin-bottom:6px">Servicios de referencia: su valor no se suma al total de la propuesta. Si la empresa desea añadirlos, se cotizan aparte.</div>';
-    rows+='<div class="quote-item-ref quote-item-head"><div>Servicio</div><div>Valor unit.</div><div></div></div>';
-    rows+=quoteItems.map((it,i)=>`<div class="quote-item-ref"><div>${it.name}</div><input class="qprice" type="number" min="0" step="100" value="${it.price}" title="Precio editable solo para esta cotización" onchange="setRefPrice(${i},this.value)"><div class="del" onclick="quoteItems.splice(${i},1);updateQuoteItems();updateTotals()">×</div></div>`).join('');
+    let rows='<div class="pkg-quote-block loose-block'+(looseInclude?'':' excluded')+'">'+blockHead('🧪 Servicios individuales','loose',0,looseInclude,'<span class="pkg-remove" onclick="quoteItems=[];updateQuoteItems();updateTotals()">Quitar todos ×</span>');
+    rows+=quoteItems.map((it,i)=>`<div class="quote-item"><div>${it.name}</div><input class="qprice" type="number" min="0" step="100" value="${it.price}" title="Precio editable solo para esta cotización" onchange="setRefPrice(${i},this.value)"><input class="qty" type="number" min="1" value="${itemQty(it)}" onchange="setRefQty(${i},this.value)"><div>${fmt(it.price*itemQty(it))}</div><div class="del" onclick="quoteItems.splice(${i},1);updateQuoteItems();updateTotals()">×</div></div>`).join('');
+    rows+=blockFoot('servicios individuales',blockSub(quoteItems),workers)+'</div>';
     c.innerHTML=rows;
   }
   renderPackagesList();
@@ -1061,17 +1098,15 @@ function updateQuoteItems(){
 function renderPackagesList(){
   const c=document.getElementById('quote-packages-list'); if(!c) return;
   if(!selectedPackages.length){ c.innerHTML=''; return; }
+  const workers=parseInt(document.getElementById('q-workers')?.value)||1;
   c.innerHTML=selectedPackages.map(function(pkg,pi){
+    const inc=pkg.include!==false;
     const rows=pkg.items.map(function(it,ii){
       return '<div class="quote-item"><div>'+it.name+'</div><input class="qprice" type="number" min="0" step="100" value="'+it.price+'" title="Precio editable solo para esta cotización" onchange="setPkgPrice('+pi+','+ii+',this.value)"><input class="qty" type="number" min="1" value="'+it.qty+'" onchange="selectedPackages['+pi+'].items['+ii+'].qty=parseInt(this.value)||1;updateQuoteItems();updateTotals()"><div>'+fmt(it.price*it.qty)+'</div><div class="del" onclick="selectedPackages['+pi+'].items.splice('+ii+',1);if(!selectedPackages['+pi+'].items.length)selectedPackages.splice('+pi+',1);updateQuoteItems();updateTotals()">×</div></div>';
     }).join('');
-    const sub=pkg.items.reduce(function(a,it){return a+it.price*it.qty;},0);
-    return '<div class="pkg-quote-block">'
-      +'<div class="pkg-quote-head"><span>📦 Paquete: '+pkg.label+'</span><span class="pkg-remove" onclick="removePackageFromQuote(\''+pkg.key+'\')">Quitar paquete ×</span></div>'
-      +'<div class="quote-item quote-item-head"><div>Servicio</div><div>Unit.</div><div>Cant.</div><div>Total</div><div></div></div>'
-      +rows
-      +'<div class="pkg-quote-sub"><span>Subtotal '+pkg.label+'</span><span>'+fmt(sub)+'</span></div>'
-      +'</div>';
+    return '<div class="pkg-quote-block'+(inc?'':' excluded')+'">'
+      +blockHead('📦 Paquete: '+pkg.label,'pkg',pi,inc,'<span class="pkg-remove" onclick="removePackageFromQuote(\''+pkg.key+'\')">Quitar ×</span>')
+      +rows+blockFoot(pkg.label,blockSub(pkg.items),workers)+'</div>';
   }).join('');
 }
 function modalitySuggestedLogistic(mod, workers){
@@ -1082,42 +1117,47 @@ function modalitySuggestedLogistic(mod, workers){
 function updateTotals(){
   const workers=parseInt(document.getElementById('q-workers')?.value)||1;
   const mod=document.getElementById('q-modality')?.value||'intramural';
-  let log=parseFloat(document.getElementById('q-logistic')?.value)||0;
   const logInput=document.getElementById('q-logistic');
+  let log=parseFloat(logInput?.value)||0;
   if(document.activeElement!==logInput && log===0 && mod.includes('brigada')){log=modalitySuggestedLogistic(mod,workers); logInput.value=log;}
   document.getElementById('tele-warning').style.display=mod==='telemedicina'?'block':'none';
-  const discount=Math.min(parseFloat(document.getElementById('q-discount')?.value)||0,15);
-  const pkgSubtotal=selectedPackages.reduce((a,p)=>a+p.items.reduce((s,it)=>s+it.price*it.qty,0),0);
-  const subtotal=pkgSubtotal;
-  const gross=subtotal+log;
-  const disc=gross*discount/100;
-  const total=gross-disc;
-  document.getElementById('quote-totals').style.display=(quoteItems.length||selectedPackages.length)?'block':'none';
-  document.getElementById('t-subtotal').textContent=fmt(subtotal);
-  document.getElementById('t-logistic').textContent=fmt(log);
-  document.getElementById('t-discount').textContent='-'+fmt(disc);
-  document.getElementById('t-total').textContent=fmt(total);
-  document.getElementById('t-per-worker').textContent=fmt(total/workers);
+  const q=computeQuote();
+  const box=document.getElementById('quote-totals');
+  box.style.display=q.blocks.length?'block':'none';
+  if(!q.blocks.length){box.innerHTML='';return;}
+  let h='<label class="grand-toggle"><input type="checkbox" '+(showGrandTotal?'checked':'')+' onchange="showGrandTotal=this.checked;updateTotals()"> Mostrar gran total (sumar los bloques marcados)</label>';
+  h+='<div class="blocks-summary">'+q.blocks.map(function(bk){
+    return '<div class="total-row'+(bk.include?'':' muted-row')+'"><span>'+bk.label+(bk.include||!showGrandTotal?'':' <em>(no suma)</em>')+'</span><span>'+fmt(bk.sub)+'</span></div>';
+  }).join('')+'</div>';
+  if(q.grand){
+    h+='<div class="total-row"><span>Subtotal bloques incluidos</span><span id="t-subtotal">'+fmt(q.subtotal)+'</span></div>'
+     +'<div class="total-row"><span>Logística / operación</span><span id="t-logistic">'+fmt(q.log)+'</span></div>'
+     +'<div class="total-row"><span>Descuento '+q.discount+'%</span><span id="t-discount">-'+fmt(q.disc)+'</span></div>'
+     +'<div class="total-row"><span>Valor por trabajador</span><span id="t-per-worker">'+fmt(q.perWorker)+'</span></div>'
+     +'<div class="total-row main"><span>Gran total cotización</span><span id="t-total">'+fmt(q.total)+'</span></div>';
+  } else {
+    h+='<div class="alert info" style="font-size:11.5px;margin-top:8px">Sin gran total: cada bloque se presenta como opción independiente'+(q.discount?' (descuento '+q.discount+'% aplicado a cada uno)':'')+'.'+(q.log?' La logística ('+fmt(q.log)+') se suma a la opción que elija la empresa.':'')+'</div>'
+     +q.blocks.map(function(bk){return '<div class="total-row main option-row"><span>'+bk.label+'<small>'+fmt(bk.net/workers)+' por trabajador</small></span><span>'+fmt(bk.net)+'</span></div>';}).join('')
+     +'<span id="t-subtotal" hidden></span><span id="t-logistic" hidden>'+fmt(q.log)+'</span><span id="t-discount" hidden></span><span id="t-per-worker" hidden></span><span id="t-total" hidden></span>';
+  }
+  box.innerHTML=h;
 }
-function clearQuote(){quoteItems=[];selectedPackages=[];updateQuoteItems();updateTotals();}
+function clearQuote(){quoteItems=[];selectedPackages=[];looseInclude=true;updateQuoteItems();updateTotals();}
 function generateQuote(){
   const company=document.getElementById('q-company').value||'la empresa';
   const workers=parseInt(document.getElementById('q-workers').value)||1;
   const mod=document.getElementById('q-modality').selectedOptions[0].text;
   const total=document.getElementById('t-total').textContent;
   const per=document.getElementById('t-per-worker').textContent;
-  const servicesTxt=quoteItems.map(x=>`• ${x.name} — Valor referencial: ${fmt(x.price)} (no incluido en el total; se cotiza aparte si la empresa lo solicita)`).join('\n');
-  const packagesTxt=selectedPackages.map(function(p){
-    const lines=p.items.map(function(it){return `   - ${it.name} — Valor unit.: ${fmt(it.price)} · Cant.: ${it.qty} · Total: ${fmt(it.price*it.qty)}`;}).join('\n');
-    const sub=p.items.reduce(function(a,it){return a+it.price*it.qty;},0);
-    return `• Paquete ${p.label} (Subtotal: ${fmt(sub)})\n${lines}`;
+  const q=computeQuote();
+  const body0=q.blocks.map(function(bk){
+    const lines=bk.items.map(function(it){return `   - ${it.name} — Valor unit.: ${fmt(it.price)} · Cant.: ${itemQty(it)} · Total: ${fmt(it.price*itemQty(it))}`;}).join('\n');
+    return `• ${bk.label} — Total: ${fmt(bk.sub)} (${fmt(bk.perWorker)} por trabajador)${q.grand&&!bk.include?' — opcional, no incluido en el gran total':''}\n${lines}`;
   }).join('\n\n');
-  let body='';
-  if(selectedPackages.length) body+=`Paquetes aplicados (base del total cotizado):\n${packagesTxt}\n\n`;
-  if(quoteItems.length) body+=`Servicios adicionales de referencia:\n${servicesTxt}\n\n`;
+  let body=body0?body0+'\n\n':'';
   if(!body) body='Servicios por definir\n\n';
   const tele = document.getElementById('q-modality').value==='telemedicina' ? '\n\nNota: telemedicina sujeta a validación de perfil administrativo de bajo riesgo, objeto social, cargo y ausencia de apoyos diagnósticos.' : '';
-  const txt=`Cordial saludo,\n\nDe acuerdo con la necesidad de ${company}, presentamos propuesta para ${workers} trabajador(es) bajo modalidad ${mod}.\n\n${body}Valor por trabajador: ${per}\nValor total estimado: ${total}\n\nAntes de agendar, agradecemos compartir profesiograma o matriz de riesgos. Si no cuentan con estos documentos, podemos orientar la estructuración por cargos y riesgos.${tele}\n\nQuedamos atentos para coordinar agenda, documentación y proceso de vinculación.\n\nSothysalud IPS`;
+  const txt=`Cordial saludo,\n\nDe acuerdo con la necesidad de ${company}, presentamos propuesta para ${workers} trabajador(es) bajo modalidad ${mod}.\n\n${body}${q.grand?`Logística / operación: ${fmt(q.log)}\nDescuento: ${q.discount}%\nValor por trabajador: ${fmt(q.perWorker)}\nGran total estimado: ${fmt(q.total)}\n\n`:`Cada bloque se presenta como opción independiente${q.discount?' (descuento '+q.discount+'% aplicado)':''}:\n${q.blocks.map(function(bk){return '   - '+bk.label+': '+fmt(bk.net)+' ('+fmt(bk.net/q.workers)+' por trabajador)';}).join('\n')}${q.log?'\nLogística / operación (se suma a la opción elegida): '+fmt(q.log):''}\n\n`}Antes de agendar, agradecemos compartir profesiograma o matriz de riesgos. Si no cuentan con estos documentos, podemos orientar la estructuración por cargos y riesgos.${tele}\n\nQuedamos atentos para coordinar agenda, documentación y proceso de vinculación.\n\nSothysalud IPS`;
   document.getElementById('modal-quote-content').textContent=txt;
   document.getElementById('quote-modal').classList.add('open');
 }
@@ -1406,50 +1446,47 @@ function generatePDF(){
     y+=6.8;
   }
   function refHead(){doc.setFillColor(BLUE[0],BLUE[1],BLUE[2]);doc.rect(ML,y,CW,7,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text('SERVICIO',ML+2,y+4.7);doc.text('VALOR UNITARIO',ML+CW-2,y+4.7,{align:'right'});y+=7;}
-  if(quoteItems.length){
-    secTitle('Servicios adicionales de referencia');
-    para('Estos servicios no están incluidos en el total de esta propuesta: se muestran únicamente como valor de referencia, por si la empresa desea añadirlos. Su cantidad y costo final se definen según lo que decida la empresa.',{gap:4,size:9,color:GRAY});
-    need(24);refHead();
-    quoteItems.forEach(function(it,i){
-      if(need(6.8))refHead();
-      if(i%2===1){doc.setFillColor(247,250,252);doc.rect(ML,y,CW,6.8,'F');}
-      doc.setTextColor(INK[0],INK[1],INK[2]);doc.setFont('helvetica','normal');doc.setFontSize(9.2);
-      doc.text(doc.splitTextToSize(it.name,CW-70)[0],ML+2,y+4.6);
-      doc.text(fmt(it.price),ML+CW-2,y+4.6,{align:'right'});
-      y+=6.8;
-    });
-    y+=7;
-  }
   para('Nota: Los servicios ofertados corresponden a actividades en Seguridad y Salud en el Trabajo, prestados por IPS habilitada, por lo cual se encuentran excluidos de IVA conforme a la normatividad vigente en Colombia.',{size:8.5,color:GRAY,gap:5});
-  var pkgGrandTotal=0;
-  if(typeof selectedPackages!=='undefined' && selectedPackages.length){
-    secTitle('Paquetes de exámenes aplicados');
-    para('Esta propuesta incorpora los siguientes paquetes de referencia técnica. El valor de cada paquete se calcula multiplicando el valor unitario de cada examen por la cantidad de trabajadores, y es lo único que compone el total de la cotización:',{gap:4});
-    selectedPackages.forEach(function(pkg){
-      if(!pkg || !pkg.items || !pkg.items.length) return;
+  var Q=computeQuote();
+  if(Q.blocks.length){
+    secTitle('Servicios y paquetes cotizados');
+    para(Q.grand?'El valor de cada bloque se calcula multiplicando el valor unitario por la cantidad. Los bloques marcados como opcionales se presentan con su valor, pero no forman parte del gran total.':'Cada bloque se presenta como una opción independiente con su propio total, para que la empresa elija la que mejor se ajuste a su necesidad.',{gap:4});
+    Q.blocks.forEach(function(bk){
       need(13);
       doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(BLUED[0],BLUED[1],BLUED[2]);
-      doc.text('PAQUETE: '+pkg.label.toUpperCase(),ML,y); y+=6;
-      need(7);svcHead('EXAMEN');
-      pkg.items.forEach(function(it,i){ svcRow(it,i); });
-      var pkgSub=pkg.items.reduce(function(a,it){return a+it.price*it.qty;},0);
-      pkgGrandTotal+=pkgSub;
-      if(need(7.5))svcHead('EXAMEN');
+      doc.text(bk.label.toUpperCase()+(Q.grand&&!bk.include?'  (OPCIONAL)':''),ML,y); y+=6;
+      need(7);svcHead(bk.kind==='pkg'?'EXAMEN':'SERVICIO');
+      bk.items.forEach(function(it,i){ svcRow({name:it.name,price:it.price,qty:itemQty(it)},i); });
+      if(need(13))svcHead('SERVICIO');
       doc.setFillColor(230,238,247);doc.rect(ML,y,CW,7.5,'F');
       doc.setTextColor(BLUED[0],BLUED[1],BLUED[2]);doc.setFont('helvetica','bold');doc.setFontSize(9.5);
-      doc.text('Subtotal '+pkg.label,ML+2,y+5.2);doc.text(fmt(pkgSub),ML+CW-2,y+5.2,{align:'right'});
-      y+=7.5+7;
+      doc.text('Total '+bk.label,ML+2,y+5.2);doc.text(fmt(bk.sub),ML+CW-2,y+5.2,{align:'right'});
+      y+=7.5;
+      doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(GRAY[0],GRAY[1],GRAY[2]);
+      doc.text('Valor por trabajador',ML+2,y+4.4);doc.text(fmt(bk.perWorker),ML+CW-2,y+4.4,{align:'right'});
+      y+=6+6;
     });
   }
   need(40);
   secTitle('Resumen de valores');
   function sumLine(label,val,o){o=o||{};need(o.gap!=null?o.gap+3:8);doc.setFont('helvetica',o.bold?'bold':'normal');doc.setFontSize(o.size||10);var c=o.color||INK;doc.setTextColor(c[0],c[1],c[2]);doc.text(label,ML,y);doc.text(val,ML+CW,y,{align:'right'});y+=(o.gap!=null?o.gap:6.5);}
-  sumLine('Subtotal paquetes aplicados',fmt(pkgGrandTotal));
-  sumLine('Logística / operación',logisticTxt);
-  sumLine('Descuento',discountTxt);
-  need(9);doc.setDrawColor(LINE[0],LINE[1],LINE[2]);doc.setLineWidth(0.3);doc.line(ML,y,ML+CW,y);y+=6;
-  sumLine('TOTAL COTIZACIÓN',totalTxt,{bold:true,size:13,color:BLUED,gap:7});
-  sumLine('Valor por trabajador',perWorkerTxt,{color:GRAY,size:9,gap:8});
+  if(Q.grand){
+    Q.blocks.forEach(function(bk){sumLine(bk.label+(bk.include?'':' (opcional, no suma)'),fmt(bk.sub),{color:bk.include?INK:GRAY});});
+    need(9);doc.setDrawColor(LINE[0],LINE[1],LINE[2]);doc.setLineWidth(0.3);doc.line(ML,y,ML+CW,y);y+=6;
+    sumLine('Subtotal',fmt(Q.subtotal));
+    sumLine('Logística / operación',fmt(Q.log));
+    sumLine('Descuento ('+Q.discount+'%)','-'+fmt(Q.disc));
+    need(9);doc.line(ML,y,ML+CW,y);y+=6;
+    sumLine('GRAN TOTAL COTIZACIÓN',fmt(Q.total),{bold:true,size:13,color:BLUED,gap:7});
+    sumLine('Valor por trabajador',fmt(Q.perWorker),{color:GRAY,size:9,gap:8});
+  } else {
+    Q.blocks.forEach(function(bk){
+      sumLine(bk.label,fmt(bk.net),{bold:true,color:BLUED,gap:5});
+      sumLine('   Valor por trabajador',fmt(bk.net/Q.workers),{color:GRAY,size:9,gap:6});
+    });
+    if(Q.discount)para('Valores con descuento del '+Q.discount+'% aplicado.',{size:8.5,color:GRAY,gap:2});
+    if(Q.log)sumLine('Logística / operación (se suma a la opción elegida)',fmt(Q.log),{gap:8});
+  }
   secTitle('Condiciones de pago');
   para('Sothysalud IPS maneja un modelo de pago anticipado para servicios empresariales, con el fin de garantizar la programación de agendas y disponibilidad de personal médico. Una vez confirmado el pago, se procede con la programación inmediata de las valoraciones médicas.',{gap:5});
   para('Quedamos atentos a su confirmación para avanzar con la programación y ejecución del servicio.',{gap:6});
