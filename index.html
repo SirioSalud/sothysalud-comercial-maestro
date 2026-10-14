@@ -78,14 +78,60 @@ label{display:block;font-size:11.2px;text-transform:uppercase;letter-spacing:.7p
 .service-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid #eef3f9;cursor:pointer}
 .service-item:hover{background:var(--accent)}.service-name{font-size:12.6px;line-height:1.3}.service-price{font-size:12px;font-weight:800;color:var(--navy);white-space:nowrap}
 .add{width:24px;height:24px;border-radius:50%;border:none;background:var(--sky);color:white;cursor:pointer;font-weight:800;flex:0 0 auto}
-.quote-item{display:grid;grid-template-columns:1fr 52px 40px 68px 16px;gap:5px;align-items:center;padding:8px 0;border-bottom:1px solid #eef3f9;font-size:12px}
+.quote-item{display:grid;grid-template-columns:minmax(0,1fr) 78px 42px 72px 16px;gap:5px;align-items:center;padding:8px 0;border-bottom:1px solid #eef3f9;font-size:12px}
 .quote-item-head{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;border-bottom:1px solid #dde4ee;padding-bottom:6px}
-.quote-item-ref{display:grid;grid-template-columns:1fr 78px 16px;gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid #eef3f9;font-size:12px}
+.quote-item-ref{display:grid;grid-template-columns:minmax(0,1fr) 92px 16px;gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid #eef3f9;font-size:12px}
 .quote-item-ref.quote-item-head{padding-bottom:6px}
-.qty{padding:4px;text-align:center}.del{color:var(--danger);cursor:pointer;font-weight:800;text-align:center}
+.qty{padding:4px;text-align:center}
+.qprice{padding:4px 5px;text-align:right;font-size:12px;width:100%}
+.quote-item>div:first-child{overflow-wrap:anywhere}
+.new-service-toggle{display:block;width:calc(100% - 28px);margin:10px 14px;padding:9px;border:1px dashed var(--sky);border-radius:10px;background:var(--accent);color:var(--blue);font-weight:700;font-size:12.5px;cursor:pointer}
+#new-service-box{display:none;padding:4px 14px 14px;border-bottom:1px solid #eef3f9}
+#new-service-box.open{display:block}
+#new-service-box label{font-size:11px}
+#new-service-box .ns-check{display:flex;gap:6px;align-items:center;font-size:11.5px;color:var(--muted);margin:6px 0 10px}
+#new-service-box .ns-check input{width:auto}.del{color:var(--danger);cursor:pointer;font-weight:800;text-align:center}
 .pkg-quote-block{margin-top:14px;padding:12px;border:1px solid #dde7f3;border-radius:12px;background:#f7fafd}
 .pkg-quote-head{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:var(--navy);font-size:13px;margin-bottom:6px}
-.pkg-remove{color:var(--danger);font-weight:700;font-size:11.5px;cursor:pointer}
+.pkg-remove{color:var(--danger);font-weight:700;font-size:11.5px;cursor:pointer;white-space:nowrap}
+.pkg-head-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.inc-toggle,.grand-toggle{display:inline-flex;gap:5px;align-items:center;font-size:11.5px;font-weight:600;color:var(--blue);cursor:pointer;text-transform:none;letter-spacing:0;margin:0}
+.inc-toggle input,.grand-toggle input{width:auto;margin:0}
+.grand-toggle{display:flex;padding:8px 10px;background:var(--accent);border-radius:10px;margin-bottom:8px;font-size:12.5px}
+.pkg-quote-block.excluded{opacity:.62;border-style:dashed}
+.loose-block{margin-top:0}
+.pkg-quote-pw{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:3px}
+.muted-row{opacity:.6}.muted-row em{font-size:11px}
+.mg{display:inline-block;border-radius:999px;padding:1px 6px;font-size:10px;font-weight:800;margin-left:3px;vertical-align:1px}
+.mg-good{background:#dff4e8;color:var(--success)}.mg-warn{background:#fff1d2;color:var(--warn)}.mg-danger{background:#ffe2e5;color:var(--danger)}.mg-none{background:#eef2f7;color:var(--muted)}
+.mg-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.mg-dot.mg-good{background:var(--success)}.mg-dot.mg-warn{background:#e0a100}.mg-dot.mg-danger{background:var(--danger)}
+.mg-line{font-size:11.5px;color:var(--muted);margin-top:5px;padding-top:5px;border-top:1px dotted #c6d4e6}
+.mg-total{font-size:12px;color:var(--muted);margin-top:6px;padding:7px 9px;background:#f4f7fb;border-radius:8px}
+.mg-alerts{margin-top:10px;display:grid;gap:5px;font-size:12.5px}.mg-alerts.ok{color:var(--success)}
+.admin-summary{margin-top:12px;font-size:13px}
+.vol-hint{font-size:11.5px;color:var(--muted);margin:-4px 0 8px}.vol-hint b{color:var(--blue)}
+.conv-hint{font-size:12px;padding:9px 12px;margin:6px 0 10px}
+.cot-label{font-size:11.5px;color:var(--muted);margin-bottom:10px}.cot-label b{color:var(--navy)}
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px 14px;margin:12px 0}
+.exp-check{display:flex;gap:7px;align-items:center;text-transform:none;letter-spacing:0;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;margin:0}
+.exp-check input{width:auto;margin:0}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;border-radius:999px;font-size:10.5px;font-weight:800;padding:1px 7px}
+.seg-toolbar{display:grid;grid-template-columns:200px 1fr 220px;gap:12px;margin-bottom:10px}
+.seg-motivos{font-size:12.5px;color:var(--muted);margin:4px 0 10px}
+.seg-table-wrap{overflow-x:auto}
+.seg-table td{vertical-align:top}.seg-table select,.seg-table input[type=date]{min-width:140px;padding:6px 8px}
+.seg-table textarea{min-width:170px;font-size:12px;padding:6px 8px}
+.seg-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+.seg-actions{display:flex;gap:5px;flex-wrap:wrap}.seg-actions .btn{padding:7px 10px;font-size:11.5px}
+.seg-late td{background:#fff6f6!important}
+.kpi-danger{color:var(--danger)!important}.kpi-good{color:var(--success)!important}
+.file-btn{cursor:pointer;display:inline-block;text-transform:none;letter-spacing:0;font-size:13px;margin:0}
+.admin-grid{margin-top:0}
+.tarifa-cost{background:#fffaf0!important}
+@media(max-width:900px){.seg-toolbar{grid-template-columns:1fr}}
+.blocks-summary{border-bottom:1px dashed #c6d4e6;margin-bottom:6px;padding-bottom:4px}
+.option-row small{display:block;font-size:11px;font-weight:500;color:var(--muted)}
 .pkg-quote-sub{display:flex;justify-content:space-between;margin-top:6px;padding-top:6px;border-top:1px dashed #c6d4e6;font-weight:800;color:var(--blue);font-size:12.5px}
 .total-row{display:flex;justify-content:space-between;margin:7px 0;font-size:13px;color:var(--muted)}
 .total-row.main{font-family:'Syne';font-size:18px;font-weight:800;color:var(--navy);border-top:2px solid var(--border);padding-top:12px;margin-top:10px}
@@ -363,6 +409,7 @@ label{color:#5b6d84 !important;}
     <div class="nav-item" onclick="showSection('riesgo')">🦺 Clasificación de Riesgo ARL</div>
     <div class="nav-item" onclick="showSection('brigadas')">🚐 Calculadora Brigadas</div>
     <div class="nav-item" onclick="showSection('tarifas')">💲 Tarifas Base 2026</div>
+    <div class="nav-item" onclick="showSection('seguimiento')">📈 Seguimiento <span id="seg-badge" class="nav-badge" style="display:none">0</span></div>
   </div>
   <div class="nav-section">
     <div class="nav-label">Gobierno Comercial</div>
@@ -494,6 +541,33 @@ label{color:#5b6d84 !important;}
         <div class="tarifa-toolbar"><button class="btn" onclick="saveTarifas()">💾 Guardar tarifas</button><button class="btn secondary" onclick="addTarifaRow()">＋ Agregar servicio</button><button class="btn secondary" onclick="resetTarifas()">↺ Restablecer</button></div>
         <table class="table"><thead><tr><th>Servicio</th><th class="price">Valor</th><th></th></tr></thead><tbody id="price-table-body"></tbody></table>
       </div>
+      <div class="grid-2 admin-grid">
+        <div class="card">
+          <div class="card-title">📉 Descuento por volumen</div>
+          <div class="card-sub">El cotizador propone el descuento según el número de trabajadores (máximo 15 %). El asesor puede cambiarlo en cada cotización.</div>
+          <table class="table"><thead><tr><th>Desde (trabajadores)</th><th>Descuento %</th><th></th></tr></thead><tbody id="escalas-body"></tbody></table>
+          <div class="btn-row"><button class="btn" onclick="saveEscalas()">Guardar escalas</button><button class="btn secondary" onclick="addEscala()">＋ Escala</button></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🤝 Convenios por empresa</div>
+          <div class="card-sub">Tarifas pactadas con cada cliente. Cuando escribes el nombre de la empresa en el cotizador, se usan automáticamente.</div>
+          <table class="table"><thead><tr><th>Empresa y tarifas</th><th>Fecha</th><th></th></tr></thead><tbody id="convenios-body"></tbody></table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔒 Costos y márgenes <span class="pill">Solo administrador</span></div>
+        <div class="card-sub">Los costos de proveedor nunca salen de este navegador: no van en el PDF, ni en el texto de la propuesta, ni en el sitio. Activa el modo administrador para verlos.</div>
+        <div class="btn-row"><button class="btn secondary" id="admin-toggle-btn" onclick="toggleAdmin()">🔒 Modo administrador</button></div>
+        <div id="admin-costs" style="display:none">
+          <div class="form-row" style="max-width:520px">
+            <div><label>Margen mínimo (%)</label><input id="margen-min" type="number" min="0" max="95" onchange="setMargenMin(this.value)"></div>
+            <div><label>Importar costos (CSV)</label><label class="btn secondary file-btn" style="display:block;text-align:center">⬆️ Elegir archivo<input type="file" accept=".csv,.txt" onchange="importCostsFile(this)" hidden></label></div>
+          </div>
+          <div class="card-sub" style="margin-top:8px">El CSV necesita las columnas <b>servicio</b> y <b>costo</b> (sirve el archivo de costos de Echavarría). También puedes escribir el costo de cada servicio en la columna 🔒 de la tabla de tarifas. Semáforo: verde ≥ margen mínimo, amarillo por debajo, rojo con pérdida.</div>
+          <div id="admin-costs-summary" class="admin-summary"></div>
+          <div class="btn-row"><button class="btn secondary" onclick="exportCosts()">⬇️ Exportar costos</button></div>
+        </div>
+      </div>
     </section>
 
     <section id="section-cotizador" class="section">
@@ -502,12 +576,29 @@ label{color:#5b6d84 !important;}
         <div class="panel">
           <div class="panel-head">📋 Servicios</div>
           <div class="search"><input id="service-search" placeholder="Buscar servicio..." oninput="filterServices()"></div>
+          <button class="new-service-toggle" type="button" onclick="toggleNewService()">＋ Añadir servicio nuevo al catálogo</button>
+          <div id="new-service-box">
+            <label>Nombre del servicio</label><input id="ns-name" placeholder="Ej.: Ácido trans-trans mucónico">
+            <div class="form-row">
+              <div><label>Categoría</label><input id="ns-cat" list="ns-cats" placeholder="Laboratorios"><datalist id="ns-cats"></datalist></div>
+              <div><label>Precio de venta</label><input id="ns-price" type="number" min="0" step="100" placeholder="0"></div>
+            </div>
+            <label class="ns-check"><input id="ns-quote" type="checkbox" checked> Agregarlo también a esta cotización</label>
+            <button class="btn" type="button" onclick="addServiceToCatalog()">Guardar en el catálogo</button>
+          </div>
           <div class="service-list" id="service-list"></div>
         </div>
         <div class="panel">
           <div class="panel-head">🧾 Configuración y cotización</div>
           <div class="panel-body">
+            <div id="cot-actual-label" class="cot-label"></div>
             <label>Empresa cliente</label><input id="q-company" placeholder="Nombre de la empresa">
+            <div id="convenio-hint" class="alert success conv-hint" style="display:none"></div>
+            <div class="form-row">
+              <div><label>Contacto</label><input id="q-contact" placeholder="Nombre de quien recibe"></div>
+              <div><label>Correo</label><input id="q-email" type="email" placeholder="correo@empresa.com"></div>
+            </div>
+            <label>WhatsApp / celular</label><input id="q-phone" type="tel" placeholder="300 123 4567">
             <div class="form-row">
               <div><label>Trabajadores</label><input id="q-workers" type="number" min="1" value="10" oninput="updateTotals()"></div>
               <div><label>Modalidad</label><select id="q-modality" onchange="updateTotals()"><option value="intramural">Intramural</option><option value="brigada_bog">Brigada Bogotá</option><option value="brigada_fuera">Brigada fuera de Bogotá</option><option value="telemedicina">Telemedicina</option></select></div>
@@ -516,17 +607,12 @@ label{color:#5b6d84 !important;}
               <div><label>Costo logístico</label><input id="q-logistic" type="number" min="0" value="0" oninput="updateTotals()"></div>
               <div><label>Descuento %</label><input id="q-discount" type="number" min="0" max="15" value="0" oninput="updateTotals()"></div>
             </div>
+            <div id="vol-hint" class="vol-hint"></div>
             <div class="alert warn" id="tele-warning" style="display:none"><b>Telemedicina:</b> validar riesgo I, perfil administrativo y ausencia de apoyos diagnósticos antes de ofertar.</div>
             <div id="quote-items-list"><div class="alert info">Agrega servicios desde el panel izquierdo.</div></div>
             <div id="quote-packages-list"></div>
-            <div id="quote-totals" style="display:none;margin-top:12px">
-              <div class="total-row"><span>Subtotal paquetes</span><span id="t-subtotal">$0</span></div>
-              <div class="total-row"><span>Logística / operación</span><span id="t-logistic">$0</span></div>
-              <div class="total-row"><span>Descuento</span><span id="t-discount">$0</span></div>
-              <div class="total-row"><span>Valor por trabajador</span><span id="t-per-worker">$0</span></div>
-              <div class="total-row main"><span>Total cotización</span><span id="t-total">$0</span></div>
-            </div>
-            <div class="btn-row"><button class="btn" onclick="generateQuote()">Generar propuesta</button><button class="btn secondary" onclick="clearQuote()">Limpiar</button></div>
+            <div id="quote-totals" style="display:none;margin-top:12px"></div>
+            <div class="btn-row"><button class="btn" onclick="generateQuote()">Generar propuesta</button><button class="btn secondary" onclick="registrarCotizacion()">💾 Guardar</button><button class="btn secondary" onclick="saveConvenio()">🤝 Guardar como convenio</button><button class="btn secondary" onclick="nuevaCotizacion()">Nueva</button></div>
           </div>
         </div>
       </div>
@@ -579,7 +665,32 @@ label{color:#5b6d84 !important;}
             <div class="btn-row"><button class="btn" style="background:#8a6d1d" onclick="openPackageModal('vip')">📝 Ver y agregar</button></div>
           </div>
         </div>
+        <div class="card-title" style="margin-top:26px">🧪 Paquetes por exposición / riesgo</div>
+        <div class="card-sub">Pensados para cargos con exposiciones específicas. Igual que los anteriores, se abren para ajustar antes de sumarlos.</div>
+        <div class="grid-3" id="risk-pkg-grid"></div>
+        <div class="card risk-builder" style="margin-top:16px;margin-bottom:0">
+          <div class="card-title">🧭 Armar paquete según los riesgos del cargo</div>
+          <div class="card-sub">Marca a qué está expuesto el cargo (según el profesiograma o lo que cuente el cliente) y el cotizador arma el paquete con la valoración médica de base.</div>
+          <label>Nombre del cargo</label><input id="rb-cargo" placeholder="Ej.: Operario de pintura">
+          <div id="risk-builder-checks" class="exp-grid"></div>
+          <div class="btn-row"><button class="btn" onclick="buildRiskPackage()">Armar paquete</button></div>
+        </div>
         <div class="alert warn" style="margin-top:12px"><b>Nota:</b> estos paquetes son un punto de partida técnico. Ajusta cantidades y agrega o quita exámenes según lo que confirme el profesiograma o la matriz de riesgos del cliente. La lista completa de clases de riesgo ARL está en <span class="gold" style="cursor:pointer;color:var(--sky);font-weight:700" onclick="showSection('riesgo')">Clasificación de Riesgo ARL →</span></div>
+      </div>
+    </section>
+
+    <section id="section-seguimiento" class="section">
+      <div class="grid-4" id="seg-kpis"></div>
+      <div class="card">
+        <div class="seg-toolbar">
+          <div><label>Ver</label><select id="seg-filter" onchange="renderSeguimiento()"><option value="activas">En curso</option><option value="hoy">Seguimiento para hoy</option><option value="todas">Todas</option><option value="borrador">Borrador</option><option value="enviada">Enviadas</option><option value="negociacion">En negociación</option><option value="aceptada">Aceptadas</option><option value="perdida">Perdidas</option></select></div>
+          <div><label>Buscar</label><input id="seg-search" placeholder="Empresa, contacto o número" oninput="renderSeguimiento()"></div>
+          <div><label>Asesor (este navegador)</label><input id="seg-asesor" placeholder="Tu nombre" onchange="setAsesor(this.value)"></div>
+        </div>
+        <div id="seg-motivos" class="seg-motivos"></div>
+        <div class="seg-table-wrap"><table class="table seg-table"><thead><tr><th>N°</th><th>Empresa</th><th class="price">Valor</th><th>Estado</th><th>Próximo seguimiento</th><th>Notas</th><th></th></tr></thead><tbody id="seg-body"></tbody></table></div>
+        <div class="btn-row"><button class="btn secondary" onclick="exportCotsCSV()">⬇️ Exportar a Excel (CSV)</button><button class="btn secondary" onclick="exportBackup()">💾 Respaldo completo</button><label class="btn secondary file-btn">⬆️ Restaurar respaldo<input type="file" accept=".json" onchange="importBackup(this)" hidden></label></div>
+        <div class="alert info" style="font-size:12px"><b>Importante:</b> el seguimiento, los convenios y los costos se guardan en este navegador. Descarga un respaldo cada semana; para compartirlo con otro asesor, envíale el respaldo y que lo restaure. La versión privada con base de datos central resolverá esto.</div>
       </div>
     </section>
 
@@ -824,34 +935,126 @@ const services = [
   {cat:'Laboratorios', name:'Frotis de Garganta / Faringe', price:15800},
   {cat:'Laboratorios', name:'KOH de Uñas', price:13500},
   {cat:'Laboratorios', name:'Cuadro Hemático (Hemograma)', price:15900},
-  {cat:'Laboratorios', name:'Panel de Drogas x5', price:70000},
+  {cat:'Laboratorios', name:'Panel de Drogas x5', price:80000},
   {cat:'Laboratorios', name:'Panel de Drogas x2 (Marihuana y Cocaína)', price:40000},
   {cat:'Laboratorios', name:'Alcohol Etílico en Sangre', price:60000},
   {cat:'Laboratorios', name:'Electrocardiograma (mayores de 40 años)', price:50000},
   {cat:'Laboratorios', name:'Rx de Tórax', price:45000},
-  {cat:'Laboratorios', name:'Hemoclasificación', price:28000},
+  {cat:'Laboratorios', name:'Hemoclasificación', price:22000},
   {cat:'Vacunas', name:'Triple Viral', price:140000},
-  {cat:'Vacunas', name:'Tetraxim', price:257000}
+  {cat:'Vacunas', name:'Tetraxim', price:257000},
+  /* Portafolio Laboratorio Médico Echavarría 2026 — precios de venta sugeridos (editables en Tarifas) */
+  {cat:'Lab · Química y control', name:'Creatinina en suero', price:13000},
+  {cat:'Lab · Química y control', name:'Nitrógeno ureico (BUN)', price:13000},
+  {cat:'Lab · Química y control', name:'Ácido úrico', price:13000},
+  {cat:'Lab · Química y control', name:'Colesterol total', price:13000},
+  {cat:'Lab · Química y control', name:'Colesterol HDL', price:13000},
+  {cat:'Lab · Química y control', name:'Colesterol LDL', price:20500},
+  {cat:'Lab · Química y control', name:'Triglicéridos', price:13000},
+  {cat:'Lab · Química y control', name:'Transaminasa TGO (AST)', price:13500},
+  {cat:'Lab · Química y control', name:'Transaminasa TGP (ALT)', price:13500},
+  {cat:'Lab · Química y control', name:'Gamma glutamil transferasa (GGT)', price:14000},
+  {cat:'Lab · Química y control', name:'Fosfatasa alcalina', price:15000},
+  {cat:'Lab · Química y control', name:'Bilirrubinas total y directa', price:16000},
+  {cat:'Lab · Química y control', name:'Hemoglobina glicosilada (HbA1c)', price:30500},
+  {cat:'Lab · Química y control', name:'Glucosa pre y post prandial', price:21500},
+  {cat:'Lab · Química y control', name:'TSH ultrasensible', price:28500},
+  {cat:'Lab · Química y control', name:'Antígeno prostático (PSA)', price:28000},
+  {cat:'Lab · Química y control', name:'Uroanálisis con sedimento', price:16000},
+  {cat:'Lab · Química y control', name:'Velocidad de sedimentación (VSG)', price:13000},
+  {cat:'Lab · Química y control', name:'Prueba de embarazo (BHCG cualitativa)', price:13000},
+  {cat:'Lab · Química y control', name:'Proteína C reactiva (PCR)', price:16500},
+  {cat:'Lab · Química y control', name:'Microalbuminuria (orina parcial)', price:13000},
+  {cat:'Lab · Serologías e inmunidad', name:'Serología VDRL', price:18000},
+  {cat:'Lab · Serologías e inmunidad', name:'Hepatitis B antígeno de superficie (HBsAg)', price:32500},
+  {cat:'Lab · Serologías e inmunidad', name:'Hepatitis B anticuerpos (Anti-HBs)', price:31500},
+  {cat:'Lab · Serologías e inmunidad', name:'Hepatitis A anticuerpos totales', price:41500},
+  {cat:'Lab · Serologías e inmunidad', name:'Hepatitis C anticuerpos (Anti-VHC)', price:58000},
+  {cat:'Lab · Serologías e inmunidad', name:'VIH 1 y 2 anticuerpos', price:37500},
+  {cat:'Lab · Serologías e inmunidad', name:'Rubéola IgG', price:37000},
+  {cat:'Lab · Serologías e inmunidad', name:'Varicela zóster IgG', price:90000},
+  {cat:'Lab · Serologías e inmunidad', name:'Sarampión IgG', price:106500},
+  {cat:'Lab · Serologías e inmunidad', name:'Toxoide tetánico anticuerpos IgG', price:122500},
+  {cat:'Lab · Serologías e inmunidad', name:'Leptospira IgM', price:54500},
+  {cat:'Lab · Toxicología ocupacional', name:'Plomo en sangre', price:116500},
+  {cat:'Lab · Toxicología ocupacional', name:'Mercurio en orina', price:119500},
+  {cat:'Lab · Toxicología ocupacional', name:'Colinesterasa eritrocitaria (acetilcolinesterasa)', price:103000},
+  {cat:'Lab · Toxicología ocupacional', name:'Colinesterasa sérica', price:18000},
+  {cat:'Lab · Toxicología ocupacional', name:'Ácido hipúrico (tolueno)', price:144000},
+  {cat:'Lab · Toxicología ocupacional', name:'Ácido metilhipúrico (xileno)', price:144000},
+  {cat:'Lab · Toxicología ocupacional', name:'Ácido S-fenilmercaptúrico (benceno)', price:389000},
+  {cat:'Lab · Toxicología ocupacional', name:'Fenol en orina', price:161000},
+  {cat:'Lab · Toxicología ocupacional', name:'Arsénico en orina', price:96500},
+  {cat:'Lab · Toxicología ocupacional', name:'Cromo en orina', price:41500},
+  {cat:'Lab · Toxicología ocupacional', name:'Cadmio en sangre', price:119000},
+  {cat:'Lab · Toxicología ocupacional', name:'Manganeso en suero', price:121500},
+  {cat:'Lab · Toxicología ocupacional', name:'Carboxihemoglobina (monóxido de carbono)', price:40500},
+  {cat:'Lab · Toxicología ocupacional', name:'Alcohol metílico en orina', price:136000},
+  {cat:'Lab · Toxicología ocupacional', name:'Organofosforados en sangre', price:232500},
+  {cat:'Lab · Drogas de abuso', name:'Cannabinoides (marihuana) en orina', price:25500},
+  {cat:'Lab · Drogas de abuso', name:'Cocaína en orina', price:25500},
+  {cat:'Lab · Drogas de abuso', name:'Anfetaminas y metanfetaminas', price:115000},
+  {cat:'Lab · Drogas de abuso', name:'Benzodiacepinas en orina', price:136500},
+  {cat:'Lab · Drogas de abuso', name:'Opiáceos', price:115000},
+  {cat:'Lab · Drogas de abuso', name:'Barbitúricos', price:115000},
+  {cat:'Lab · Drogas de abuso', name:'Panel de Drogas x3 (Marihuana, Cocaína y Anfetaminas)', price:135000},
+  {cat:'Lab · Microbiología y otros', name:'Coprocultivo', price:30000},
+  {cat:'Lab · Microbiología y otros', name:'Gota gruesa (hemoparásitos)', price:41000},
+  {cat:'Lab · Microbiología y otros', name:'Baciloscopia (Ziehl-Neelsen)', price:13000},
+  {cat:'Lab · Microbiología y otros', name:'Prueba de tuberculina (Mantoux)', price:119000},
+  {cat:'Lab · Microbiología y otros', name:'Quantiferon TB (interferón gamma)', price:530500}
 ];
 /* === Tarifas editables + persistencia (Sothysalud) === */
 const PRICE_LS_KEY='sothy_servicios_v1';
-(function(){try{const raw=localStorage.getItem(PRICE_LS_KEY);if(raw){const arr=JSON.parse(raw);if(Array.isArray(arr)&&arr.length){services.length=0;arr.forEach(s=>services.push({cat:s.cat||'Otros Servicios',name:s.name||'',price:parseInt(s.price)||0}));}}}catch(e){}})();
+const DEL_LS_KEY='sothy_servicios_eliminados_v1';
+function getDeleted(){try{return JSON.parse(localStorage.getItem(DEL_LS_KEY)||'[]')||[];}catch(e){return [];}}
+function setDeleted(a){try{localStorage.setItem(DEL_LS_KEY,JSON.stringify(a));}catch(e){}}
+(function(){try{const defaults=services.slice();const raw=localStorage.getItem(PRICE_LS_KEY);if(raw){const arr=JSON.parse(raw);if(Array.isArray(arr)&&arr.length){services.length=0;arr.forEach(s=>services.push({cat:s.cat||'Otros Servicios',name:s.name||'',price:parseInt(s.price)||0}));
+  /* Servicios nuevos del catálogo base que aún no estén en la lista guardada (y que no se hayan eliminado a propósito) */
+  const del=getDeleted();const have=new Set(services.map(s=>s.name.trim().toLowerCase()));
+  defaults.forEach(d=>{const k=d.name.trim().toLowerCase();if(!have.has(k)&&del.indexOf(k)<0){services.push(Object.assign({},d));have.add(k);}});
+  /* Cambios de precio oficiales: se aplican una sola vez sobre catálogos ya guardados */
+  const PRICE_UPDATES={id:'2026-10-14',prices:{'panel de drogas x5':80000,'hemoclasificación':22000}};
+  if(localStorage.getItem('sothy_precios_aplicados')!==PRICE_UPDATES.id){services.forEach(s=>{const np=PRICE_UPDATES.prices[s.name.trim().toLowerCase()];if(np)s.price=np;});localStorage.setItem('sothy_precios_aplicados',PRICE_UPDATES.id);localStorage.setItem(PRICE_LS_KEY,JSON.stringify(services));}
+  sortServicesByCat();}}}catch(e){}})();
+function sortServicesByCat(){const order=[];services.forEach(s=>{if(order.indexOf(s.cat)<0)order.push(s.cat);});const tmp=services.slice();services.length=0;order.forEach(c=>tmp.filter(s=>s.cat===c).forEach(s=>services.push(s)));}
 function saveServices(){try{localStorage.setItem(PRICE_LS_KEY,JSON.stringify(services));}catch(e){}}
 function refreshQuoterViews(){var el=document.getElementById('service-search');buildServiceList(el?el.value:'');updateTotals();}
 function addTarifaRow(){services.push({cat:'Otros Servicios',name:'Nuevo servicio',price:0});buildPriceTable();}
-function deleteService(i){if(confirm('¿Eliminar este servicio de la lista de tarifas?')){services.splice(i,1);buildPriceTable();refreshQuoterViews();}}
+function deleteService(i){if(confirm('¿Eliminar este servicio de la lista de tarifas?')){const k=String(services[i].name).trim().toLowerCase();const del=getDeleted();if(del.indexOf(k)<0){del.push(k);setDeleted(del);}services.splice(i,1);saveServices();buildPriceTable();refreshQuoterViews();}}
 function saveTarifas(){saveServices();refreshQuoterViews();buildPriceTable();sothyToast('Tarifas guardadas ✓');}
-function resetTarifas(){if(confirm('Esto restaura las tarifas originales y descarta tus cambios guardados. ¿Continuar?')){localStorage.removeItem(PRICE_LS_KEY);location.reload();}}
+function resetTarifas(){if(confirm('Esto restaura las tarifas originales y descarta tus cambios guardados. ¿Continuar?')){localStorage.removeItem(PRICE_LS_KEY);localStorage.removeItem(DEL_LS_KEY);location.reload();}}
 function sothyToast(m){var t=document.getElementById('sothy-toast');if(!t){t=document.createElement('div');t.id='sothy-toast';document.body.appendChild(t);}t.textContent=m;t.className='show';clearTimeout(window.__sothyT);window.__sothyT=setTimeout(function(){t.className='';},2600);}
 
+function addServiceToCatalog(){
+  const n=document.getElementById('ns-name'),c=document.getElementById('ns-cat'),pr=document.getElementById('ns-price'),alsoQ=document.getElementById('ns-quote');
+  const name=(n.value||'').trim(),cat=(c.value||'').trim()||'Otros Servicios',price=parseInt(pr.value)||0;
+  if(!name){sothyToast('Escribe el nombre del servicio');n.focus();return;}
+  if(price<=0){sothyToast('Escribe el precio de venta');pr.focus();return;}
+  if(services.some(s=>s.name.trim().toLowerCase()===name.toLowerCase())){sothyToast('Ese servicio ya existe en el catálogo');return;}
+  services.push({cat:cat,name:name,price:price});sortServicesByCat();
+  const del=getDeleted().filter(k=>k!==name.toLowerCase());setDeleted(del);
+  saveServices();buildPriceTable();refreshQuoterViews();fillCatOptions();
+  if(alsoQ&&alsoQ.checked){addService(services.findIndex(s=>s.name===name));}
+  n.value='';pr.value='';sothyToast('Servicio añadido al catálogo ✓');
+}
+function fillCatOptions(){const dl=document.getElementById('ns-cats');if(!dl)return;const cats=[];services.forEach(s=>{if(cats.indexOf(s.cat)<0)cats.push(s.cat);});dl.innerHTML=cats.map(c=>'<option value="'+String(c).replace(/"/g,'&quot;')+'">').join('');}
+function toggleNewService(){const b=document.getElementById('new-service-box');if(!b)return;b.classList.toggle('open');if(b.classList.contains('open')){fillCatOptions();document.getElementById('ns-name').focus();}}
+function setRefPrice(i,v){if(!quoteItems[i])return;quoteItems[i].price=Math.max(0,parseInt(v)||0);setTimeout(function(){updateQuoteItems();updateTotals();},0);}
+function setPkgPrice(pi,ii,v){const it=selectedPackages[pi]&&selectedPackages[pi].items[ii];if(!it)return;it.price=Math.max(0,parseInt(v)||0);setTimeout(function(){updateQuoteItems();updateTotals();},0);}
+function _adm(){return !!(window.isAdmin&&window.isAdmin());}
+function _mb(n,p){return window.marginBadge?window.marginBadge(n,p):'';}
+function _ml(items){return window.marginLine?window.marginLine(items,Math.min(parseFloat(document.getElementById('q-discount')?.value)||0,15)):'';}
+function _pf(n,p){return window.priceFor?window.priceFor(n,p):p;}
 let quoteItems=[];
 function buildPriceTable(){
   const tb=document.getElementById('price-table-body'); if(!tb) return; tb.innerHTML='';
+  const th=tb.parentNode.querySelector('thead tr'); if(th) th.innerHTML='<th>Servicio</th><th class="price">Valor</th>'+(_adm()?'<th class="price">Costo 🔒</th><th>Margen</th>':'')+'<th></th>';
   let last='';
   services.forEach((s,idx)=>{
-    if(s.cat!==last){tb.innerHTML+=`<tr class="cat-row"><td colspan="3">${s.cat}</td></tr>`; last=s.cat;}
+    if(s.cat!==last){tb.innerHTML+=`<tr class="cat-row"><td colspan="${_adm()?5:3}">${s.cat}</td></tr>`; last=s.cat;}
     var safe=String(s.name).replace(/"/g,'&quot;');
-    tb.innerHTML+=`<tr><td><input class="tarifa-name" value="${safe}" onchange="services[${idx}].name=this.value"></td><td class="price"><input class="tarifa-price" type="number" min="0" step="100" value="${s.price}" onchange="services[${idx}].price=parseInt(this.value)||0;refreshQuoterViews()"></td><td class="tarifa-actions"><button class="tarifa-del" title="Eliminar" onclick="deleteService(${idx})">×</button></td></tr>`;
+    tb.innerHTML+=`<tr><td><input class="tarifa-name" value="${safe}" onchange="services[${idx}].name=this.value"></td><td class="price"><input class="tarifa-price" type="number" min="0" step="100" value="${s.price}" onchange="services[${idx}].price=parseInt(this.value)||0;refreshQuoterViews()"></td>${_adm()?`<td class="price"><input class="tarifa-price tarifa-cost" type="number" min="0" step="50" placeholder="—" value="${window.getCost&&getCost(s.name)!=null?getCost(s.name):''}" onchange="setCost(services[${idx}].name,this.value)"></td><td class="tarifa-mg">${_mb(s.name,s.price)}</td>`:''}<td class="tarifa-actions"><button class="tarifa-del" title="Eliminar" onclick="deleteService(${idx})">×</button></td></tr>`;
   });
 }
 function buildServiceList(filter=''){
@@ -864,7 +1067,7 @@ function buildServiceList(filter=''){
   });
 }
 function filterServices(){buildServiceList(document.getElementById('service-search').value)}
-function addService(i){const s=services[i]; if(quoteItems.find(x=>x.name===s.name)){ sothyToast('Ese servicio ya está en la lista'); return; } quoteItems.push({name:s.name, price:s.price, cat:s.cat}); updateQuoteItems(); updateTotals();}
+function addService(i){const s=services[i]; if(quoteItems.find(x=>x.name===s.name)){ sothyToast('Ese servicio ya está en la lista'); return; } quoteItems.push({name:s.name, price:_pf(s.name,s.price), cat:s.cat, qty:parseInt(document.getElementById('q-workers')?.value)||1}); updateQuoteItems(); updateTotals();}
 const PAQUETES_COTIZADOR = {
   administrativo: {label:'Administrativo', exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Visiometría','Optometría']},
   operativo: {label:'Operativo (planta / industrial)', exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Audiometría Tonal','Visiometría','Cuadro Hemático (Hemograma)','Perfil Lipídico','Glicemia','Espirometría']},
@@ -882,7 +1085,7 @@ function addPackageToQuote(key, examList){
   const items = [];
   list.forEach(function(n){
     const svc = services.find(function(s){ return s.name===n; });
-    if(svc) items.push({name:svc.name, price:svc.price, qty:workers});
+    if(svc) items.push({name:svc.name, price:_pf(svc.name,svc.price), qty:workers});
   });
   if(!items.length){ alert('Selecciona al menos un examen para agregar.'); return; }
   const existing=selectedPackages.find(function(p){return p.key===key;});
@@ -945,14 +1148,47 @@ function confirmAddPackage(){
   addPackageToQuote(pkgModalKey, names);
   closePackageModal();
 }
+let looseInclude=true;
+let showGrandTotal=true;
+function setRefQty(i,v){if(!quoteItems[i])return;quoteItems[i].qty=Math.max(1,parseInt(v)||1);setTimeout(function(){updateQuoteItems();updateTotals();},0);}
+function toggleBlockInclude(kind,pi,on){if(kind==='loose')looseInclude=on;else if(selectedPackages[pi])selectedPackages[pi].include=on;updateTotals();}
+function itemQty(it){return Math.max(1,parseInt(it.qty)||1);}
+function blockSub(items){return items.reduce(function(a,it){return a+it.price*itemQty(it);},0);}
+/* Cálculo único de la cotización: lo usan pantalla, texto y PDF */
+function computeQuote(){
+  const workers=parseInt(document.getElementById('q-workers')?.value)||1;
+  const log=parseFloat(document.getElementById('q-logistic')?.value)||0;
+  const discount=Math.min(parseFloat(document.getElementById('q-discount')?.value)||0,15);
+  const blocks=[];
+  selectedPackages.forEach(function(p,pi){if(p.items&&p.items.length)blocks.push({kind:'pkg',pi:pi,label:'Paquete '+p.label,items:p.items,sub:blockSub(p.items),include:p.include!==false});});
+  if(quoteItems.length)blocks.push({kind:'loose',label:'Servicios individuales',items:quoteItems,sub:blockSub(quoteItems),include:looseInclude});
+  blocks.forEach(function(bk){bk.disc=bk.sub*discount/100;bk.net=bk.sub-bk.disc;bk.perWorker=bk.sub/workers;});
+  const inc=blocks.filter(function(bk){return bk.include;});
+  const subtotal=inc.reduce(function(a,bk){return a+bk.sub;},0);
+  const gross=subtotal+log, disc=gross*discount/100, total=gross-disc;
+  return {workers:workers,log:log,discount:discount,blocks:blocks,included:inc,subtotal:subtotal,disc:disc,total:total,perWorker:total/workers,grand:showGrandTotal&&inc.length>0};
+}
+function blockHead(title,kind,pi,include,removeHtml){
+  return '<div class="pkg-quote-head"><span>'+title+'</span><span class="pkg-head-actions">'
+    +'<label class="inc-toggle" title="Si lo desmarcas, este bloque se muestra con su propio total pero no entra al gran total"><input type="checkbox" '+(include?'checked':'')+' onchange="toggleBlockInclude(\''+kind+'\','+pi+',this.checked)"> Sumar al gran total</label>'
+    +removeHtml+'</span></div>'
+    +'<div class="quote-item quote-item-head"><div>Servicio</div><div>Unit.</div><div>Cant.</div><div>Total</div><div></div></div>';
+}
+function blockFoot(label,sub,workers){
+  return '<div class="pkg-quote-sub"><span>Total '+label+'</span><span>'+fmt(sub)+'</span></div>'
+    +'<div class="pkg-quote-pw"><span>Valor por trabajador</span><span>'+fmt(sub/workers)+'</span></div>';
+}
 function updateQuoteItems(){
   const c=document.getElementById('quote-items-list');
-  if(!quoteItems.length){
-    c.innerHTML='<div class="alert info">Agrega servicios desde el panel izquierdo.</div>';
+  const workers=parseInt(document.getElementById('q-workers')?.value)||1;
+  if(!quoteItems.length && !selectedPackages.length){
+    c.innerHTML='<div class="alert info">Agrega servicios desde el panel izquierdo o un paquete por perfil de cargo.</div>';
+  } else if(!quoteItems.length){
+    c.innerHTML='';
   } else {
-    let rows='<div class="alert info" style="font-size:11.5px;margin-bottom:6px">Servicios de referencia: su valor no se suma al total de la propuesta. Si la empresa desea añadirlos, se cotizan aparte.</div>';
-    rows+='<div class="quote-item-ref quote-item-head"><div>Servicio</div><div>Valor unit.</div><div></div></div>';
-    rows+=quoteItems.map((it,i)=>`<div class="quote-item-ref"><div>${it.name}</div><div>${fmt(it.price)}</div><div class="del" onclick="quoteItems.splice(${i},1);updateQuoteItems();updateTotals()">×</div></div>`).join('');
+    let rows='<div class="pkg-quote-block loose-block'+(looseInclude?'':' excluded')+'">'+blockHead('🧪 Servicios individuales','loose',0,looseInclude,'<span class="pkg-remove" onclick="quoteItems=[];updateQuoteItems();updateTotals()">Quitar todos ×</span>');
+    rows+=quoteItems.map((it,i)=>`<div class="quote-item"><div>${it.name}${_mb(it.name,it.price)}</div><input class="qprice" type="number" min="0" step="100" value="${it.price}" title="Precio editable solo para esta cotización" onchange="setRefPrice(${i},this.value)"><input class="qty" type="number" min="1" value="${itemQty(it)}" onchange="setRefQty(${i},this.value)"><div>${fmt(it.price*itemQty(it))}</div><div class="del" onclick="quoteItems.splice(${i},1);updateQuoteItems();updateTotals()">×</div></div>`).join('');
+    rows+=blockFoot('servicios individuales',blockSub(quoteItems),workers)+_ml(quoteItems)+'</div>';
     c.innerHTML=rows;
   }
   renderPackagesList();
@@ -960,17 +1196,15 @@ function updateQuoteItems(){
 function renderPackagesList(){
   const c=document.getElementById('quote-packages-list'); if(!c) return;
   if(!selectedPackages.length){ c.innerHTML=''; return; }
+  const workers=parseInt(document.getElementById('q-workers')?.value)||1;
   c.innerHTML=selectedPackages.map(function(pkg,pi){
+    const inc=pkg.include!==false;
     const rows=pkg.items.map(function(it,ii){
-      return '<div class="quote-item"><div>'+it.name+'</div><div>'+fmt(it.price)+'</div><input class="qty" type="number" min="1" value="'+it.qty+'" onchange="selectedPackages['+pi+'].items['+ii+'].qty=parseInt(this.value)||1;updateQuoteItems();updateTotals()"><div>'+fmt(it.price*it.qty)+'</div><div class="del" onclick="selectedPackages['+pi+'].items.splice('+ii+',1);if(!selectedPackages['+pi+'].items.length)selectedPackages.splice('+pi+',1);updateQuoteItems();updateTotals()">×</div></div>';
+      return '<div class="quote-item"><div>'+it.name+_mb(it.name,it.price)+'</div><input class="qprice" type="number" min="0" step="100" value="'+it.price+'" title="Precio editable solo para esta cotización" onchange="setPkgPrice('+pi+','+ii+',this.value)"><input class="qty" type="number" min="1" value="'+it.qty+'" onchange="selectedPackages['+pi+'].items['+ii+'].qty=parseInt(this.value)||1;updateQuoteItems();updateTotals()"><div>'+fmt(it.price*it.qty)+'</div><div class="del" onclick="selectedPackages['+pi+'].items.splice('+ii+',1);if(!selectedPackages['+pi+'].items.length)selectedPackages.splice('+pi+',1);updateQuoteItems();updateTotals()">×</div></div>';
     }).join('');
-    const sub=pkg.items.reduce(function(a,it){return a+it.price*it.qty;},0);
-    return '<div class="pkg-quote-block">'
-      +'<div class="pkg-quote-head"><span>📦 Paquete: '+pkg.label+'</span><span class="pkg-remove" onclick="removePackageFromQuote(\''+pkg.key+'\')">Quitar paquete ×</span></div>'
-      +'<div class="quote-item quote-item-head"><div>Servicio</div><div>Unit.</div><div>Cant.</div><div>Total</div><div></div></div>'
-      +rows
-      +'<div class="pkg-quote-sub"><span>Subtotal '+pkg.label+'</span><span>'+fmt(sub)+'</span></div>'
-      +'</div>';
+    return '<div class="pkg-quote-block'+(inc?'':' excluded')+'">'
+      +blockHead('📦 Paquete: '+pkg.label,'pkg',pi,inc,'<span class="pkg-remove" onclick="removePackageFromQuote(\''+pkg.key+'\')">Quitar ×</span>')
+      +rows+blockFoot(pkg.label,blockSub(pkg.items),workers)+_ml(pkg.items)+'</div>';
   }).join('');
 }
 function modalitySuggestedLogistic(mod, workers){
@@ -981,42 +1215,48 @@ function modalitySuggestedLogistic(mod, workers){
 function updateTotals(){
   const workers=parseInt(document.getElementById('q-workers')?.value)||1;
   const mod=document.getElementById('q-modality')?.value||'intramural';
-  let log=parseFloat(document.getElementById('q-logistic')?.value)||0;
   const logInput=document.getElementById('q-logistic');
+  let log=parseFloat(logInput?.value)||0;
   if(document.activeElement!==logInput && log===0 && mod.includes('brigada')){log=modalitySuggestedLogistic(mod,workers); logInput.value=log;}
   document.getElementById('tele-warning').style.display=mod==='telemedicina'?'block':'none';
-  const discount=Math.min(parseFloat(document.getElementById('q-discount')?.value)||0,15);
-  const pkgSubtotal=selectedPackages.reduce((a,p)=>a+p.items.reduce((s,it)=>s+it.price*it.qty,0),0);
-  const subtotal=pkgSubtotal;
-  const gross=subtotal+log;
-  const disc=gross*discount/100;
-  const total=gross-disc;
-  document.getElementById('quote-totals').style.display=(quoteItems.length||selectedPackages.length)?'block':'none';
-  document.getElementById('t-subtotal').textContent=fmt(subtotal);
-  document.getElementById('t-logistic').textContent=fmt(log);
-  document.getElementById('t-discount').textContent='-'+fmt(disc);
-  document.getElementById('t-total').textContent=fmt(total);
-  document.getElementById('t-per-worker').textContent=fmt(total/workers);
+  const q=computeQuote();
+  const box=document.getElementById('quote-totals');
+  box.style.display=q.blocks.length?'block':'none';
+  if(!q.blocks.length){box.innerHTML='';return;}
+  let h='<label class="grand-toggle"><input type="checkbox" '+(showGrandTotal?'checked':'')+' onchange="showGrandTotal=this.checked;updateTotals()"> Mostrar gran total (sumar los bloques marcados)</label>';
+  h+='<div class="blocks-summary">'+q.blocks.map(function(bk){
+    return '<div class="total-row'+(bk.include?'':' muted-row')+'"><span>'+bk.label+(bk.include||!showGrandTotal?'':' <em>(no suma)</em>')+'</span><span>'+fmt(bk.sub)+'</span></div>';
+  }).join('')+'</div>';
+  if(q.grand){
+    h+='<div class="total-row"><span>Subtotal bloques incluidos</span><span id="t-subtotal">'+fmt(q.subtotal)+'</span></div>'
+     +'<div class="total-row"><span>Logística / operación</span><span id="t-logistic">'+fmt(q.log)+'</span></div>'
+     +'<div class="total-row"><span>Descuento '+q.discount+'%</span><span id="t-discount">-'+fmt(q.disc)+'</span></div>'
+     +'<div class="total-row"><span>Valor por trabajador</span><span id="t-per-worker">'+fmt(q.perWorker)+'</span></div>'
+     +'<div class="total-row main"><span>Gran total cotización</span><span id="t-total">'+fmt(q.total)+'</span></div>';
+    if(_adm()){const all=[];q.included.forEach(function(bk){bk.items.forEach(function(it){all.push(it);});});h+='<div class="mg-total">🔒 '+_ml(all).replace(/<\/?div[^>]*>/g,'')+'</div>';}
+  } else {
+    h+='<div class="alert info" style="font-size:11.5px;margin-top:8px">Sin gran total: cada bloque se presenta como opción independiente'+(q.discount?' (descuento '+q.discount+'% aplicado a cada uno)':'')+'.'+(q.log?' La logística ('+fmt(q.log)+') se suma a la opción que elija la empresa.':'')+'</div>'
+     +q.blocks.map(function(bk){return '<div class="total-row main option-row"><span>'+bk.label+'<small>'+fmt(bk.net/workers)+' por trabajador</small></span><span>'+fmt(bk.net)+'</span></div>';}).join('')
+     +'<span id="t-subtotal" hidden></span><span id="t-logistic" hidden>'+fmt(q.log)+'</span><span id="t-discount" hidden></span><span id="t-per-worker" hidden></span><span id="t-total" hidden></span>';
+  }
+  box.innerHTML=h;
 }
-function clearQuote(){quoteItems=[];selectedPackages=[];updateQuoteItems();updateTotals();}
+function clearQuote(){quoteItems=[];selectedPackages=[];looseInclude=true;updateQuoteItems();updateTotals();}
 function generateQuote(){
   const company=document.getElementById('q-company').value||'la empresa';
   const workers=parseInt(document.getElementById('q-workers').value)||1;
   const mod=document.getElementById('q-modality').selectedOptions[0].text;
   const total=document.getElementById('t-total').textContent;
   const per=document.getElementById('t-per-worker').textContent;
-  const servicesTxt=quoteItems.map(x=>`• ${x.name} — Valor referencial: ${fmt(x.price)} (no incluido en el total; se cotiza aparte si la empresa lo solicita)`).join('\n');
-  const packagesTxt=selectedPackages.map(function(p){
-    const lines=p.items.map(function(it){return `   - ${it.name} — Valor unit.: ${fmt(it.price)} · Cant.: ${it.qty} · Total: ${fmt(it.price*it.qty)}`;}).join('\n');
-    const sub=p.items.reduce(function(a,it){return a+it.price*it.qty;},0);
-    return `• Paquete ${p.label} (Subtotal: ${fmt(sub)})\n${lines}`;
+  const q=computeQuote();
+  const body0=q.blocks.map(function(bk){
+    const lines=bk.items.map(function(it){return `   - ${it.name} — Valor unit.: ${fmt(it.price)} · Cant.: ${itemQty(it)} · Total: ${fmt(it.price*itemQty(it))}`;}).join('\n');
+    return `• ${bk.label} — Total: ${fmt(bk.sub)} (${fmt(bk.perWorker)} por trabajador)${q.grand&&!bk.include?' — opcional, no incluido en el gran total':''}\n${lines}`;
   }).join('\n\n');
-  let body='';
-  if(selectedPackages.length) body+=`Paquetes aplicados (base del total cotizado):\n${packagesTxt}\n\n`;
-  if(quoteItems.length) body+=`Servicios adicionales de referencia:\n${servicesTxt}\n\n`;
+  let body=body0?body0+'\n\n':'';
   if(!body) body='Servicios por definir\n\n';
   const tele = document.getElementById('q-modality').value==='telemedicina' ? '\n\nNota: telemedicina sujeta a validación de perfil administrativo de bajo riesgo, objeto social, cargo y ausencia de apoyos diagnósticos.' : '';
-  const txt=`Cordial saludo,\n\nDe acuerdo con la necesidad de ${company}, presentamos propuesta para ${workers} trabajador(es) bajo modalidad ${mod}.\n\n${body}Valor por trabajador: ${per}\nValor total estimado: ${total}\n\nAntes de agendar, agradecemos compartir profesiograma o matriz de riesgos. Si no cuentan con estos documentos, podemos orientar la estructuración por cargos y riesgos.${tele}\n\nQuedamos atentos para coordinar agenda, documentación y proceso de vinculación.\n\nSothysalud IPS`;
+  const txt=`Cordial saludo,\n\nDe acuerdo con la necesidad de ${company}, presentamos propuesta para ${workers} trabajador(es) bajo modalidad ${mod}.\n\n${body}${q.grand?`Logística / operación: ${fmt(q.log)}\nDescuento: ${q.discount}%\nValor por trabajador: ${fmt(q.perWorker)}\nGran total estimado: ${fmt(q.total)}\n\n`:`Cada bloque se presenta como opción independiente${q.discount?' (descuento '+q.discount+'% aplicado)':''}:\n${q.blocks.map(function(bk){return '   - '+bk.label+': '+fmt(bk.net)+' ('+fmt(bk.net/q.workers)+' por trabajador)';}).join('\n')}${q.log?'\nLogística / operación (se suma a la opción elegida): '+fmt(q.log):''}\n\n`}Antes de agendar, agradecemos compartir profesiograma o matriz de riesgos. Si no cuentan con estos documentos, podemos orientar la estructuración por cargos y riesgos.${tele}\n\nQuedamos atentos para coordinar agenda, documentación y proceso de vinculación.\n\nSothysalud IPS`;
   document.getElementById('modal-quote-content').textContent=txt;
   document.getElementById('quote-modal').classList.add('open');
 }
@@ -1242,7 +1482,7 @@ function buildServiceList(filter){
   services.filter(function(s){return s.name.toLowerCase().includes(filter.toLowerCase())||s.cat.toLowerCase().includes(filter.toLowerCase());}).forEach(function(s){
     if(s.cat!==last){list.innerHTML+='<div class="service-cat">'+s.cat+'</div>'; last=s.cat;}
     var idx=services.indexOf(s);
-    list.innerHTML+='<div class="service-item"><div class="service-name" onclick="addService('+idx+')" title="Clic para agregar a la cotización">'+s.name+'</div><input class="service-price-input" type="number" min="0" step="100" value="'+s.price+'" title="Edita el valor de este examen" onclick="event.stopPropagation()" onchange="setServicePrice('+idx+',this.value)"><button class="add" onclick="addService('+idx+')">+</button></div>';
+    list.innerHTML+='<div class="service-item"><div class="service-name" onclick="addService('+idx+')" title="Clic para agregar a la cotización">'+(window.marginDot?marginDot(s.name,s.price):'')+s.name+'</div><input class="service-price-input" type="number" min="0" step="100" value="'+s.price+'" title="Edita el valor de este examen" onclick="event.stopPropagation()" onchange="setServicePrice('+idx+',this.value)"><button class="add" onclick="addService('+idx+')">+</button></div>';
   });
 }
 function generatePDF(){
@@ -1283,6 +1523,7 @@ function generatePDF(){
   doc.text(coverDate,33.4,249.5);
   newPage();
   secTitle('Propuesta comercial');
+  if(window.__cotPDF){var _ct=document.getElementById('q-contact');para('Cotización N° '+window.__cotPDF+' · Vigencia: 30 días'+(_ct&&_ct.value?' · Atención: '+_ct.value:''),{size:9,color:GRAY,gap:4});}
   para('En SOTHYSALUD IPS somos una institución especializada en Seguridad y Salud en el Trabajo, enfocada en la prevención, el control del riesgo y la optimización de procesos empresariales en salud ocupacional.',{gap:4});
   para('De acuerdo con la necesidad de '+company+', presentamos propuesta para '+workers+' trabajador(es) bajo modalidad '+modLabel+'.',{gap:5});
   secTitle('Alcance del servicio');
@@ -1305,50 +1546,47 @@ function generatePDF(){
     y+=6.8;
   }
   function refHead(){doc.setFillColor(BLUE[0],BLUE[1],BLUE[2]);doc.rect(ML,y,CW,7,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text('SERVICIO',ML+2,y+4.7);doc.text('VALOR UNITARIO',ML+CW-2,y+4.7,{align:'right'});y+=7;}
-  if(quoteItems.length){
-    secTitle('Servicios adicionales de referencia');
-    para('Estos servicios no están incluidos en el total de esta propuesta: se muestran únicamente como valor de referencia, por si la empresa desea añadirlos. Su cantidad y costo final se definen según lo que decida la empresa.',{gap:4,size:9,color:GRAY});
-    need(24);refHead();
-    quoteItems.forEach(function(it,i){
-      if(need(6.8))refHead();
-      if(i%2===1){doc.setFillColor(247,250,252);doc.rect(ML,y,CW,6.8,'F');}
-      doc.setTextColor(INK[0],INK[1],INK[2]);doc.setFont('helvetica','normal');doc.setFontSize(9.2);
-      doc.text(doc.splitTextToSize(it.name,CW-70)[0],ML+2,y+4.6);
-      doc.text(fmt(it.price),ML+CW-2,y+4.6,{align:'right'});
-      y+=6.8;
-    });
-    y+=7;
-  }
   para('Nota: Los servicios ofertados corresponden a actividades en Seguridad y Salud en el Trabajo, prestados por IPS habilitada, por lo cual se encuentran excluidos de IVA conforme a la normatividad vigente en Colombia.',{size:8.5,color:GRAY,gap:5});
-  var pkgGrandTotal=0;
-  if(typeof selectedPackages!=='undefined' && selectedPackages.length){
-    secTitle('Paquetes de exámenes aplicados');
-    para('Esta propuesta incorpora los siguientes paquetes de referencia técnica. El valor de cada paquete se calcula multiplicando el valor unitario de cada examen por la cantidad de trabajadores, y es lo único que compone el total de la cotización:',{gap:4});
-    selectedPackages.forEach(function(pkg){
-      if(!pkg || !pkg.items || !pkg.items.length) return;
+  var Q=computeQuote();
+  if(Q.blocks.length){
+    secTitle('Servicios y paquetes cotizados');
+    para(Q.grand?'El valor de cada bloque se calcula multiplicando el valor unitario por la cantidad. Los bloques marcados como opcionales se presentan con su valor, pero no forman parte del gran total.':'Cada bloque se presenta como una opción independiente con su propio total, para que la empresa elija la que mejor se ajuste a su necesidad.',{gap:4});
+    Q.blocks.forEach(function(bk){
       need(13);
       doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(BLUED[0],BLUED[1],BLUED[2]);
-      doc.text('PAQUETE: '+pkg.label.toUpperCase(),ML,y); y+=6;
-      need(7);svcHead('EXAMEN');
-      pkg.items.forEach(function(it,i){ svcRow(it,i); });
-      var pkgSub=pkg.items.reduce(function(a,it){return a+it.price*it.qty;},0);
-      pkgGrandTotal+=pkgSub;
-      if(need(7.5))svcHead('EXAMEN');
+      doc.text(bk.label.toUpperCase()+(Q.grand&&!bk.include?'  (OPCIONAL)':''),ML,y); y+=6;
+      need(7);svcHead(bk.kind==='pkg'?'EXAMEN':'SERVICIO');
+      bk.items.forEach(function(it,i){ svcRow({name:it.name,price:it.price,qty:itemQty(it)},i); });
+      if(need(13))svcHead('SERVICIO');
       doc.setFillColor(230,238,247);doc.rect(ML,y,CW,7.5,'F');
       doc.setTextColor(BLUED[0],BLUED[1],BLUED[2]);doc.setFont('helvetica','bold');doc.setFontSize(9.5);
-      doc.text('Subtotal '+pkg.label,ML+2,y+5.2);doc.text(fmt(pkgSub),ML+CW-2,y+5.2,{align:'right'});
-      y+=7.5+7;
+      doc.text('Total '+bk.label,ML+2,y+5.2);doc.text(fmt(bk.sub),ML+CW-2,y+5.2,{align:'right'});
+      y+=7.5;
+      doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(GRAY[0],GRAY[1],GRAY[2]);
+      doc.text('Valor por trabajador',ML+2,y+4.4);doc.text(fmt(bk.perWorker),ML+CW-2,y+4.4,{align:'right'});
+      y+=6+6;
     });
   }
   need(40);
   secTitle('Resumen de valores');
   function sumLine(label,val,o){o=o||{};need(o.gap!=null?o.gap+3:8);doc.setFont('helvetica',o.bold?'bold':'normal');doc.setFontSize(o.size||10);var c=o.color||INK;doc.setTextColor(c[0],c[1],c[2]);doc.text(label,ML,y);doc.text(val,ML+CW,y,{align:'right'});y+=(o.gap!=null?o.gap:6.5);}
-  sumLine('Subtotal paquetes aplicados',fmt(pkgGrandTotal));
-  sumLine('Logística / operación',logisticTxt);
-  sumLine('Descuento',discountTxt);
-  need(9);doc.setDrawColor(LINE[0],LINE[1],LINE[2]);doc.setLineWidth(0.3);doc.line(ML,y,ML+CW,y);y+=6;
-  sumLine('TOTAL COTIZACIÓN',totalTxt,{bold:true,size:13,color:BLUED,gap:7});
-  sumLine('Valor por trabajador',perWorkerTxt,{color:GRAY,size:9,gap:8});
+  if(Q.grand){
+    Q.blocks.forEach(function(bk){sumLine(bk.label+(bk.include?'':' (opcional, no suma)'),fmt(bk.sub),{color:bk.include?INK:GRAY});});
+    need(9);doc.setDrawColor(LINE[0],LINE[1],LINE[2]);doc.setLineWidth(0.3);doc.line(ML,y,ML+CW,y);y+=6;
+    sumLine('Subtotal',fmt(Q.subtotal));
+    sumLine('Logística / operación',fmt(Q.log));
+    sumLine('Descuento ('+Q.discount+'%)','-'+fmt(Q.disc));
+    need(9);doc.line(ML,y,ML+CW,y);y+=6;
+    sumLine('GRAN TOTAL COTIZACIÓN',fmt(Q.total),{bold:true,size:13,color:BLUED,gap:7});
+    sumLine('Valor por trabajador',fmt(Q.perWorker),{color:GRAY,size:9,gap:8});
+  } else {
+    Q.blocks.forEach(function(bk){
+      sumLine(bk.label,fmt(bk.net),{bold:true,color:BLUED,gap:5});
+      sumLine('   Valor por trabajador',fmt(bk.net/Q.workers),{color:GRAY,size:9,gap:6});
+    });
+    if(Q.discount)para('Valores con descuento del '+Q.discount+'% aplicado.',{size:8.5,color:GRAY,gap:2});
+    if(Q.log)sumLine('Logística / operación (se suma a la opción elegida)',fmt(Q.log),{gap:8});
+  }
   secTitle('Condiciones de pago');
   para('Sothysalud IPS maneja un modelo de pago anticipado para servicios empresariales, con el fin de garantizar la programación de agendas y disponibilidad de personal médico. Una vez confirmado el pago, se procede con la programación inmediata de las valoraciones médicas.',{gap:5});
   para('Quedamos atentos a su confirmación para avanzar con la programación y ejecución del servicio.',{gap:6});
@@ -1357,9 +1595,353 @@ function generatePDF(){
   para('gerencia@sothysaludips.com · WhatsApp +57 311 858 6247 · www.sothysaludips.com',{size:9,color:GRAY,gap:0});
   function footer(pg,tp){var fy=PH-15;doc.setDrawColor(LINE[0],LINE[1],LINE[2]);doc.setLineWidth(0.2);doc.line(ML,fy,PW-MR,fy);doc.setFont('helvetica','normal');doc.setFontSize(7.1);doc.setTextColor(120,130,145);doc.text('SOTHYSALUD IPS · www.sothysaludips.com · Cl. 53B Bis #25-52, Local 1, Piso 1, Teusaquillo, Bogotá',PW/2,fy+4,{align:'center'});doc.text('601 937 1795 · WhatsApp +57 311 858 6247 · gerencia@sothysaludips.com · contactosothysaludips@gmail.com',PW/2,fy+7.4,{align:'center'});doc.text(pg+' / '+tp,PW-MR,fy+10.8,{align:'right'});}
   var np=doc.getNumberOfPages();for(var p=2;p<=np;p++){doc.setPage(p);footer(p-1,np-1);}
-  doc.save('Propuesta-SOTHYSALUD-'+company.replace(/[^a-zA-Z0-9]+/g,'-')+'.pdf');
+  doc.save('Propuesta-SOTHYSALUD-'+(window.__cotPDF?window.__cotPDF+'-':'')+company.replace(/[^a-zA-Z0-9]+/g,'-')+'.pdf');
 }
 try{buildServiceList(document.getElementById('service-search')?document.getElementById('service-search').value:'');buildPriceTable();}catch(e){}
+</script>
+<script id="sothy-mejora-3">
+/* === Mejora Sothysalud 3: margen privado, volumen, convenios, paquetes por riesgo, seguimiento y envío === */
+(function(){
+/* ---------- utilidades ---------- */
+function ls(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function key(n){return String(n||'').trim().toLowerCase();}
+function todayISO(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}
+function addDaysISO(n){var d=new Date();d.setDate(d.getDate()+n);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}
+function val(id){var el=document.getElementById(id);return el?el.value:'';}
+window.sothyEsc=esc;
+
+/* ---------- 1. Costos privados y margen (solo administrador, solo este navegador) ---------- */
+var COST_KEY='sothy_costos_v1', PIN_KEY='sothy_admin_pin_v1', MIN_KEY='sothy_margen_min_v1';
+window.getCost=function(name){var m=ls(COST_KEY,{});var c=m[key(name)];return (c===undefined||c===null||c==='')?null:Number(c);};
+window.setCost=function(name,v){var m=ls(COST_KEY,{});var n=parseInt(v);if(isNaN(n)||n<=0)delete m[key(name)];else m[key(name)]=n;lsSet(COST_KEY,m);refreshAll();};
+window.margenMin=function(){return Number(ls(MIN_KEY,30));};
+window.isAdmin=function(){try{return sessionStorage.getItem('sothy_admin_on')==='1';}catch(e){return false;}};
+async function sha(t){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('sothy|'+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0');}).join('');}
+window.toggleAdmin=async function(){
+  if(isAdmin()){try{sessionStorage.removeItem('sothy_admin_on');}catch(e){} refreshAll();sothyToast('Modo administrador desactivado');return;}
+  var saved=ls(PIN_KEY,null);
+  if(!saved){
+    var p1=prompt('Crea un PIN de administrador para este navegador (mínimo 4 caracteres). Protege la vista de costos y márgenes.');
+    if(!p1||p1.length<4){sothyToast('PIN no creado');return;}
+    var p2=prompt('Repite el PIN');if(p1!==p2){sothyToast('Los PIN no coinciden');return;}
+    lsSet(PIN_KEY,await sha(p1));
+  } else {
+    var p=prompt('PIN de administrador');if(!p)return;
+    if(await sha(p)!==saved){sothyToast('PIN incorrecto');return;}
+  }
+  try{sessionStorage.setItem('sothy_admin_on','1');}catch(e){}
+  refreshAll();sothyToast('Modo administrador activo: se ven costos y márgenes');
+};
+function marginInfo(price,cost){if(cost==null||!price)return null;var m=(price-cost)/price*100;var cls=m<0?'danger':m<margenMin()?'warn':'good';return {m:m,cls:cls};}
+window.marginBadge=function(name,price){if(!isAdmin())return '';var mi=marginInfo(price,getCost(name));if(!mi)return ' <span class="mg mg-none" title="Sin costo registrado">s/c</span>';return ' <span class="mg mg-'+mi.cls+'" title="Costo '+fmt(getCost(name))+'">'+Math.round(mi.m)+'%</span>';};
+window.marginDot=function(name,price){if(!isAdmin())return '';var mi=marginInfo(price,getCost(name));return mi?'<span class="mg-dot mg-'+mi.cls+'" title="Margen '+Math.round(mi.m)+'% · costo '+fmt(getCost(name))+'"></span>':'';};
+window.blockMargin=function(items,discount){
+  var rev=0,cost=0,known=0;
+  items.forEach(function(it){var c=getCost(it.name);var q=itemQty(it);if(c!=null){known++;rev+=it.price*q*(1-(discount||0)/100);cost+=c*q;}});
+  return {rev:rev,cost:cost,known:known,total:items.length,m:rev?(rev-cost)/rev*100:null};
+};
+window.marginLine=function(items,discount){
+  if(!isAdmin())return '';
+  var b=blockMargin(items,discount);
+  if(b.m==null)return '<div class="mg-line">Margen: sin costos registrados</div>';
+  var cls=b.m<0?'danger':b.m<margenMin()?'warn':'good';
+  return '<div class="mg-line">Margen bruto <span class="mg mg-'+cls+'">'+Math.round(b.m)+'%</span> · utilidad '+fmt(b.rev-b.cost)+(b.known<b.total?' · '+(b.total-b.known)+' sin costo':'')+'</div>';
+};
+function parseCSV(text){
+  var rows=[],row=[],f='',q=false;
+  for(var i=0;i<text.length;i++){var c=text[i];
+    if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+    else if(c==='"')q=true;else if(c===','||c===';'){row.push(f);f='';}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f='';}
+    else f+=c;}
+  if(f!==''||row.length){row.push(f);rows.push(row);}
+  return rows.filter(function(r){return r.some(function(x){return String(x).trim();});});
+}
+window.importCostsFile=function(input){
+  var file=input.files&&input.files[0];if(!file)return;
+  var r=new FileReader();
+  r.onload=function(){
+    var rows=parseCSV(String(r.result).replace(/^﻿/,''));if(rows.length<2){sothyToast('El archivo no tiene filas');return;}
+    var h=rows[0].map(key);
+    var iN=h.findIndex(function(x){return /servicio|nombre|examen|descrip/.test(x);});
+    var iC=h.findIndex(function(x){return /costo/.test(x);});
+    var iP=h.findIndex(function(x){return /precio/.test(x);});
+    var iK=h.findIndex(function(x){return /categor/.test(x);});
+    if(iN<0||iC<0){sothyToast('El archivo debe tener columnas "servicio" y "costo"');return;}
+    var m=ls(COST_KEY,{}),n=0,added=0;
+    rows.slice(1).forEach(function(rw){
+      var name=String(rw[iN]||'').trim();var cost=parseInt(String(rw[iC]||'').replace(/[^\d]/g,''));
+      if(!name||!cost)return; m[key(name)]=cost;n++;
+      if(!services.some(function(s){return key(s.name)===key(name);})&&iP>=0){
+        var pr=parseInt(String(rw[iP]||'').replace(/[^\d]/g,''));
+        if(pr){services.push({cat:(iK>=0&&rw[iK])?String(rw[iK]).trim():'Laboratorios',name:name,price:pr});added++;}
+      }
+    });
+    lsSet(COST_KEY,m);if(added){sortServicesByCat();saveServices();}
+    input.value='';refreshAll();sothyToast(n+' costos importados'+(added?' · '+added+' servicios nuevos':''));
+  };
+  r.readAsText(file,'utf-8');
+};
+window.exportCosts=function(){
+  var m=ls(COST_KEY,{});var lines=[['servicio','costo','precio','margen_%']];
+  services.forEach(function(s){var c=m[key(s.name)];if(c)lines.push([s.name,c,s.price,Math.round((s.price-c)/s.price*100)]);});
+  downloadText('costos_sothysalud.csv',lines.map(function(r){return r.map(function(x){return '"'+String(x).replace(/"/g,'""')+'"';}).join(',');}).join('\n'));
+};
+function downloadText(name,text,type){var b=new Blob(['﻿'+text],{type:type||'text/csv;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+window.downloadText=downloadText;
+window.setMargenMin=function(v){lsSet(MIN_KEY,Math.max(0,parseFloat(v)||0));refreshAll();};
+
+/* ---------- 2. Escalas por volumen y convenios por empresa ---------- */
+var ESC_KEY='sothy_escalas_v1', CONV_KEY='sothy_convenios_v1';
+var ESC_DEF=[{min:1,dto:0},{min:20,dto:3},{min:50,dto:5},{min:100,dto:8},{min:300,dto:10}];
+window.getEscalas=function(){var e=ls(ESC_KEY,null);return (Array.isArray(e)&&e.length?e:ESC_DEF).slice().sort(function(a,b){return a.min-b.min;});};
+window.volumeDto=function(w){var d=0;getEscalas().forEach(function(e){if(w>=e.min)d=e.dto;});return Math.min(15,d);};
+window.saveEscalas=function(){
+  var rows=document.querySelectorAll('#escalas-body tr');var arr=[];
+  rows.forEach(function(tr){var mn=parseInt(tr.querySelector('.esc-min').value);var dt=parseFloat(tr.querySelector('.esc-dto').value);if(mn>0&&!isNaN(dt))arr.push({min:mn,dto:Math.min(15,Math.max(0,dt))});});
+  if(!arr.length){sothyToast('Agrega al menos una escala');return;}
+  lsSet(ESC_KEY,arr);renderAdminPanels();applyVolume(true);sothyToast('Escalas guardadas ✓');
+};
+window.addEscala=function(){var e=getEscalas();e.push({min:(e[e.length-1]||{min:0}).min+50,dto:0});lsSet(ESC_KEY,e);renderAdminPanels();};
+window.delEscala=function(i){var e=getEscalas();e.splice(i,1);lsSet(ESC_KEY,e);renderAdminPanels();};
+var discountTouched=false;
+window.applyVolume=function(force){
+  var w=parseInt(val('q-workers'))||1;var d=volumeDto(w);var el=document.getElementById('q-discount');
+  if(el&&(!discountTouched||force)){el.value=d;}
+  var h=document.getElementById('vol-hint');
+  if(h)h.innerHTML='Escala por volumen para '+w+' trabajador(es): <b>'+d+'%</b>'+(discountTouched&&el&&Number(el.value)!==d?' · <a href="#" onclick="discountTouchedReset();return false">usar escala</a>':'');
+};
+window.discountTouchedReset=function(){discountTouched=false;applyVolume(true);updateTotals();};
+window.getConvenios=function(){return ls(CONV_KEY,{});};
+window.convenioActual=function(){var c=getConvenios()[key(val('q-company'))];return c||null;};
+window.priceFor=function(name,base){var c=convenioActual();if(c&&c.prices&&c.prices[name]!=null)return c.prices[name];return base;};
+window.saveConvenio=function(){
+  var company=val('q-company').trim();if(!company){sothyToast('Escribe primero el nombre de la empresa');return;}
+  var prices={};
+  quoteItems.forEach(function(it){prices[it.name]=it.price;});
+  selectedPackages.forEach(function(p){p.items.forEach(function(it){prices[it.name]=it.price;});});
+  if(!Object.keys(prices).length){sothyToast('Agrega servicios para guardar sus tarifas pactadas');return;}
+  var all=getConvenios();var prev=all[key(company)];
+  all[key(company)]={name:company,prices:Object.assign({},prev?prev.prices:{},prices),fecha:todayISO()};
+  lsSet(CONV_KEY,all);renderConvenioHint();renderAdminPanels();sothyToast('Convenio de '+company+' guardado ('+Object.keys(all[key(company)].prices).length+' tarifas)');
+};
+window.applyConvenio=function(){
+  var c=convenioActual();if(!c)return;var n=0;
+  quoteItems.forEach(function(it){if(c.prices[it.name]!=null){it.price=c.prices[it.name];n++;}});
+  selectedPackages.forEach(function(p){p.items.forEach(function(it){if(c.prices[it.name]!=null){it.price=c.prices[it.name];n++;}});});
+  updateQuoteItems();updateTotals();sothyToast(n+' tarifas del convenio aplicadas');
+};
+window.delConvenio=function(k){if(!confirm('¿Eliminar este convenio?'))return;var all=getConvenios();delete all[k];lsSet(CONV_KEY,all);renderAdminPanels();renderConvenioHint();};
+window.renderConvenioHint=function(){
+  var h=document.getElementById('convenio-hint');if(!h)return;var c=convenioActual();
+  h.innerHTML=c?'🤝 <b>'+esc(c.name)+'</b> tiene convenio ('+Object.keys(c.prices).length+' tarifas pactadas, '+esc(c.fecha)+'). Se usan al agregar servicios. <a href="#" onclick="applyConvenio();return false">Aplicar a la cotización actual</a>':'';
+  h.style.display=c?'block':'none';
+};
+
+/* ---------- 3. Paquetes por exposición / riesgo ---------- */
+var RISK_PKGS={
+  solventes:{label:'Riesgo químico · Solventes',icon:'🧴',sub:'Pinturas, tintas, limpieza industrial, petroquímica',exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Cuadro Hemático (Hemograma)','Transaminasa TGO (AST)','Transaminasa TGP (ALT)','Creatinina en suero','Uroanálisis con sedimento','Ácido hipúrico (tolueno)','Ácido metilhipúrico (xileno)','Espirometría'],note:'Si hay exposición a benceno, añade "Ácido S-fenilmercaptúrico (benceno)". Los indicadores biológicos se toman al final de la jornada.'},
+  plaguicidas:{label:'Riesgo químico · Plaguicidas',icon:'🌾',sub:'Agro, fumigación, control de plagas',exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Colinesterasa eritrocitaria (acetilcolinesterasa)','Cuadro Hemático (Hemograma)','Transaminasa TGO (AST)','Transaminasa TGP (ALT)','Creatinina en suero','Espirometría'],note:'La colinesterasa aplica a organofosforados y carbamatos; idealmente con línea de base al ingreso.'},
+  metales:{label:'Metales y soldadura',icon:'🔥',sub:'Soldadura, fundición, baterías, metalmecánica',exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Audiometría Tonal','Visiometría','Espirometría','Plomo en sangre','Cuadro Hemático (Hemograma)','Creatinina en suero','Rx de Tórax'],note:'Ajusta el metal según la exposición real: cromo, cadmio, manganeso o mercurio están en el catálogo.'},
+  biologico:{label:'Riesgo biológico · Salud',icon:'🧫',sub:'Clínicas, laboratorios, aseo hospitalario',exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Cuadro Hemático (Hemograma)','Hepatitis B antígeno de superficie (HBsAg)','Hepatitis B anticuerpos (Anti-HBs)','Varicela zóster IgG','Rubéola IgG','Toxoide tetánico anticuerpos IgG'],note:'La prueba de VIH no se incluye: en Colombia es voluntaria y requiere consentimiento informado; ofrécela solo si el trabajador la acepta.'},
+  confinados:{label:'Espacios confinados',icon:'🕳️',sub:'Tanques, alcantarillas, silos',exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Espirometría','Audiometría Tonal','Visiometría','Electrocardiograma (mayores de 40 años)','Pruebas Vestibulares / Equilibrio','Perfil Lipídico','Glicemia','Valoración Psicológica']},
+  vigilancia:{label:'Seguridad y vigilancia',icon:'🛡️',sub:'Vigilantes, escoltas, porteros',exams:['Valoración Médica Osteomuscular (ingreso/periódico/retiro)','Visiometría','Audiometría Tonal','Valoración Psicológica','Panel de Drogas x3 (Marihuana, Cocaína y Anfetaminas)'],note:'La prueba de drogas requiere consentimiento informado del trabajador.'}
+};
+Object.keys(RISK_PKGS).forEach(function(k){PAQUETES_COTIZADOR['r_'+k]={label:RISK_PKGS[k].label,exams:RISK_PKGS[k].exams,note:RISK_PKGS[k].note};});
+var EXPOSICIONES=[
+  ['ruido','Ruido',['Audiometría Tonal']],
+  ['pvd','Pantallas / visual',['Visiometría','Optometría']],
+  ['alturas','Trabajo en alturas',['Val. Médica Osteomuscular + Trabajo en Alturas','Pruebas Vestibulares / Equilibrio','Electrocardiograma (mayores de 40 años)','Perfil Lipídico','Glicemia']],
+  ['conduccion','Conducción',['Prueba Psicométrica para Conductores','Visiometría','Audiometría Tonal','Alcohol Etílico en Sangre']],
+  ['polvos','Polvos / material particulado',['Espirometría','Rx de Tórax']],
+  ['solventes','Solventes',['Cuadro Hemático (Hemograma)','Transaminasa TGO (AST)','Transaminasa TGP (ALT)','Ácido hipúrico (tolueno)','Ácido metilhipúrico (xileno)']],
+  ['plaguicidas','Plaguicidas',['Colinesterasa eritrocitaria (acetilcolinesterasa)','Transaminasa TGO (AST)','Transaminasa TGP (ALT)']],
+  ['plomo','Plomo / metales',['Plomo en sangre','Creatinina en suero']],
+  ['biologico','Biológico',['Hepatitis B antígeno de superficie (HBsAg)','Hepatitis B anticuerpos (Anti-HBs)','Toxoide tetánico anticuerpos IgG']],
+  ['alimentos','Manipulación de alimentos',['Val. Médica Osteomuscular + Dermatológico + Manip. Alimentos','Frotis de Garganta / Faringe','KOH de Uñas','Coprológico','Curso Buenas Prácticas Alimenticias (Virtual)']],
+  ['electrico','Riesgo eléctrico',['Electrocardiograma (mayores de 40 años)','Perfil Lipídico','Glicemia']],
+  ['psicosocial','Alta carga psicosocial / seguridad',['Valoración Psicológica']],
+  ['drogas','Política de alcohol y drogas',['Panel de Drogas x3 (Marihuana, Cocaína y Anfetaminas)','Alcohol Etílico en Sangre']]
+];
+window.renderRiskPackages=function(){
+  var g=document.getElementById('risk-pkg-grid');if(!g)return;
+  g.innerHTML=Object.keys(RISK_PKGS).map(function(k){var p=RISK_PKGS[k];
+    return '<div class="card" style="margin-bottom:0"><div class="card-title">'+p.icon+' '+esc(p.label)+'</div><div class="card-sub">'+esc(p.sub)+'</div><p class="body-text">'+p.exams.map(esc).join(' · ')+'.</p><div class="btn-row"><button class="btn secondary" onclick="openPackageModal(\'r_'+k+'\')">📝 Ver y agregar</button></div></div>';}).join('');
+  var b=document.getElementById('risk-builder-checks');
+  if(b)b.innerHTML=EXPOSICIONES.map(function(e){return '<label class="exp-check"><input type="checkbox" value="'+e[0]+'"> '+esc(e[1])+'</label>';}).join('');
+};
+window.buildRiskPackage=function(){
+  var cargo=val('rb-cargo').trim()||'Cargo por riesgos';
+  var sel=Array.prototype.map.call(document.querySelectorAll('#risk-builder-checks input:checked'),function(i){return i.value;});
+  if(!sel.length){sothyToast('Marca al menos una exposición del cargo');return;}
+  var exams=['Valoración Médica Osteomuscular (ingreso/periódico/retiro)'];
+  EXPOSICIONES.forEach(function(e){if(sel.indexOf(e[0])>=0)e[2].forEach(function(x){if(exams.indexOf(x)<0)exams.push(x);});});
+  if(exams.indexOf('Val. Médica Osteomuscular + Trabajo en Alturas')>=0||exams.indexOf('Val. Médica Osteomuscular + Dermatológico + Manip. Alimentos')>=0)exams.splice(exams.indexOf('Valoración Médica Osteomuscular (ingreso/periódico/retiro)'),1);
+  var k='c_'+key(cargo).replace(/[^a-z0-9]+/g,'_');
+  PAQUETES_COTIZADOR[k]={label:cargo,exams:exams.filter(function(x){return services.some(function(s){return s.name===x;});}),note:'Paquete armado según las exposiciones marcadas. Confírmalo con el profesiograma del cliente.'};
+  openPackageModal(k);
+};
+
+/* ---------- 4. Seguimiento de cotizaciones ---------- */
+var COT_KEY='sothy_cotizaciones_v1';
+var ESTADOS=[['borrador','Borrador'],['enviada','Enviada'],['negociacion','En negociación'],['aceptada','Aceptada'],['perdida','Perdida']];
+var MOTIVOS=['Precio','Eligió otra IPS','Tiempo de respuesta','Sin respuesta del cliente','Proyecto cancelado','Cobertura / ubicación','Otro'];
+window.cotActual=null;
+window.getCots=function(){return ls(COT_KEY,[]);};
+function saveCots(a){lsSet(COT_KEY,a);updateSegBadge();}
+function nextId(){var y=new Date().getFullYear();var n=getCots().filter(function(c){return c.id.indexOf('COT-'+y+'-')===0;}).map(function(c){return parseInt(c.id.split('-')[2])||0;});return 'COT-'+y+'-'+String((n.length?Math.max.apply(null,n):0)+1).padStart(4,'0');}
+function snapshot(){return {company:val('q-company'),contact:val('q-contact'),email:val('q-email'),phone:val('q-phone'),workers:val('q-workers'),modality:val('q-modality'),logistic:val('q-logistic'),discount:val('q-discount'),quoteItems:JSON.parse(JSON.stringify(quoteItems)),selectedPackages:JSON.parse(JSON.stringify(selectedPackages)),looseInclude:looseInclude,showGrandTotal:showGrandTotal};}
+window.registrarCotizacion=function(estado,silent){
+  var q=computeQuote();if(!q.blocks.length){if(!silent)sothyToast('Agrega servicios o paquetes antes de guardar');return null;}
+  var all=getCots();var rec=cotActual?all.find(function(c){return c.id===cotActual;}):null;
+  var base={empresa:val('q-company').trim()||'(sin nombre)',contacto:val('q-contact'),correo:val('q-email'),telefono:val('q-phone'),trabajadores:q.workers,modalidad:(document.getElementById('q-modality').selectedOptions[0]||{}).text||'',total:q.grand?q.total:q.blocks.reduce(function(a,b){return Math.max(a,b.net);},0),granTotal:q.grand,bloques:q.blocks.map(function(b){return b.label;}),snapshot:snapshot(),actualizada:todayISO(),asesor:ls('sothy_asesor','')};
+  if(rec){Object.assign(rec,base);rec.version=(rec.version||1)+1;if(estado&&rank(estado)>rank(rec.estado))rec.estado=estado;}
+  else{rec=Object.assign({id:nextId(),fecha:todayISO(),estado:estado||'borrador',proximo:addDaysISO(3),motivo:'',notas:'',version:1},base);all.unshift(rec);}
+  if(estado==='enviada'&&(!rec.proximo||rec.proximo<todayISO()))rec.proximo=addDaysISO(3);
+  saveCots(all);cotActual=rec.id;renderCotLabel();renderSeguimiento();
+  if(!silent)sothyToast('Cotización '+rec.id+' guardada');
+  return rec;
+};
+function rank(e){return ['borrador','enviada','negociacion','aceptada','perdida'].indexOf(e);}
+window.renderCotLabel=function(){var el=document.getElementById('cot-actual-label');if(el)el.innerHTML=cotActual?'Editando <b>'+esc(cotActual)+'</b> · <a href="#" onclick="nuevaCotizacion();return false">Nueva cotización</a>':'Cotización nueva (se numera al guardar o generar la propuesta)';};
+window.nuevaCotizacion=function(){cotActual=null;['q-company','q-contact','q-email','q-phone'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});discountTouched=false;clearQuote();applyVolume(true);updateTotals();renderCotLabel();renderConvenioHint();};
+window.abrirCotizacion=function(id){
+  var rec=getCots().find(function(c){return c.id===id;});if(!rec||!rec.snapshot)return;var s=rec.snapshot;
+  var set=function(i,v){var e=document.getElementById(i);if(e&&v!=null)e.value=v;};
+  set('q-company',s.company);set('q-contact',s.contact);set('q-email',s.email);set('q-phone',s.phone);set('q-workers',s.workers);set('q-modality',s.modality);set('q-logistic',s.logistic);set('q-discount',s.discount);
+  quoteItems=s.quoteItems||[];selectedPackages=s.selectedPackages||[];looseInclude=s.looseInclude!==false;showGrandTotal=s.showGrandTotal!==false;
+  discountTouched=true;lastWorkers=parseInt(s.workers)||1;cotActual=id;
+  showSection('cotizador');updateQuoteItems();updateTotals();applyVolume();renderCotLabel();renderConvenioHint();
+};
+window.setCotField=function(id,field,v){var all=getCots();var r=all.find(function(c){return c.id===id;});if(!r)return;r[field]=v;if(field==='estado'&&v!=='perdida')r.motivo='';if(field==='estado'&&(v==='aceptada'||v==='perdida'))r.cerrada=todayISO();saveCots(all);renderSeguimiento();};
+window.delCot=function(id){if(!confirm('¿Eliminar '+id+' del seguimiento?'))return;saveCots(getCots().filter(function(c){return c.id!==id;}));if(cotActual===id){cotActual=null;renderCotLabel();}renderSeguimiento();};
+window.setAsesor=function(v){lsSet('sothy_asesor',v);};
+window.exportCotsCSV=function(){
+  var rows=[['numero','fecha','empresa','contacto','correo','telefono','trabajadores','modalidad','total','estado','proximo_seguimiento','motivo_perdida','asesor','notas']];
+  getCots().forEach(function(c){rows.push([c.id,c.fecha,c.empresa,c.contacto,c.correo,c.telefono,c.trabajadores,c.modalidad,Math.round(c.total),c.estado,c.proximo,c.motivo,c.asesor,c.notas]);});
+  downloadText('seguimiento_cotizaciones_'+todayISO()+'.csv',rows.map(function(r){return r.map(function(x){return '"'+String(x==null?'':x).replace(/"/g,'""')+'"';}).join(',');}).join('\n'));
+};
+window.exportBackup=function(){downloadText('respaldo_cotizador_'+todayISO()+'.json',JSON.stringify({cotizaciones:getCots(),convenios:getConvenios(),escalas:getEscalas(),servicios:services},null,1),'application/json');};
+window.importBackup=function(input){
+  var f=input.files&&input.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(){try{var d=JSON.parse(String(r.result).replace(/^﻿/,''));
+    var mine=getCots();var ids=new Set(mine.map(function(c){return c.id;}));var n=0;
+    (d.cotizaciones||[]).forEach(function(c){if(c&&c.id&&!ids.has(c.id)){mine.push(c);n++;}});
+    mine.sort(function(a,b){return a.id<b.id?1:-1;});saveCots(mine);
+    if(d.convenios){var cv=getConvenios();Object.keys(d.convenios).forEach(function(k){if(!cv[k])cv[k]=d.convenios[k];});lsSet(CONV_KEY,cv);}
+    input.value='';renderSeguimiento();renderAdminPanels();sothyToast(n+' cotizaciones importadas');
+  }catch(e){sothyToast('Archivo de respaldo no válido');}};
+  r.readAsText(f,'utf-8');
+};
+function updateSegBadge(){
+  var n=getCots().filter(function(c){return ['borrador','enviada','negociacion'].indexOf(c.estado)>=0&&c.proximo&&c.proximo<=todayISO();}).length;
+  var b=document.getElementById('seg-badge');if(b){b.textContent=n;b.style.display=n?'inline-block':'none';}
+}
+window.renderSeguimiento=function(){
+  updateSegBadge();
+  var box=document.getElementById('seg-body');if(!box)return;
+  var all=getCots();var f=val('seg-filter')||'activas';var qtxt=key(val('seg-search'));var hoy=todayISO();
+  var acept=all.filter(function(c){return c.estado==='aceptada';}),perd=all.filter(function(c){return c.estado==='perdida';});
+  var abiertas=all.filter(function(c){return ['borrador','enviada','negociacion'].indexOf(c.estado)>=0;});
+  var vencidas=abiertas.filter(function(c){return c.proximo&&c.proximo<=hoy;});
+  var tasa=(acept.length+perd.length)?Math.round(acept.length/(acept.length+perd.length)*100):null;
+  var sum=function(a){return a.reduce(function(s,c){return s+(Number(c.total)||0);},0);};
+  document.getElementById('seg-kpis').innerHTML=
+    kpi('En curso',abiertas.length,fmt(sum(abiertas))+' en juego')+kpi('Seguimientos para hoy',vencidas.length,vencidas.length?'Llamar o escribir hoy':'Al día',vencidas.length?'danger':'')+
+    kpi('Tasa de cierre',tasa==null?'—':tasa+'%',acept.length+' ganadas · '+perd.length+' perdidas')+kpi('Valor ganado',fmt(sum(acept)),acept.length+' cotizaciones aceptadas','good');
+  var mot={};perd.forEach(function(c){var m=c.motivo||'Sin motivo';mot[m]=(mot[m]||0)+1;});
+  document.getElementById('seg-motivos').innerHTML=Object.keys(mot).length?'<b>Motivos de pérdida:</b> '+Object.keys(mot).sort(function(a,b){return mot[b]-mot[a];}).map(function(m){return esc(m)+' ('+mot[m]+')';}).join(' · '):'';
+  var list=all.filter(function(c){
+    if(f==='activas'&&['borrador','enviada','negociacion'].indexOf(c.estado)<0)return false;
+    if(f==='hoy'&&!(['borrador','enviada','negociacion'].indexOf(c.estado)>=0&&c.proximo&&c.proximo<=hoy))return false;
+    if(f!=='todas'&&f!=='activas'&&f!=='hoy'&&c.estado!==f)return false;
+    if(qtxt&&key(c.empresa+' '+c.id+' '+c.contacto).indexOf(qtxt)<0)return false;return true;});
+  if(!list.length){box.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted)">No hay cotizaciones en esta vista. Se registran solas al guardar, generar la propuesta o enviarla.</td></tr>';return;}
+  box.innerHTML=list.map(function(c){
+    var late=['borrador','enviada','negociacion'].indexOf(c.estado)>=0&&c.proximo&&c.proximo<=hoy;
+    return '<tr class="'+(late?'seg-late':'')+'"><td style="white-space:nowrap"><b>'+esc(c.id)+'</b><div class="seg-sub">'+esc(c.fecha)+(c.version>1?' · v'+c.version:'')+'</div></td>'
+      +'<td><b>'+esc(c.empresa)+'</b><div class="seg-sub">'+esc([c.contacto,c.telefono,c.correo].filter(Boolean).join(' · '))+'</div><div class="seg-sub">'+esc(c.trabajadores+' trab. · '+c.modalidad)+'</div></td>'
+      +'<td style="text-align:right;white-space:nowrap"><b>'+fmt(c.total)+'</b><div class="seg-sub">'+(c.granTotal?'Gran total':'Opciones')+'</div></td>'
+      +'<td><select onchange="setCotField(\''+c.id+'\',\'estado\',this.value)">'+ESTADOS.map(function(e){return '<option value="'+e[0]+'"'+(c.estado===e[0]?' selected':'')+'>'+e[1]+'</option>';}).join('')+'</select>'
+      +(c.estado==='perdida'?'<select style="margin-top:4px" onchange="setCotField(\''+c.id+'\',\'motivo\',this.value)"><option value="">Motivo…</option>'+MOTIVOS.map(function(m){return '<option'+(c.motivo===m?' selected':'')+'>'+m+'</option>';}).join('')+'</select>':'')+'</td>'
+      +'<td><input type="date" value="'+esc(c.proximo||'')+'" onchange="setCotField(\''+c.id+'\',\'proximo\',this.value)">'+(late?'<div class="seg-sub" style="color:var(--danger);font-weight:700">Pendiente</div>':'')+'</td>'
+      +'<td><textarea rows="2" placeholder="Notas de la gestión" onchange="setCotField(\''+c.id+'\',\'notas\',this.value)">'+esc(c.notas||'')+'</textarea></td>'
+      +'<td class="seg-actions"><button class="btn secondary" onclick="abrirCotizacion(\''+c.id+'\')">Abrir</button>'
+      +(c.telefono?'<button class="btn secondary" onclick="segWhatsApp(\''+c.id+'\')">WhatsApp</button>':'')
+      +'<button class="btn secondary" onclick="delCot(\''+c.id+'\')">×</button></td></tr>';}).join('');
+};
+window.segWhatsApp=function(id){var c=getCots().find(function(x){return x.id===id;});if(!c)return;window.open(waLink(c.telefono,'Hola '+((c.contacto||'').split(' ')[0]||'')+', le escribo de Sothysalud IPS para hacer seguimiento a la propuesta '+c.id+'. ¿Pudieron revisarla? Quedo atento a cualquier ajuste.'),'_blank');};
+function kpi(l,v,s,cls){return '<div class="stat"><div class="stat-label">'+l+'</div><div class="stat-value'+(cls?' kpi-'+cls:'')+'">'+v+'</div><div class="stat-sub">'+s+'</div></div>';}
+
+/* ---------- 5. Envío directo ---------- */
+window.waLink=function(phone,text){var d=String(phone||'').replace(/\D/g,'');if(d.length===10)d='57'+d;return 'https://wa.me/'+d+'?text='+encodeURIComponent(text||'');};
+window.emailQuote=function(){
+  var rec=registrarCotizacion('enviada',true);generatePDF();
+  var company=val('q-company')||'la empresa';
+  var subject=encodeURIComponent('Propuesta Comercial Sothysalud IPS'+(rec?' '+rec.id:'')+' - '+company);
+  var body=encodeURIComponent((document.getElementById('modal-quote-content').textContent||'')+'\n\n(Adjunta aquí el PDF que se acaba de descargar a tu computador)');
+  window.location.href='mailto:'+encodeURIComponent(val('q-email').trim())+'?subject='+subject+'&body='+body;
+};
+window.whatsappQuote=function(){
+  registrarCotizacion('enviada',true);generatePDF();
+  var text=(document.getElementById('modal-quote-content').textContent||'')+'\n\n(Adjunta también el PDF que se acaba de descargar, en este chat)';
+  var ph=val('q-phone').trim();
+  window.open(ph?waLink(ph,text):'https://wa.me/?text='+encodeURIComponent(text),'_blank');
+};
+var _genQuote=window.generateQuote;
+window.generateQuote=function(){var rec=registrarCotizacion(null,true);_genQuote();
+  var el=document.getElementById('modal-quote-content');
+  if(rec&&el&&el.textContent.indexOf(rec.id)<0){
+    var head='Cotización N° '+rec.id+' · Vigencia: 30 días\n'+(val('q-contact')?'Atención: '+val('q-contact')+'\n':'')+'\n';
+    el.textContent=head+el.textContent;}
+};
+var _genPDF=window.generatePDF;
+window.generatePDF=function(){var rec=registrarCotizacion(null,true);window.__cotPDF=rec?rec.id:null;_genPDF();};
+
+/* ---------- Paneles de administración (Tarifas) ---------- */
+window.renderAdminPanels=function(){
+  var esb=document.getElementById('escalas-body');
+  if(esb)esb.innerHTML=getEscalas().map(function(e,i){return '<tr><td><input class="esc-min" type="number" min="1" value="'+e.min+'"></td><td><input class="esc-dto" type="number" min="0" max="15" step="0.5" value="'+e.dto+'"></td><td><button class="tarifa-del" onclick="delEscala('+i+')">×</button></td></tr>';}).join('');
+  var cvb=document.getElementById('convenios-body');
+  if(cvb){var cv=getConvenios();var ks=Object.keys(cv);
+    cvb.innerHTML=ks.length?ks.map(function(k){var c=cv[k];return '<tr><td><b>'+esc(c.name)+'</b><div class="seg-sub">'+Object.keys(c.prices).map(function(n){return esc(n)+': '+fmt(c.prices[n]);}).join(' · ')+'</div></td><td>'+esc(c.fecha)+'</td><td><button class="tarifa-del" data-k="'+esc(k)+'" onclick="delConvenio(this.dataset.k)">×</button></td></tr>';}).join(''):'<tr><td colspan="3" style="color:var(--muted)">Aún no hay convenios. Se crean desde el cotizador con "Guardar como convenio".</td></tr>';}
+  var adm=document.getElementById('admin-costs');
+  if(adm){
+    adm.style.display=isAdmin()?'block':'none';
+    if(!isAdmin()){document.getElementById('admin-costs-summary').innerHTML='';}else{
+    var mm=document.getElementById('margen-min');if(mm)mm.value=margenMin();
+    var m=ls(COST_KEY,{});var withCost=services.filter(function(s){return m[key(s.name)];});
+    var alerts=withCost.map(function(s){return {s:s,mi:marginInfo(s.price,m[key(s.name)])};}).filter(function(x){return x.mi.cls!=='good';}).sort(function(a,b){return a.mi.m-b.mi.m;});
+    document.getElementById('admin-costs-summary').innerHTML=withCost.length+' de '+services.length+' servicios con costo registrado.'
+      +(alerts.length?'<div class="mg-alerts">'+alerts.map(function(x){return '<div><span class="mg mg-'+x.mi.cls+'">'+Math.round(x.mi.m)+'%</span> '+esc(x.s.name)+' — precio '+fmt(x.s.price)+' · costo '+fmt(m[key(x.s.name)])+'</div>';}).join('')+'</div>':'<div class="mg-alerts ok">Todos los servicios con costo cumplen el margen mínimo.</div>');
+}
+  }
+  var ab=document.getElementById('admin-toggle-btn');if(ab)ab.textContent=isAdmin()?'🔓 Salir de modo administrador':'🔒 Modo administrador (costos y márgenes)';
+};
+window.refreshAll=function(){try{buildPriceTable();}catch(e){}try{refreshQuoterViews();}catch(e){}try{updateQuoteItems();updateTotals();}catch(e){}renderAdminPanels();};
+
+/* ---------- Cableado inicial ---------- */
+var lastWorkers=parseInt(val('q-workers'))||1;
+document.addEventListener('DOMContentLoaded',init);if(document.readyState!=='loading')init();
+var inited=false;
+function init(){
+  if(inited)return;inited=true;
+  sections.push('seguimiento');titles.seguimiento=['Seguimiento comercial','Embudo de cotizaciones'];
+  var d=document.getElementById('q-discount');if(d)d.addEventListener('input',function(){discountTouched=true;applyVolume();});
+  var w=document.getElementById('q-workers');
+  if(w)w.addEventListener('input',function(){
+    var nw=parseInt(w.value)||1;
+    quoteItems.forEach(function(it){if(itemQty(it)===lastWorkers)it.qty=nw;});
+    selectedPackages.forEach(function(p){p.items.forEach(function(it){if(it.qty===lastWorkers)it.qty=nw;});});
+    lastWorkers=nw;applyVolume();updateQuoteItems();updateTotals();});
+  var c=document.getElementById('q-company');if(c)c.addEventListener('input',renderConvenioHint);
+  var a=document.getElementById('seg-asesor');if(a)a.value=ls('sothy_asesor','');
+  renderRiskPackages();applyVolume();renderCotLabel();renderConvenioHint();renderAdminPanels();renderSeguimiento();
+  try{buildPriceTable();refreshQuoterViews();}catch(e){}
+}
+})();
 </script>
 </body>
 </html>
