@@ -78,11 +78,18 @@ label{display:block;font-size:11.2px;text-transform:uppercase;letter-spacing:.7p
 .service-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid #eef3f9;cursor:pointer}
 .service-item:hover{background:var(--accent)}.service-name{font-size:12.6px;line-height:1.3}.service-price{font-size:12px;font-weight:800;color:var(--navy);white-space:nowrap}
 .add{width:24px;height:24px;border-radius:50%;border:none;background:var(--sky);color:white;cursor:pointer;font-weight:800;flex:0 0 auto}
-.quote-item{display:grid;grid-template-columns:1fr 52px 40px 68px 16px;gap:5px;align-items:center;padding:8px 0;border-bottom:1px solid #eef3f9;font-size:12px}
+.quote-item{display:grid;grid-template-columns:minmax(0,1fr) 78px 42px 72px 16px;gap:5px;align-items:center;padding:8px 0;border-bottom:1px solid #eef3f9;font-size:12px}
 .quote-item-head{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;border-bottom:1px solid #dde4ee;padding-bottom:6px}
-.quote-item-ref{display:grid;grid-template-columns:1fr 78px 16px;gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid #eef3f9;font-size:12px}
+.quote-item-ref{display:grid;grid-template-columns:minmax(0,1fr) 92px 16px;gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid #eef3f9;font-size:12px}
 .quote-item-ref.quote-item-head{padding-bottom:6px}
-.qty{padding:4px;text-align:center}.del{color:var(--danger);cursor:pointer;font-weight:800;text-align:center}
+.qty{padding:4px;text-align:center}
+.qprice{padding:4px 5px;text-align:right;font-size:12px;width:100%}
+.new-service-toggle{display:block;width:calc(100% - 28px);margin:10px 14px;padding:9px;border:1px dashed var(--sky);border-radius:10px;background:var(--accent);color:var(--blue);font-weight:700;font-size:12.5px;cursor:pointer}
+#new-service-box{display:none;padding:4px 14px 14px;border-bottom:1px solid #eef3f9}
+#new-service-box.open{display:block}
+#new-service-box label{font-size:11px}
+#new-service-box .ns-check{display:flex;gap:6px;align-items:center;font-size:11.5px;color:var(--muted);margin:6px 0 10px}
+#new-service-box .ns-check input{width:auto}.del{color:var(--danger);cursor:pointer;font-weight:800;text-align:center}
 .pkg-quote-block{margin-top:14px;padding:12px;border:1px solid #dde7f3;border-radius:12px;background:#f7fafd}
 .pkg-quote-head{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:var(--navy);font-size:13px;margin-bottom:6px}
 .pkg-remove{color:var(--danger);font-weight:700;font-size:11.5px;cursor:pointer}
@@ -502,6 +509,16 @@ label{color:#5b6d84 !important;}
         <div class="panel">
           <div class="panel-head">📋 Servicios</div>
           <div class="search"><input id="service-search" placeholder="Buscar servicio..." oninput="filterServices()"></div>
+          <button class="new-service-toggle" type="button" onclick="toggleNewService()">＋ Añadir servicio nuevo al catálogo</button>
+          <div id="new-service-box">
+            <label>Nombre del servicio</label><input id="ns-name" placeholder="Ej.: Ácido trans-trans mucónico">
+            <div class="form-row">
+              <div><label>Categoría</label><input id="ns-cat" list="ns-cats" placeholder="Laboratorios"><datalist id="ns-cats"></datalist></div>
+              <div><label>Precio de venta</label><input id="ns-price" type="number" min="0" step="100" placeholder="0"></div>
+            </div>
+            <label class="ns-check"><input id="ns-quote" type="checkbox" checked> Agregarlo también a esta cotización</label>
+            <button class="btn" type="button" onclick="addServiceToCatalog()">Guardar en el catálogo</button>
+          </div>
           <div class="service-list" id="service-list"></div>
         </div>
         <div class="panel">
@@ -831,19 +848,103 @@ const services = [
   {cat:'Laboratorios', name:'Rx de Tórax', price:45000},
   {cat:'Laboratorios', name:'Hemoclasificación', price:28000},
   {cat:'Vacunas', name:'Triple Viral', price:140000},
-  {cat:'Vacunas', name:'Tetraxim', price:257000}
+  {cat:'Vacunas', name:'Tetraxim', price:257000},
+  /* Portafolio Laboratorio Médico Echavarría 2026 — precios de venta sugeridos (editables en Tarifas) */
+  {cat:'Lab · Química y control', name:'Creatinina en suero', price:13000},
+  {cat:'Lab · Química y control', name:'Nitrógeno ureico (BUN)', price:13000},
+  {cat:'Lab · Química y control', name:'Ácido úrico', price:13000},
+  {cat:'Lab · Química y control', name:'Colesterol total', price:13000},
+  {cat:'Lab · Química y control', name:'Colesterol HDL', price:13000},
+  {cat:'Lab · Química y control', name:'Colesterol LDL', price:20500},
+  {cat:'Lab · Química y control', name:'Triglicéridos', price:13000},
+  {cat:'Lab · Química y control', name:'Transaminasa TGO (AST)', price:13500},
+  {cat:'Lab · Química y control', name:'Transaminasa TGP (ALT)', price:13500},
+  {cat:'Lab · Química y control', name:'Gamma glutamil transferasa (GGT)', price:14000},
+  {cat:'Lab · Química y control', name:'Fosfatasa alcalina', price:15000},
+  {cat:'Lab · Química y control', name:'Bilirrubinas total y directa', price:16000},
+  {cat:'Lab · Química y control', name:'Hemoglobina glicosilada (HbA1c)', price:30500},
+  {cat:'Lab · Química y control', name:'Glucosa pre y post prandial', price:21500},
+  {cat:'Lab · Química y control', name:'TSH ultrasensible', price:28500},
+  {cat:'Lab · Química y control', name:'Antígeno prostático (PSA)', price:28000},
+  {cat:'Lab · Química y control', name:'Uroanálisis con sedimento', price:16000},
+  {cat:'Lab · Química y control', name:'Velocidad de sedimentación (VSG)', price:13000},
+  {cat:'Lab · Química y control', name:'Prueba de embarazo (BHCG cualitativa)', price:13000},
+  {cat:'Lab · Química y control', name:'Proteína C reactiva (PCR)', price:16500},
+  {cat:'Lab · Química y control', name:'Microalbuminuria (orina parcial)', price:13000},
+  {cat:'Lab · Serologías e inmunidad', name:'Serología VDRL', price:18000},
+  {cat:'Lab · Serologías e inmunidad', name:'Hepatitis B antígeno de superficie (HBsAg)', price:32500},
+  {cat:'Lab · Serologías e inmunidad', name:'Hepatitis B anticuerpos (Anti-HBs)', price:31500},
+  {cat:'Lab · Serologías e inmunidad', name:'Hepatitis A anticuerpos totales', price:41500},
+  {cat:'Lab · Serologías e inmunidad', name:'Hepatitis C anticuerpos (Anti-VHC)', price:58000},
+  {cat:'Lab · Serologías e inmunidad', name:'VIH 1 y 2 anticuerpos', price:37500},
+  {cat:'Lab · Serologías e inmunidad', name:'Rubéola IgG', price:37000},
+  {cat:'Lab · Serologías e inmunidad', name:'Varicela zóster IgG', price:90000},
+  {cat:'Lab · Serologías e inmunidad', name:'Sarampión IgG', price:106500},
+  {cat:'Lab · Serologías e inmunidad', name:'Toxoide tetánico anticuerpos IgG', price:122500},
+  {cat:'Lab · Serologías e inmunidad', name:'Leptospira IgM', price:54500},
+  {cat:'Lab · Toxicología ocupacional', name:'Plomo en sangre', price:116500},
+  {cat:'Lab · Toxicología ocupacional', name:'Mercurio en orina', price:119500},
+  {cat:'Lab · Toxicología ocupacional', name:'Colinesterasa eritrocitaria (acetilcolinesterasa)', price:103000},
+  {cat:'Lab · Toxicología ocupacional', name:'Colinesterasa sérica', price:18000},
+  {cat:'Lab · Toxicología ocupacional', name:'Ácido hipúrico (tolueno)', price:144000},
+  {cat:'Lab · Toxicología ocupacional', name:'Ácido metilhipúrico (xileno)', price:144000},
+  {cat:'Lab · Toxicología ocupacional', name:'Ácido S-fenilmercaptúrico (benceno)', price:389000},
+  {cat:'Lab · Toxicología ocupacional', name:'Fenol en orina', price:161000},
+  {cat:'Lab · Toxicología ocupacional', name:'Arsénico en orina', price:96500},
+  {cat:'Lab · Toxicología ocupacional', name:'Cromo en orina', price:41500},
+  {cat:'Lab · Toxicología ocupacional', name:'Cadmio en sangre', price:119000},
+  {cat:'Lab · Toxicología ocupacional', name:'Manganeso en suero', price:121500},
+  {cat:'Lab · Toxicología ocupacional', name:'Carboxihemoglobina (monóxido de carbono)', price:40500},
+  {cat:'Lab · Toxicología ocupacional', name:'Alcohol metílico en orina', price:136000},
+  {cat:'Lab · Toxicología ocupacional', name:'Organofosforados en sangre', price:232500},
+  {cat:'Lab · Drogas de abuso', name:'Cannabinoides (marihuana) en orina', price:25500},
+  {cat:'Lab · Drogas de abuso', name:'Cocaína en orina', price:25500},
+  {cat:'Lab · Drogas de abuso', name:'Anfetaminas y metanfetaminas', price:115000},
+  {cat:'Lab · Drogas de abuso', name:'Benzodiacepinas en orina', price:136500},
+  {cat:'Lab · Drogas de abuso', name:'Opiáceos', price:115000},
+  {cat:'Lab · Drogas de abuso', name:'Barbitúricos', price:115000},
+  {cat:'Lab · Drogas de abuso', name:'Panel de Drogas x3 (Marihuana, Cocaína y Anfetaminas)', price:135000},
+  {cat:'Lab · Microbiología y otros', name:'Coprocultivo', price:30000},
+  {cat:'Lab · Microbiología y otros', name:'Gota gruesa (hemoparásitos)', price:41000},
+  {cat:'Lab · Microbiología y otros', name:'Baciloscopia (Ziehl-Neelsen)', price:13000},
+  {cat:'Lab · Microbiología y otros', name:'Prueba de tuberculina (Mantoux)', price:119000},
+  {cat:'Lab · Microbiología y otros', name:'Quantiferon TB (interferón gamma)', price:530500}
 ];
 /* === Tarifas editables + persistencia (Sothysalud) === */
 const PRICE_LS_KEY='sothy_servicios_v1';
-(function(){try{const raw=localStorage.getItem(PRICE_LS_KEY);if(raw){const arr=JSON.parse(raw);if(Array.isArray(arr)&&arr.length){services.length=0;arr.forEach(s=>services.push({cat:s.cat||'Otros Servicios',name:s.name||'',price:parseInt(s.price)||0}));}}}catch(e){}})();
+const DEL_LS_KEY='sothy_servicios_eliminados_v1';
+function getDeleted(){try{return JSON.parse(localStorage.getItem(DEL_LS_KEY)||'[]')||[];}catch(e){return [];}}
+function setDeleted(a){try{localStorage.setItem(DEL_LS_KEY,JSON.stringify(a));}catch(e){}}
+(function(){try{const defaults=services.slice();const raw=localStorage.getItem(PRICE_LS_KEY);if(raw){const arr=JSON.parse(raw);if(Array.isArray(arr)&&arr.length){services.length=0;arr.forEach(s=>services.push({cat:s.cat||'Otros Servicios',name:s.name||'',price:parseInt(s.price)||0}));
+  /* Servicios nuevos del catálogo base que aún no estén en la lista guardada (y que no se hayan eliminado a propósito) */
+  const del=getDeleted();const have=new Set(services.map(s=>s.name.trim().toLowerCase()));
+  defaults.forEach(d=>{const k=d.name.trim().toLowerCase();if(!have.has(k)&&del.indexOf(k)<0){services.push(Object.assign({},d));have.add(k);}});
+  sortServicesByCat();}}}catch(e){}})();
+function sortServicesByCat(){const order=[];services.forEach(s=>{if(order.indexOf(s.cat)<0)order.push(s.cat);});const tmp=services.slice();services.length=0;order.forEach(c=>tmp.filter(s=>s.cat===c).forEach(s=>services.push(s)));}
 function saveServices(){try{localStorage.setItem(PRICE_LS_KEY,JSON.stringify(services));}catch(e){}}
 function refreshQuoterViews(){var el=document.getElementById('service-search');buildServiceList(el?el.value:'');updateTotals();}
 function addTarifaRow(){services.push({cat:'Otros Servicios',name:'Nuevo servicio',price:0});buildPriceTable();}
-function deleteService(i){if(confirm('¿Eliminar este servicio de la lista de tarifas?')){services.splice(i,1);buildPriceTable();refreshQuoterViews();}}
+function deleteService(i){if(confirm('¿Eliminar este servicio de la lista de tarifas?')){const k=String(services[i].name).trim().toLowerCase();const del=getDeleted();if(del.indexOf(k)<0){del.push(k);setDeleted(del);}services.splice(i,1);saveServices();buildPriceTable();refreshQuoterViews();}}
 function saveTarifas(){saveServices();refreshQuoterViews();buildPriceTable();sothyToast('Tarifas guardadas ✓');}
-function resetTarifas(){if(confirm('Esto restaura las tarifas originales y descarta tus cambios guardados. ¿Continuar?')){localStorage.removeItem(PRICE_LS_KEY);location.reload();}}
+function resetTarifas(){if(confirm('Esto restaura las tarifas originales y descarta tus cambios guardados. ¿Continuar?')){localStorage.removeItem(PRICE_LS_KEY);localStorage.removeItem(DEL_LS_KEY);location.reload();}}
 function sothyToast(m){var t=document.getElementById('sothy-toast');if(!t){t=document.createElement('div');t.id='sothy-toast';document.body.appendChild(t);}t.textContent=m;t.className='show';clearTimeout(window.__sothyT);window.__sothyT=setTimeout(function(){t.className='';},2600);}
 
+function addServiceToCatalog(){
+  const n=document.getElementById('ns-name'),c=document.getElementById('ns-cat'),pr=document.getElementById('ns-price'),alsoQ=document.getElementById('ns-quote');
+  const name=(n.value||'').trim(),cat=(c.value||'').trim()||'Otros Servicios',price=parseInt(pr.value)||0;
+  if(!name){sothyToast('Escribe el nombre del servicio');n.focus();return;}
+  if(price<=0){sothyToast('Escribe el precio de venta');pr.focus();return;}
+  if(services.some(s=>s.name.trim().toLowerCase()===name.toLowerCase())){sothyToast('Ese servicio ya existe en el catálogo');return;}
+  services.push({cat:cat,name:name,price:price});sortServicesByCat();
+  const del=getDeleted().filter(k=>k!==name.toLowerCase());setDeleted(del);
+  saveServices();buildPriceTable();refreshQuoterViews();fillCatOptions();
+  if(alsoQ&&alsoQ.checked){addService(services.findIndex(s=>s.name===name));}
+  n.value='';pr.value='';sothyToast('Servicio añadido al catálogo ✓');
+}
+function fillCatOptions(){const dl=document.getElementById('ns-cats');if(!dl)return;const cats=[];services.forEach(s=>{if(cats.indexOf(s.cat)<0)cats.push(s.cat);});dl.innerHTML=cats.map(c=>'<option value="'+String(c).replace(/"/g,'&quot;')+'">').join('');}
+function toggleNewService(){const b=document.getElementById('new-service-box');if(!b)return;b.classList.toggle('open');if(b.classList.contains('open')){fillCatOptions();document.getElementById('ns-name').focus();}}
+function setRefPrice(i,v){if(!quoteItems[i])return;quoteItems[i].price=Math.max(0,parseInt(v)||0);setTimeout(function(){updateQuoteItems();updateTotals();},0);}
+function setPkgPrice(pi,ii,v){const it=selectedPackages[pi]&&selectedPackages[pi].items[ii];if(!it)return;it.price=Math.max(0,parseInt(v)||0);setTimeout(function(){updateQuoteItems();updateTotals();},0);}
 let quoteItems=[];
 function buildPriceTable(){
   const tb=document.getElementById('price-table-body'); if(!tb) return; tb.innerHTML='';
@@ -952,7 +1053,7 @@ function updateQuoteItems(){
   } else {
     let rows='<div class="alert info" style="font-size:11.5px;margin-bottom:6px">Servicios de referencia: su valor no se suma al total de la propuesta. Si la empresa desea añadirlos, se cotizan aparte.</div>';
     rows+='<div class="quote-item-ref quote-item-head"><div>Servicio</div><div>Valor unit.</div><div></div></div>';
-    rows+=quoteItems.map((it,i)=>`<div class="quote-item-ref"><div>${it.name}</div><div>${fmt(it.price)}</div><div class="del" onclick="quoteItems.splice(${i},1);updateQuoteItems();updateTotals()">×</div></div>`).join('');
+    rows+=quoteItems.map((it,i)=>`<div class="quote-item-ref"><div>${it.name}</div><input class="qprice" type="number" min="0" step="100" value="${it.price}" title="Precio editable solo para esta cotización" onchange="setRefPrice(${i},this.value)"><div class="del" onclick="quoteItems.splice(${i},1);updateQuoteItems();updateTotals()">×</div></div>`).join('');
     c.innerHTML=rows;
   }
   renderPackagesList();
@@ -962,7 +1063,7 @@ function renderPackagesList(){
   if(!selectedPackages.length){ c.innerHTML=''; return; }
   c.innerHTML=selectedPackages.map(function(pkg,pi){
     const rows=pkg.items.map(function(it,ii){
-      return '<div class="quote-item"><div>'+it.name+'</div><div>'+fmt(it.price)+'</div><input class="qty" type="number" min="1" value="'+it.qty+'" onchange="selectedPackages['+pi+'].items['+ii+'].qty=parseInt(this.value)||1;updateQuoteItems();updateTotals()"><div>'+fmt(it.price*it.qty)+'</div><div class="del" onclick="selectedPackages['+pi+'].items.splice('+ii+',1);if(!selectedPackages['+pi+'].items.length)selectedPackages.splice('+pi+',1);updateQuoteItems();updateTotals()">×</div></div>';
+      return '<div class="quote-item"><div>'+it.name+'</div><input class="qprice" type="number" min="0" step="100" value="'+it.price+'" title="Precio editable solo para esta cotización" onchange="setPkgPrice('+pi+','+ii+',this.value)"><input class="qty" type="number" min="1" value="'+it.qty+'" onchange="selectedPackages['+pi+'].items['+ii+'].qty=parseInt(this.value)||1;updateQuoteItems();updateTotals()"><div>'+fmt(it.price*it.qty)+'</div><div class="del" onclick="selectedPackages['+pi+'].items.splice('+ii+',1);if(!selectedPackages['+pi+'].items.length)selectedPackages.splice('+pi+',1);updateQuoteItems();updateTotals()">×</div></div>';
     }).join('');
     const sub=pkg.items.reduce(function(a,it){return a+it.price*it.qty;},0);
     return '<div class="pkg-quote-block">'
