@@ -1,106 +1,113 @@
 # Escuela de Negocios — Sothysalud IPS
 
-Ruta de formación comercial en una sola página: 18 módulos navegables,
-examen final con certificado, módulo de comisiones protegido por clave y
-una herramienta de scoring de clientes.
+Ruta de formación comercial: 14 módulos, examen de certificación con dos
+intentos y emisión de diploma.
 
 Publicada en **comercial.sothysaludips.com** (proyecto Vercel
-`escueladenegocios-sothysaludips`). Este `index.html` es el fuente recuperado
-del deployment de producción del 2 de septiembre de 2026, con las
-correcciones de la revisión de octubre aplicadas.
+`escueladenegocios-sothysaludips`).
 
 ## Estructura
 
-Archivo único y autocontenido: no carga nada de la red salvo la fuente
-DM Sans desde Google Fonts. CSS y JavaScript van en línea, y las dos
-imágenes (logo y plantilla de diploma) van embebidas en base64 — que es
-el 96% de los 4 MB del archivo. El código real son unas 182 KB.
+```
+index.html                     el sitio: solo marcado
+assets/css/escuela.css         estilos
+assets/js/escuela.js           navegación, examen, certificado, herramientas
+assets/img/                    logo y portada
+certificados/                  las tres plantillas de diploma en SVG
+vercel.json                    cabeceras de caché
+```
+
+Sitio estático sin build ni dependencias. Lo único que pide a la red es la
+fuente DM Sans de Google Fonts.
+
+Hasta octubre de 2026 todo esto era un solo `index.html` de 4,2 MB, del
+cual el 96% eran dos imágenes en base64. Ningún cambio se podía revisar en
+git: cualquier diff mostraba millones de caracteres. Separados, el marcado
+queda en 73 KB y se lee.
 
 ## Módulos
 
 | Página | Módulo |
 |---|---|
-| `page-formacion` | 1 · Esencia, historia y venta responsable |
-| `page-propuesta` | 1 · Propuesta de valor |
-| `page-mercado` | 2 · Mercado de salud ocupacional en Colombia |
-| `page-normativa` | 3 · Normativa SST |
-| `page-perfiles` | 4 · Perfiles del equipo comercial |
-| `page-estructura` | 5 · Estructura y fases de crecimiento |
-| `page-comisiones` | 6 · Comisiones y KPIs |
-| `page-prospeccion` | 7 · Prospección: primeros 30 días |
-| `page-playbook` | 8 · Playbook de ventas |
-| `page-objeciones` | 9 · Manejo de objeciones |
-| `page-pipeline` | 10 · Pipeline demo |
-| `page-seleccion` | 11 · Filtros de selección y entrevista |
-| `page-onboarding` | 12 · Onboarding 90 días |
-| `page-scoring` | 13 · Scoring de clientes |
-| `page-riesgos` | 14 · Riesgos y pensamiento estratégico |
-| `page-kit` | 16 · Kit de activación |
-| `page-checklist` | 17 · Checklist operativo |
+| `page-formacion` | Esencia, historia y venta responsable |
+| `page-propuesta` | Propuesta de valor |
+| `page-mercado` | Mercado de salud ocupacional en Colombia |
+| `page-normativa` | Normativa SST |
+| `page-perfiles` | Perfiles del equipo comercial |
+| `page-estructura` | Estructura y fases de crecimiento |
+| `page-prospeccion` | Prospección: primeros 30 días |
+| `page-playbook` | Playbook de ventas |
+| `page-objeciones` | Manejo de objeciones |
+| `page-pipeline` | Pipeline demo |
+| `page-scoring` | Scoring de clientes |
+| `page-riesgos` | Riesgos y pensamiento estratégico |
+| `page-kit` | Kit de activación |
+| `page-checklist` | Checklist operativo |
 | `page-examen` | Evaluación final y certificado |
 
-El módulo 15 no existe en esta versión; la numeración salta del 14 al 16.
+La numeración de módulos que se ve en pantalla es la original del curso y
+salta algunos números, porque hay contenido que se retiró.
 
-## Funcionamiento
+## Qué se retiró, y por qué
 
-La navegación la maneja `gp(id)`, que alterna la clase `active` entre los
-`.page` y marca el botón del menú; `visited` lleva el progreso sobre los
-módulos.
+De la revisión de octubre de 2026:
 
-El módulo de comisiones está detrás de una clave (`UnlockPrivate`), y el
-scoring de clientes calcula en vivo sobre los selectores del módulo 13.
+- **Comisiones y KPIs**, **Filtros de selección y entrevista** y
+  **Onboarding 90 días** salieron de la Escuela. Le dicen al comercial cómo
+  se le paga, cómo se le selecciona y cómo se le acompaña: es material del
+  administrador, no del estudiante. El marcado se conserva íntegro en
+  `escuela-admin/contenido/modulos-administrador.html` para montarlo allí.
+- La pestaña **Condiciones de paso** del módulo de estructura, por lo
+  mismo: decide cuándo la compañía abre una fase nueva, no qué hace el
+  comercial hoy.
+- Las cifras de **base salarial y comisión** de los cinco perfiles.
+- El bloque **Riesgos de crecer demasiado rápido** y las tarjetas de manual
+  de marca de la portada: la escuela habla con autoridad, no justifica por
+  qué está hecha como está.
 
-### Examen final y certificado
+Al retirarse el módulo de comisiones desapareció también la función
+`UnlockPrivate`, que llevaba una clave en duro.
 
-El módulo `page-examen` fue reconstruido en octubre de 2026. El
-JavaScript conservaba toda la lógica, pero su HTML no existía en el
-deployment de producción: de los 45 elementos que el script busca por id,
-37 faltaban. Se rehízo el marcado contra el CSS original, que sí había
-sobrevivido.
+## El examen
 
-El examen toma 15 preguntas al azar de un banco de 30, aprueba con 80 y
-permite 2 intentos, contados por correo en `localStorage`. Con 90 la
-certificación es destacada y con 100 es Distinción Estrella Sirio. Agotados
-los dos intentos, `ShowAdministrativeReview` arma un reporte de revisión
-administrativa en vez de descartar al aspirante.
+Toma 15 preguntas al azar de un banco de 30. Aprueba con 80, permite 2
+intentos y los cuenta por correo. Con 90 la certificación es destacada y
+con 100 es Distinción Estrella Sirio. Agotados los dos intentos,
+`ShowAdministrativeReview` arma un reporte para administración en vez de
+descartar al aspirante.
 
-### Los diplomas
+**Los intentos se cuentan en `localStorage`**, es decir en el navegador del
+estudiante: basta con borrar los datos del sitio para volver a tener dos, y
+la administración no se entera. Esto solo se resuelve con la base de datos
+del administrador.
 
-Las tres plantillas están en `certificados/` como SVG: `aprobada.svg`,
-`destacada.svg` y `sirio.svg`. Van como archivos aparte y no incrustadas en
-base64 porque suman 8 MB, que en base64 pasarían de 10 MB y los
-descargaría todo estudiante solo para leer el módulo 1. Así el navegador
-los pide únicamente al generar el diploma.
+## Los diplomas
+
+Las tres plantillas están en `certificados/` como SVG. Van como archivos
+aparte y no incrustadas, porque suman 8 MB y en base64 pasarían de 10 MB
+que descargaría todo estudiante solo para leer el módulo 1. Así el
+navegador las pide únicamente al generar el diploma.
 
 `GenerateCert` elige la plantilla según el puntaje y la aplica como fondo
-del `.cert-stage`. Sobre ella se posicionan en absoluto el nombre, la
-fecha y el código de verificación, con un juego de coordenadas por
-plantilla porque las tres distribuyen el espacio distinto.
+del `.cert-stage`. Encima se posicionan en absoluto el nombre, la fecha y
+el código, con coordenadas propias por plantilla porque las tres
+distribuyen el espacio distinto. Los porcentajes del CSS son el **centro**
+de cada elemento, no su esquina.
 
-Tres cosas que hubo que corregir para que esto funcionara:
+Si no hay plantilla, el diploma se dibuja con un diseño de respaldo en CSS
+(clase `cert-plain`), de modo que el examen nunca queda sin certificado.
 
-- `GenerateCert` leía la constante de la plantilla pero nunca la usaba.
-- Una regla `.cert-stage` suelta, de un diseño anterior de tres columnas,
-  dejaba el contenedor en `display:grid` con `aspect-ratio:auto` y
-  `background:transparent`, todo `!important`. Comparte especificidad con
-  `.exact-diploma` y va después, así que ganaba ella y el fondo nunca se
-  veía. El contenedor se fija ahora con `.cert-stage.exact-diploma`, que
-  lleva dos clases y gana siempre.
-- El nombre se medía en `vw`, es decir contra el ancho de la ventana y no
-  del diploma, y en pantallas grandes se desbordaba sobre el cuerpo del
-  texto. Ahora va en `cqw`, y si aun así no cabe en una línea,
-  `AjustaNombre` lo reduce hasta que quepa.
+Al cambiar una plantilla hay que volver a medir sus tres posiciones: poner
+una rejilla de porcentajes sobre el SVG y leer dónde cae cada hueco.
 
-Al cambiar una plantilla hay que volver a medir sus tres posiciones. El
-método rápido es poner una rejilla de porcentajes sobre el SVG y leer
-dónde cae cada hueco; los valores del CSS son el **centro** de cada
-elemento, no su esquina.
+## Sobre esta hoja de estilos
 
-## Despliegue
+`escuela.css` acumula varias generaciones de rediseño, con reglas repetidas
+que se pisan entre sí: hay una docena de reglas `.hero-home` y cinco de
+`.cert-stage`. Dos defectos salieron de ahí: el diploma nunca mostraba su
+plantilla, y la portada dejaba el texto en 268 px porque una regla tardía
+le fijaba 500 px mínimos a la imagen.
 
-Sitio estático sin build. El deployment de producción se hizo con Vercel
-Drop (arrastrando la carpeta), no desde Git.
-
-Para desplegarlo desde este repositorio, en el proyecto de Vercel hay que
-apuntar **Root Directory** a `escuela-de-negocios/`, o el build tomará la
-raíz del repo, que contiene el Sistema Comercial Maestro.
+Antes de añadir una regla conviene buscar si el selector ya existe más
+abajo. Los arreglos nuevos van al final, con su comentario, y con dos
+clases cuando necesitan ganarle a una regla `!important` previa.
