@@ -1411,6 +1411,67 @@ body{overflow-x:hidden}
   .qz-actions .btn{width:100%!important}
 }
 
+
+/* ══ El diploma manda sobre las reglas .cert-stage de diseños anteriores ══
+   Una regla suelta mas abajo deja .cert-stage en display:grid con
+   aspect-ratio:auto y background:transparent, todo !important. Como comparte
+   especificidad con .exact-diploma y va despues, ganaba ella y la plantilla
+   nunca se veia. Este selector lleva dos clases, asi que gana siempre. */
+.cert-stage.exact-diploma{
+  display:block!important;
+  grid-template-columns:none!important;
+  gap:0!important;
+  min-height:0!important;
+  max-width:1100px!important;
+  width:100%!important;
+  aspect-ratio:1448/1086!important;
+  margin:0 auto!important;
+  background-color:#f0f4f8!important;
+  background-position:center!important;
+  background-size:contain!important;
+  background-repeat:no-repeat!important;
+  border-radius:12px!important;
+  overflow:hidden!important;
+}
+
+/* ══ Calibración de los diplomas de octubre de 2026 ══
+   Las posiciones anteriores correspondian a otras plantillas: el nombre caia
+   sobre el cuerpo del texto y el codigo sobre "Intensidad horaria". Estas se
+   midieron sobre los SVG actuales. Los porcentajes son el CENTRO de cada
+   elemento, porque todos llevan translate(-50%,-50%).
+   El tamano va en cqw (ancho del propio diploma) y no en vw: con vw el nombre
+   dependia del ancho de la ventana y se desbordaba en pantallas grandes. */
+.cert-stage.exact-diploma{ container-type:inline-size; }
+
+.cert-stage.exact-diploma .cert-stage-name{
+  font-size:34px!important;          /* respaldo si no hay soporte de cqw */
+  font-size:3.3cqw!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+}
+.cert-stage.exact-diploma .cert-stage-date,
+.cert-stage.exact-diploma .cert-stage-code{
+  font-size:14px!important;
+  font-size:1.27cqw!important;
+  color:#0D2F78!important;
+  background:none!important;
+  white-space:nowrap!important;
+}
+
+/* Certificación aprobada */
+.cert-stage.cert-tpl-aprobada .cert-stage-name{ left:51%!important; top:56.0%!important; width:44%!important; }
+.cert-stage.cert-tpl-aprobada .cert-stage-date{ left:86.0%!important; top:43.5%!important; width:13%!important; }
+.cert-stage.cert-tpl-aprobada .cert-stage-code{ left:85%!important; top:86.5%!important; width:20%!important; }
+
+/* Certificación destacada */
+.cert-stage.cert-tpl-destacada .cert-stage-name{ left:50%!important; top:47.5%!important; width:42%!important; }
+.cert-stage.cert-tpl-destacada .cert-stage-date{ left:86.5%!important; top:44.5%!important; width:12%!important; }
+.cert-stage.cert-tpl-destacada .cert-stage-code{ left:85%!important; top:80.0%!important; width:20%!important; }
+
+/* Distinción Estrella Sirio */
+.cert-stage.cert-tpl-sirio .cert-stage-name{ left:50%!important; top:67.5%!important; width:44%!important; }
+.cert-stage.cert-tpl-sirio .cert-stage-date{ left:86.0%!important; top:44.0%!important; width:13%!important; }
+.cert-stage.cert-tpl-sirio .cert-stage-code{ left:85%!important; top:79.5%!important; width:20%!important; }
 </style>
 </head>
 <body>
@@ -2852,9 +2913,12 @@ function QResetFinal(){
   var cr=document.getElementById('commercial-report'); if(cr) cr.style.display='none';
 }
 /* Certificate template images v23 */
-var CERT_TPL_APROBADA = '';
-var CERT_TPL_DESTACADA = '';
-var CERT_TPL_SIRIO = '';
+// Las plantillas van como archivos aparte, no incrustadas: los tres SVG suman
+// 8 MB y en base64 pasarian de 10 MB, que todo estudiante descargaria solo para
+// leer el modulo 1. Asi el navegador las pide unicamente al generar el diploma.
+var CERT_TPL_APROBADA  = 'certificados/aprobada.svg';
+var CERT_TPL_DESTACADA = 'certificados/destacada.svg';
+var CERT_TPL_SIRIO     = 'certificados/sirio.svg';
 
 function GetCertTemplate(pct){
   if(pct===100) return CERT_TPL_SIRIO;
@@ -2892,8 +2956,13 @@ function GenerateCert(pct){
     if(pct===100) stage.classList.add('cert-tpl-sirio');
     else if(pct>=90) stage.classList.add('cert-tpl-destacada');
     else stage.classList.add('cert-tpl-aprobada');
-    if(tplImg){ stage.classList.remove('cert-plain'); stage.style.backgroundImage='url('+tplImg+')'; }
-    else { stage.classList.add('cert-plain'); stage.style.backgroundImage=''; }
+    if(tplImg){
+      stage.classList.remove('cert-plain');
+      stage.style.setProperty('background-image','url('+tplImg+')','important');
+    } else {
+      stage.classList.add('cert-plain');
+      stage.style.removeProperty('background-image');
+    }
   }
   var recognition = type;
   var code = GetCertificateCode(d);
@@ -2902,6 +2971,7 @@ function GenerateCert(pct){
   document.getElementById('cert-stage-date').textContent=dateTxt;
   document.getElementById('cert-stage-code').textContent=code;
   var recoEl=document.getElementById('cert-stage-reco'); if(recoEl) recoEl.textContent=recognition;
+  AjustaNombre();
   var scoreEl=document.getElementById('cert-stage-score'); if(scoreEl) scoreEl.textContent='Puntaje: '+pct+'/100';
   document.getElementById('cert-score').textContent=pct+'%';
   document.getElementById('cert-attempt').textContent=attemptCount+' de '+MAX_ATTEMPTS;
@@ -2916,6 +2986,19 @@ function GenerateCert(pct){
   BuildCommercialReport(pct, recognition, type, code, GetCertFolderName(type));
   TryWebhookNotification(pct, recognition);
 }
+function AjustaNombre(){
+  var n=document.getElementById('cert-stage-name'); if(!n) return;
+  n.style.fontSize='';                                   // vuelve al tamaño de la hoja de estilo
+  var caja=n.parentNode ? n.getBoundingClientRect() : null;
+  if(!caja || !caja.width) return;
+  var limite=n.getBoundingClientRect().width;
+  var px=parseFloat(getComputedStyle(n).fontSize);
+  // el nombre va en una banda estrecha del diploma: si no cabe en una linea, encoge
+  for(var i=0; i<22 && n.scrollWidth > Math.ceil(limite) && px > 11; i++){
+    px *= 0.94; n.style.setProperty('font-size', px.toFixed(1)+'px', 'important');
+  }
+}
+
 function ShowAdministrativeReview(pct, reason){
   document.getElementById('qz-body').style.display='none';
   document.getElementById('exam-start').style.display='block';

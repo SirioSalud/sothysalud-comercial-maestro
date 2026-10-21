@@ -64,12 +64,37 @@ certificación es destacada y con 100 es Distinción Estrella Sirio. Agotados
 los dos intentos, `ShowAdministrativeReview` arma un reporte de revisión
 administrativa en vez de descartar al aspirante.
 
-**Las tres plantillas de diploma siguen vacías.** `CERT_TPL_APROBADA`,
-`CERT_TPL_DESTACADA` y `CERT_TPL_SIRIO` son cadenas vacías: las imágenes se
-perdieron junto con el marcado. Mientras falten, el certificado se dibuja
-con un diseño propio en CSS (clase `cert-plain`). Al pegar una imagen en
-esas constantes, `GenerateCert` la usa como fondo y vuelven a aplicarse las
-posiciones calibradas de `.exact-diploma` sin tocar nada más.
+### Los diplomas
+
+Las tres plantillas están en `certificados/` como SVG: `aprobada.svg`,
+`destacada.svg` y `sirio.svg`. Van como archivos aparte y no incrustadas en
+base64 porque suman 8 MB, que en base64 pasarían de 10 MB y los
+descargaría todo estudiante solo para leer el módulo 1. Así el navegador
+los pide únicamente al generar el diploma.
+
+`GenerateCert` elige la plantilla según el puntaje y la aplica como fondo
+del `.cert-stage`. Sobre ella se posicionan en absoluto el nombre, la
+fecha y el código de verificación, con un juego de coordenadas por
+plantilla porque las tres distribuyen el espacio distinto.
+
+Tres cosas que hubo que corregir para que esto funcionara:
+
+- `GenerateCert` leía la constante de la plantilla pero nunca la usaba.
+- Una regla `.cert-stage` suelta, de un diseño anterior de tres columnas,
+  dejaba el contenedor en `display:grid` con `aspect-ratio:auto` y
+  `background:transparent`, todo `!important`. Comparte especificidad con
+  `.exact-diploma` y va después, así que ganaba ella y el fondo nunca se
+  veía. El contenedor se fija ahora con `.cert-stage.exact-diploma`, que
+  lleva dos clases y gana siempre.
+- El nombre se medía en `vw`, es decir contra el ancho de la ventana y no
+  del diploma, y en pantallas grandes se desbordaba sobre el cuerpo del
+  texto. Ahora va en `cqw`, y si aun así no cabe en una línea,
+  `AjustaNombre` lo reduce hasta que quepa.
+
+Al cambiar una plantilla hay que volver a medir sus tres posiciones. El
+método rápido es poner una rejilla de porcentajes sobre el SVG y leer
+dónde cae cada hueco; los valores del CSS son el **centro** de cada
+elemento, no su esquina.
 
 ## Despliegue
 
