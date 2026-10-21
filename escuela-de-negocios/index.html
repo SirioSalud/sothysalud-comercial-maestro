@@ -136,6 +136,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.45;b
 .qfb.ok{background:var(--tl);color:var(--td)}
 .qfb.fail{background:var(--rl);color:var(--rd)}
 /* CHECKLIST */
+.chk-count{float:right;font-weight:500;font-size:11px;color:var(--tx3);letter-spacing:.02em}
 .chi{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--bd);cursor:pointer;user-select:none}
 .chi:last-child{border-bottom:none}
 .chb{width:17px;height:17px;border:1.5px solid var(--bd2);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all .12s}
@@ -1292,6 +1293,27 @@ body{overflow-x:hidden}
 }
 
 
+
+/* ══ Examen final y certificado ══ */
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px}
+.exam-pill{float:right;font-size:11px;font-weight:500;color:var(--td);background:var(--tl);border-radius:999px;padding:2px 10px;margin-left:8px}
+.exam-ctr{float:right;font-size:11px;font-weight:500;color:var(--tx3);padding:2px 0}
+.exam-q{font-size:14px;font-weight:500;color:var(--tx);margin:12px 0 11px;line-height:1.5}
+.exam-num{font-size:44px;font-weight:700;line-height:1.1;margin-bottom:6px}
+.qz-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+/* Diploma sin plantilla: se usa mientras CERT_TPL_* esten vacias */
+.cert-plain-deco{display:none}
+.cert-stage.cert-plain{background:linear-gradient(160deg,#FFFFFF 0%,#F4F8FF 100%)!important;box-shadow:inset 0 0 0 9px #fff,inset 0 0 0 10px rgba(13,71,161,.30)!important}
+.cert-stage.cert-plain .cert-plain-deco{display:block;position:absolute;inset:0}
+.cert-stage.cert-plain .cpd-brand{position:absolute;top:13%;left:0;right:0;text-align:center;font-size:clamp(10px,1.35vw,16px);letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--t)}
+.cert-stage.cert-plain .cpd-kicker{position:absolute;top:33%;left:0;right:0;text-align:center;font-size:clamp(9px,1.1vw,13px);letter-spacing:.16em;text-transform:uppercase;color:var(--tx3)}
+.cert-stage.cert-plain .cpd-foot{position:absolute;top:63%;left:0;right:0;text-align:center;font-size:clamp(9px,1.15vw,14px);color:var(--tx2)}
+.cert-stage.cert-plain .cert-stage-name{top:48%!important;left:50%!important;width:80%!important;font-size:clamp(18px,3.6vw,42px)!important;color:var(--tp)!important}
+.cert-stage.cert-plain .cert-stage-date{top:80%!important;left:30%!important;width:32%!important;font-size:clamp(9px,1vw,13px)!important;color:var(--tp)!important}
+.cert-stage.cert-plain .cert-stage-code{top:80%!important;left:70%!important;width:32%!important;font-size:clamp(9px,1vw,13px)!important;color:var(--tp)!important}
+.cert-stage.cert-plain .cpd-reco{position:absolute;top:70%;left:0;right:0;text-align:center;font-size:clamp(10px,1.3vw,16px);font-weight:700;letter-spacing:.06em;color:var(--t)}
+.cert-stage.cert-plain .cert-stage-score{background:transparent!important;display:block!important;top:88%!important;left:50%!important;width:46%!important;font-size:clamp(8px,.95vw,12px)!important;color:var(--tx3)!important}
+
 /* Exact diploma templates v19: use only the three user-provided certificate images */
 .exact-diploma{
   position:relative!important;
@@ -1430,6 +1452,9 @@ body{overflow-x:hidden}
   <button class="ni" onclick="gp('riesgos')"><span class="ni-ico">🧭</span>Riesgos y cultura</button>
   <button class="ni" onclick="gp('kit')"><span class="ni-ico">🧰</span>Kit de activación <span class="ni-badge">Nuevo</span></button>
 <button class="ni" onclick="gp('checklist')"><span class="ni-ico">✅</span>Checklist operativo</button>
+
+  <div class="ns">Evaluación</div>
+  <button class="ni" onclick="gp('examen')"><span class="ni-ico">🎓</span>Examen y certificado</button>
 
   <div class="prog-wrap">
     <div class="prog-lbl"><span>Progreso</span><span id="ppct">0%</span></div>
@@ -1660,8 +1685,6 @@ body{overflow-x:hidden}
       <div class="card"><div class="ct">Prospector / Vendedor Junior</div><div class="cs">Nivel de entrada — alimenta el pipeline del hunter</div>
       <table class="tbl"><tr><th>Dimensión</th><th>Detalle</th></tr>
       <tr><td>Función</td><td>Identifica empresas, califica leads, agenda reuniones. No cierra solo.</td></tr>
-      <tr><td>Base salarial</td><td>$1.8M – $2.5M</td></tr>
-      <tr><td>Comisión</td><td>$200K por lead calificado que cierre el hunter</td></tr>
       <tr><td>Meta mensual</td><td>30 prospectos calificados + 8 reuniones agendadas</td></tr>
       <tr><td>Perfil ideal</td><td>Recién graduado o 1 año experiencia B2B. Alta energía, tolerancia al rechazo.</td></tr>
       <tr><td>Señal de éxito</td><td>En 12 meses está listo para ser hunter con pipeline propio.</td></tr>
@@ -1672,8 +1695,6 @@ body{overflow-x:hidden}
       <div class="card"><div class="ct">Hunter Comercial</div><div class="cs">El motor de crecimiento — abre cuentas nuevas</div>
       <table class="tbl"><tr><th>Dimensión</th><th>Detalle</th></tr>
       <tr><td>Función</td><td>Prospecta, califica, presenta y cierra contratos nuevos. Ciclo completo.</td></tr>
-      <tr><td>Base salarial</td><td>$2.5M – $3.5M</td></tr>
-      <tr><td>Comisión</td><td>6% del valor del contrato año 1. Pagado cuando el cliente paga el primer mes.</td></tr>
       <tr><td>Meta mensual</td><td>15 prospectos nuevos + 3–5 reuniones calificadas + 1–2 cierres</td></tr>
       <tr><td>Perfil ideal</td><td>Ex-asesor ARL, ejecutivo EPS empresarial o vendedor B2B salud. Mínimo 2 años.</td></tr>
       <tr><td>Señal de éxito</td><td>A los 90 días tiene 3+ contratos cerrados y pipeline de $100M+.</td></tr>
@@ -1684,8 +1705,6 @@ body{overflow-x:hidden}
       <div class="card"><div class="ct">Account Manager</div><div class="cs">El guardián de la facturación recurrente</div>
       <table class="tbl"><tr><th>Dimensión</th><th>Detalle</th></tr>
       <tr><td>Función</td><td>Gestiona cartera activa, detecta upsell, ejecuta renovaciones. No prospecta nuevos.</td></tr>
-      <tr><td>Base salarial</td><td>$2.8M – $4M</td></tr>
-      <tr><td>Comisión</td><td>3% renovación + 4% upsell sobre valor adicional</td></tr>
       <tr><td>Meta</td><td>90%+ retención anual + 15% upsell trimestral + NPS &gt; 70</td></tr>
       <tr><td>Perfil ideal</td><td>Orientado a relaciones, paciente, resolutivo. Puede ser un hunter maduro.</td></tr>
       <tr><td>Señal de éxito</td><td>Sus clientes lo llaman a él primero cuando hay un problema.</td></tr>
@@ -1696,8 +1715,6 @@ body{overflow-x:hidden}
       <div class="card"><div class="ct">Ejecutivo de Alianzas</div><div class="cs">Genera flujo indirecto a través de canales</div>
       <table class="tbl"><tr><th>Dimensión</th><th>Detalle</th></tr>
       <tr><td>Función</td><td>Construye y activa alianzas con ARL, corredores de seguros, gremios, cámaras.</td></tr>
-      <tr><td>Base salarial</td><td>$4M – $6M</td></tr>
-      <tr><td>Comisión</td><td>2% sobre facturación generada por el canal + 1% extra si supera $500M/año</td></tr>
       <tr><td>Meta</td><td>5 alianzas activas con flujo regular en los primeros 6 meses</td></tr>
       <tr><td>Perfil ideal</td><td>Senior con red ya construida en ARL o sector asegurador. No se construye desde cero.</td></tr>
       <tr><td>Señal de fracaso</td><td>No tiene contactos en ARL o gremios antes de empezar. Esto no se aprende en el trabajo.</td></tr>
@@ -1707,8 +1724,6 @@ body{overflow-x:hidden}
       <div class="card"><div class="ct">Líder Comercial / Director</div><div class="cs">Construye el sistema — no solo vende</div>
       <table class="tbl"><tr><th>Dimensión</th><th>Detalle</th></tr>
       <tr><td>Función</td><td>Diseña estrategia, entrena el equipo, cierra cuentas grandes, reporta forecast a gerencia.</td></tr>
-      <tr><td>Base salarial</td><td>$5M – $8M (Fase 1) / $10M–$15M (Fase 3)</td></tr>
-      <tr><td>Comisión</td><td>1.5% sobre facturación del equipo si meta &gt;80% + bono trimestral</td></tr>
       <tr><td>Meta</td><td>Equipo alcanza 80%+ de meta colectiva + forecast con 80%+ precisión</td></tr>
       <tr><td>Lo que NO hace</td><td>No hace trabajo que puede hacer el junior. No microgestiona. Construye sistema.</td></tr>
       </table></div>
@@ -2203,35 +2218,133 @@ body{overflow-x:hidden}
 <div id="page-checklist" class="page">
   <div class="eyebrow">Módulo 17 — Herramienta</div>
   <div class="ptitle">Checklist operativo</div>
-  <div class="pdesc">Marca lo que completaste. El progreso se guarda durante esta sesión.</div>
+  <div class="pdesc">Lo mínimo que no se puede saltar en un día de venta. Se guarda solo y arranca en blanco cada mañana.</div>
 
-  <div class="card"><div class="ct">Antes de la primera llamada del día</div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">CRM revisado: todos los follow-ups del día identificados</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Los 5 prospectos más calientes del pipeline priorizados</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Investigación mínima hecha para cada empresa a llamar hoy</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Script de apertura repasado (memorizado, no leído)</div></div>
+  <div class="card" data-scope="dia"><div class="ct">Antes de la primera llamada <span class="chk-count"></span></div>
+    <div class="chi" data-k="d1" onclick="TC(this)"><div class="chb"></div><div class="cht">CRM revisado: los follow-ups de hoy identificados</div></div>
+    <div class="chi" data-k="d2" onclick="TC(this)"><div class="chb"></div><div class="cht">Los 5 prospectos más calientes priorizados</div></div>
+    <div class="chi" data-k="d3" onclick="TC(this)"><div class="chb"></div><div class="cht">Investigación mínima de cada empresa que vas a llamar</div></div>
   </div>
 
-  <div class="card"><div class="ct">Durante y después de cada reunión</div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Empresa investigada antes de entrar: empleados, sector, ARL, noticias</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Dolor real identificado en los primeros 10 minutos</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Decisor final confirmado antes de cerrar la reunión</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Propuesta enviada dentro de las 24h siguientes</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Reunión registrada en CRM con próximo paso y fecha</div></div>
+  <div class="card" data-scope="dia"><div class="ct">En cada reunión <span class="chk-count"></span></div>
+    <div class="chi" data-k="d4" onclick="TC(this)"><div class="chb"></div><div class="cht">Dolor real identificado en los primeros 10 minutos</div></div>
+    <div class="chi" data-k="d5" onclick="TC(this)"><div class="chb"></div><div class="cht">Decisor final confirmado antes de cerrar la reunión</div></div>
+    <div class="chi" data-k="d6" onclick="TC(this)"><div class="chb"></div><div class="cht">Propuesta enviada dentro de las 24 horas siguientes</div></div>
+    <div class="chi" data-k="d7" onclick="TC(this)"><div class="chb"></div><div class="cht">Reunión registrada en CRM con próximo paso y fecha</div></div>
   </div>
 
-  <div class="card"><div class="ct">Cierre del día</div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">CRM actualizado con todas las interacciones del día</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Seguimiento programado para cada propuesta abierta</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Plan del día siguiente listo antes de salir</div></div>
+  <div class="card" data-scope="dia"><div class="ct">Antes de irte <span class="chk-count"></span></div>
+    <div class="chi" data-k="d8" onclick="TC(this)"><div class="chb"></div><div class="cht">CRM actualizado con todas las interacciones del día</div></div>
+    <div class="chi" data-k="d9" onclick="TC(this)"><div class="chb"></div><div class="cht">Plan de mañana listo</div></div>
   </div>
 
-  <div class="card"><div class="ct">Revisión semanal — lunes</div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Pipeline review: estado de cada oportunidad revisado</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">20 nuevas empresas identificadas para prospectar esta semana</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Propuestas sin respuesta +5 días: llamar hoy mismo</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Métricas de la semana pasada revisadas vs. metas</div></div>
-    <div class="chi" onclick="TC(this)"><div class="chb"></div><div class="cht">Forecast de cierres para los próximos 30 días actualizado</div></div>
+  <div class="card" data-scope="semana"><div class="ct">Solo los lunes <span class="chk-count"></span></div>
+    <div class="chi" data-k="s1" onclick="TC(this)"><div class="chb"></div><div class="cht">Pipeline review: estado de cada oportunidad</div></div>
+    <div class="chi" data-k="s2" onclick="TC(this)"><div class="chb"></div><div class="cht">20 empresas nuevas identificadas para esta semana</div></div>
+    <div class="chi" data-k="s3" onclick="TC(this)"><div class="chb"></div><div class="cht">Propuestas sin respuesta hace más de 5 días: llamar hoy</div></div>
+    <div class="chi" data-k="s4" onclick="TC(this)"><div class="chb"></div><div class="cht">Forecast de cierres a 30 días actualizado</div></div>
+  </div>
+</div>
+
+
+<!-- ══ EXAMEN FINAL ══ -->
+<div id="page-examen" class="page">
+  <div class="eyebrow">Evaluación final — Escuela de Negocios</div>
+  <div class="ptitle">Examen de aprobación y certificado</div>
+  <div class="pdesc">15 preguntas tomadas al azar del banco. Se aprueba con 80 sobre 100 y tienes dos intentos. Con 90 o más la certificación es destacada; con 100, Distinción Estrella Sirio.</div>
+
+  <div id="exam-start">
+    <div class="card">
+      <div class="ct">Tus datos</div>
+      <div class="cs">Aparecen en el certificado y en el reporte que recibe la administración. Los marcados con * son obligatorios.</div>
+      <div class="exam-grid">
+        <input class="cert-input" id="student-name" placeholder="Nombre completo *">
+        <input class="cert-input" id="student-id" placeholder="Documento de identidad">
+        <input class="cert-input" id="student-email" type="email" placeholder="Correo *">
+        <input class="cert-input" id="student-phone" placeholder="Celular *">
+        <select class="cert-input" id="student-profile">
+          <option value="">Perfil comercial *</option>
+          <option>Prospector / Vendedor Junior</option>
+          <option>Hunter Comercial</option>
+          <option>Account Manager</option>
+          <option>Alianzas</option>
+          <option>Líder Comercial</option>
+        </select>
+        <input class="cert-input" id="student-stars" placeholder="Escalafón de estrellas *">
+        <input class="cert-input" id="student-formlink" placeholder="Enlace del formulario de registro">
+        <input class="cert-input" id="student-cvlink" placeholder="Enlace de la hoja de vida">
+      </div>
+      <div class="qz-actions">
+        <button class="btn btn-p" onclick="StartFinalExam()">Comenzar el examen</button>
+        <button class="btn btn-sm" onclick="FillDemoStudent()">Rellenar con datos de prueba</button>
+      </div>
+      <div class="cs" style="margin-top:10px">Los intentos se cuentan por correo y quedan guardados en este navegador.</div>
+    </div>
+  </div>
+
+  <div id="qz-body" style="display:none">
+    <div class="card">
+      <div class="ct">Examen final <span id="attempt-pill" class="exam-pill"></span><span id="qz-ctr" class="exam-ctr"></span></div>
+      <div id="qz-q" class="exam-q"></div>
+      <div class="qopts" id="qz-opts"></div>
+      <div class="qfb" id="qz-fb"></div>
+      <button class="btn btn-p" id="qz-next" style="display:none" onclick="QNext()">Siguiente →</button>
+    </div>
+  </div>
+
+  <div id="qz-score" style="display:none">
+    <div class="card" style="text-align:center">
+      <div id="qz-num" class="exam-num"></div>
+      <div id="qz-msg" class="cs" style="max-width:640px;margin:0 auto 12px"></div>
+      <button class="btn btn-sm" onclick="QResetFinal()">Volver al inicio del examen</button>
+    </div>
+  </div>
+
+  <div id="certificate" style="display:none">
+    <div class="card">
+      <div class="ct">Tu certificado</div>
+      <div class="cs">Para guardarlo: imprime esta página y elige «Guardar como PDF». Solo saldrá el diploma.</div>
+      <div class="cert-stage exact-diploma" id="cert-stage">
+        <div class="cert-plain-deco">
+          <div class="cpd-brand">Escuela de Negocios · Sothysalud IPS</div>
+          <div class="cpd-kicker">Certifica que</div>
+          <div class="cpd-foot">culminó la ruta de formación comercial institucional</div>
+          <div class="cpd-reco" id="cert-stage-reco"></div>
+        </div>
+        <div class="cert-stage-name" id="cert-stage-name"></div>
+        <div class="cert-stage-date" id="cert-stage-date"></div>
+        <div class="cert-stage-code" id="cert-stage-code"></div>
+        <div class="cert-stage-score" id="cert-stage-score"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="cert-wrap" style="display:none">
+    <div class="card cert-data">
+      <div class="ct">Datos del certificado</div>
+      <div class="cert-meta">
+        <div>Puntaje<strong id="cert-score">—</strong></div>
+        <div>Intento<strong id="cert-attempt">—</strong></div>
+        <div>Fecha<strong id="cert-date">—</strong></div>
+        <div>Código<strong id="cert-code">—</strong></div>
+        <div>Perfil comercial<strong id="cert-profile">—</strong></div>
+        <div>Escalafón<strong id="cert-stars">—</strong></div>
+        <div>Reconocimiento<strong id="cert-recognition">—</strong></div>
+        <div>Tipo de certificación<strong id="cert-type">—</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="commercial-report" style="display:none">
+    <div class="card">
+      <div class="ct">Reporte para la administración</div>
+      <div class="cs">Ya viene redactado. Envíalo o cópialo en el CRM.</div>
+      <textarea id="report-text" class="cert-input" style="width:100%;min-height:240px;resize:vertical"></textarea>
+      <div class="qz-actions">
+        <button class="btn btn-p" onclick="SendCommercialReport()">Enviar por correo</button>
+        <button class="btn" onclick="CopyCommercialReport()">Copiar</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2779,6 +2892,8 @@ function GenerateCert(pct){
     if(pct===100) stage.classList.add('cert-tpl-sirio');
     else if(pct>=90) stage.classList.add('cert-tpl-destacada');
     else stage.classList.add('cert-tpl-aprobada');
+    if(tplImg){ stage.classList.remove('cert-plain'); stage.style.backgroundImage='url('+tplImg+')'; }
+    else { stage.classList.add('cert-plain'); stage.style.backgroundImage=''; }
   }
   var recognition = type;
   var code = GetCertificateCode(d);
@@ -2786,6 +2901,7 @@ function GenerateCert(pct){
   document.getElementById('cert-stage-name').textContent=d.name||'Nombre del estudiante';
   document.getElementById('cert-stage-date').textContent=dateTxt;
   document.getElementById('cert-stage-code').textContent=code;
+  var recoEl=document.getElementById('cert-stage-reco'); if(recoEl) recoEl.textContent=recognition;
   var scoreEl=document.getElementById('cert-stage-score'); if(scoreEl) scoreEl.textContent='Puntaje: '+pct+'/100';
   document.getElementById('cert-score').textContent=pct+'%';
   document.getElementById('cert-attempt').textContent=attemptCount+' de '+MAX_ATTEMPTS;
@@ -2944,7 +3060,7 @@ function TryWebhookNotification(pct, recognition){
       mode:'no-cors',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
-    });
+    }).catch(function(){ /* el certificado no depende de la notificacion */ });
   }catch(e){ console.warn('No se pudo notificar automáticamente',e); }
 }
 function UnlockPrivate(){
@@ -2957,12 +3073,51 @@ function UnlockPrivate(){
 }
 
 // ══ CHECKLIST ══
+function ChkScopeId(scope){
+  var d=new Date();
+  if(scope==='semana'){
+    var dd=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+    dd.setDate(dd.getDate()-((dd.getDay()+6)%7));           // lunes de esta semana
+    return 'w'+dd.toISOString().slice(0,10);
+  }
+  return 'd'+d.toISOString().slice(0,10);                   // hoy
+}
+function ChkRead(scope){
+  try{ return JSON.parse(localStorage.getItem('edn.chk.'+scope+'.'+ChkScopeId(scope))||'{}'); }
+  catch(e){ return {}; }
+}
+function ChkWrite(scope,obj){
+  try{ localStorage.setItem('edn.chk.'+scope+'.'+ChkScopeId(scope),JSON.stringify(obj)); }catch(e){}
+}
+function ChkCount(card){
+  var tot=card.querySelectorAll('.chi').length;
+  var hechos=card.querySelectorAll('.chb.done').length;
+  var el=card.querySelector('.chk-count');
+  if(el) el.textContent=hechos+' de '+tot;
+}
 function TC(item){
   var b=item.querySelector('.chb'), t=item.querySelector('.cht');
   b.classList.toggle('done'); t.classList.toggle('done');
+  var card=item.closest('.card'); if(!card) return;
+  var scope=card.getAttribute('data-scope')||'dia';
+  var st=ChkRead(scope); st[item.getAttribute('data-k')]=b.classList.contains('done');
+  ChkWrite(scope,st); ChkCount(card);
+}
+function ChkRestore(){
+  document.querySelectorAll('.card[data-scope]').forEach(function(card){
+    var st=ChkRead(card.getAttribute('data-scope'));
+    card.querySelectorAll('.chi').forEach(function(it){
+      if(st[it.getAttribute('data-k')]){
+        it.querySelector('.chb').classList.add('done');
+        it.querySelector('.cht').classList.add('done');
+      }
+    });
+    ChkCount(card);
+  });
 }
 
 // ══ INIT ══
+ChkRestore();
 </script>
 
 <!-- APPS_SCRIPT_EMAIL_CORRECTION_NOTE:

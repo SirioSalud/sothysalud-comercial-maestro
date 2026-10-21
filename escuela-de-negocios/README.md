@@ -1,8 +1,8 @@
 # Escuela de Negocios — Sothysalud IPS
 
 Ruta de formación comercial en una sola página: 18 módulos navegables,
-con el módulo de comisiones protegido por clave y una herramienta de
-scoring de clientes.
+examen final con certificado, módulo de comisiones protegido por clave y
+una herramienta de scoring de clientes.
 
 Publicada en **comercial.sothysaludips.com** (proyecto Vercel
 `escueladenegocios-sothysaludips`). Este `index.html` es el fuente recuperado
@@ -37,6 +37,7 @@ el 96% de los 4 MB del archivo. El código real son unas 182 KB.
 | `page-riesgos` | 14 · Riesgos y pensamiento estratégico |
 | `page-kit` | 16 · Kit de activación |
 | `page-checklist` | 17 · Checklist operativo |
+| `page-examen` | Evaluación final y certificado |
 
 El módulo 15 no existe en esta versión; la numeración salta del 14 al 16.
 
@@ -49,21 +50,26 @@ módulos.
 El módulo de comisiones está detrás de una clave (`UnlockPrivate`), y el
 scoring de clientes calcula en vivo sobre los selectores del módulo 13.
 
-### Código sin interfaz
+### Examen final y certificado
 
-El `<script>` conserva toda la lógica del examen final (`StartFinalExam`,
-`QRender`, `QAnswer`, `QNext`), de la generación de certificados
-(`GenerateCert`, `GetCertTemplate`, `GetCertificateCode`) y del reporte
-comercial (`BuildCommercialReport`, `SendCommercialReport`,
-`TryWebhookNotification`), pero **el HTML de esas pantallas no existe en
-esta versión**: de los 45 elementos que el JavaScript busca por id, 37 no
-están en el documento.
+El módulo `page-examen` fue reconstruido en octubre de 2026. El
+JavaScript conservaba toda la lógica, pero su HTML no existía en el
+deployment de producción: de los 45 elementos que el script busca por id,
+37 faltaban. Se rehízo el marcado contra el CSS original, que sí había
+sobrevivido.
 
-En la práctica eso significa que hoy el sitio no tiene examen, ni
-certificado, ni formulario de datos del estudiante. Las funciones quedan
-como código muerto. Para reactivarlas hay que volver a construir ese
-marcado — los ids que el JS espera son `qz-*`, `cert-*`, `exam-start`,
-`report-text` y `student-*`.
+El examen toma 15 preguntas al azar de un banco de 30, aprueba con 80 y
+permite 2 intentos, contados por correo en `localStorage`. Con 90 la
+certificación es destacada y con 100 es Distinción Estrella Sirio. Agotados
+los dos intentos, `ShowAdministrativeReview` arma un reporte de revisión
+administrativa en vez de descartar al aspirante.
+
+**Las tres plantillas de diploma siguen vacías.** `CERT_TPL_APROBADA`,
+`CERT_TPL_DESTACADA` y `CERT_TPL_SIRIO` son cadenas vacías: las imágenes se
+perdieron junto con el marcado. Mientras falten, el certificado se dibuja
+con un diseño propio en CSS (clase `cert-plain`). Al pegar una imagen en
+esas constantes, `GenerateCert` la usa como fondo y vuelven a aplicarse las
+posiciones calibradas de `.exact-diploma` sin tocar nada más.
 
 ## Despliegue
 
