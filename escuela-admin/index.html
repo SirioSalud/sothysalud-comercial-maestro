@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administración — Escuela de Negocios Sothysalud IPS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --t:#0D47A1; --td:#0D47A1; --tp:#08305C; --tl:#E3F2FD;
+  --bg:#FFFFFF; --bg2:#F8FAFC; --bg3:#EEF2F7;
+  --tx:#0F172A; --tx2:#1E293B; --tx3:#64748B;
+  --bd:rgba(13,71,161,.10); --bd2:rgba(13,71,161,.18);
+  --r:10px; --rl:14px;
+  --serie:#2a78d6;
+  --ok:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --ok-bg:#E8F6E8; --warn-bg:#FDF4E0; --serious-bg:#FCEDE6; --crit-bg:#FAE9E9;
+  --ok-ink:#0A5C0A; --warn-ink:#6B4A00; --serious-ink:#8A3F1C; --crit-ink:#8A1F1F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:var(--bg2);color:var(--tx);font-size:14px;line-height:1.6}
+.shell{display:flex;min-height:100vh}
+
+/* ── Sidebar ── */
+.sidebar{width:232px;flex-shrink:0;background:var(--bg);border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{padding:18px 16px;border-bottom:1px solid var(--bd)}
+.brand-t{font-weight:700;color:var(--t);font-size:14px;line-height:1.25}
+.brand-s{font-size:11px;color:var(--tx3);margin-top:2px}
+.nav{padding:10px 8px;overflow-y:auto;flex:1}
+.ns{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--tx3);
+  padding:12px 8px 5px;font-weight:600}
+.ni{display:flex;align-items:center;gap:9px;width:100%;text-align:left;border:0;background:none;
+  font-family:inherit;font-size:13px;color:var(--tx2);padding:8px 9px;border-radius:var(--r);
+  cursor:pointer;transition:background .12s}
+.ni:hover{background:var(--bg2)}
+.ni.on{background:var(--tl);color:var(--td);font-weight:600}
+.ni-ico{width:17px;text-align:center;flex-shrink:0}
+.ni-n{margin-left:auto;font-size:11px;color:var(--tx3);font-weight:500}
+.who{padding:12px 14px;border-top:1px solid var(--bd);font-size:12px;color:var(--tx3)}
+.who strong{display:block;color:var(--tx2);font-size:12.5px}
+
+/* ── Main ── */
+.main{flex:1;padding:22px 26px 60px;max-width:1240px;min-width:0}
+.ph{margin-bottom:18px}
+.eyebrow{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--crit);font-weight:700}
+.ptitle{font-size:23px;font-weight:700;letter-spacing:-.015em;margin:3px 0 4px}
+.pdesc{font-size:13px;color:var(--tx3);max-width:72ch}
+.page{display:none}
+.page.on{display:block}
+
+.card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rl);
+  padding:15px 16px;margin-bottom:12px;box-shadow:0 10px 24px rgba(13,71,161,.05)}
+.ct{font-size:13px;font-weight:600;margin-bottom:3px}
+.cs{font-size:12px;color:var(--tx3);margin-bottom:11px}
+
+/* ── Stat tiles ── */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:12px}
+.kpi{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rl);padding:14px 15px}
+.kpi-n{font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1.1;color:var(--tp)}
+.kpi-l{font-size:11.5px;color:var(--tx3);margin-top:1px}
+.kpi-d{font-size:11px;margin-top:6px;display:flex;align-items:center;gap:4px}
+
+/* ── Tabla ── */
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:620px}
+.tbl th{text-align:left;font-weight:600;color:var(--tx3);font-size:11px;text-transform:uppercase;
+  letter-spacing:.05em;padding:0 10px 7px;border-bottom:1px solid var(--bd)}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align:middle}
+.tbl tbody tr{cursor:pointer}
+.tbl tbody tr:hover{background:var(--bg2)}
+.tbl tbody tr:last-child td{border-bottom:0}
+.nm{font-weight:600;color:var(--tx)}
+.sub{font-size:11px;color:var(--tx3)}
+
+/* ── Chips de estado: icono + texto, nunca color solo ── */
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  padding:3px 9px;border-radius:999px;white-space:nowrap}
+.chip-ok{background:var(--ok-bg);color:var(--ok-ink)}
+.chip-warn{background:var(--warn-bg);color:var(--warn-ink)}
+.chip-serious{background:var(--serious-bg);color:var(--serious-ink)}
+.chip-crit{background:var(--crit-bg);color:var(--crit-ink)}
+.chip-n{background:var(--bg3);color:var(--tx3)}
+
+/* ── Gráfico ── */
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.bar{fill:var(--serie);transition:opacity .12s}
+.chart{shape-rendering:crispEdges}
+.chart text{shape-rendering:auto}
+.bar:hover{opacity:.78}
+.gl{stroke:var(--bd);stroke-width:1}
+.al{font-size:10px;fill:var(--tx3)}
+.vl{font-size:10.5px;fill:var(--tx2);font-weight:600}
+.tip{position:fixed;pointer-events:none;background:var(--tx);color:#fff;font-size:11.5px;
+  padding:6px 9px;border-radius:8px;opacity:0;transition:opacity .1s;z-index:50;white-space:nowrap}
+.tip.on{opacity:1}
+
+/* ── Controles ── */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px}
+.inp{padding:7px 11px;border:1px solid var(--bd2);border-radius:var(--r);font-family:inherit;
+  font-size:12.5px;background:var(--bg);color:var(--tx)}
+.inp:focus{outline:2px solid var(--tl);border-color:var(--t)}
+.btn{padding:7px 14px;border-radius:var(--r);border:1px solid var(--bd2);background:var(--bg);
+  font-family:inherit;font-size:12.5px;cursor:pointer;color:var(--tx2)}
+.btn:hover{background:var(--bg2)}
+.btn-p{background:var(--t);color:#fff;border-color:var(--t)}
+.btn-p:hover{background:var(--tp)}
+.btn-sm{padding:5px 10px;font-size:11.5px}
+
+.g2{display:grid;grid-template-columns:1.6fr 1fr;gap:12px}
+.row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:12.5px}
+.row:last-child{border-bottom:0}
+.row-tx{color:var(--tx2)}
+.row-sub{font-size:11px;color:var(--tx3)}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
+.meta div{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:9px 11px;
+  font-size:11px;color:var(--tx3)}
+.meta strong{display:block;color:var(--tp);font-size:13px;margin-top:2px;font-weight:600}
+.tl{border-left:2px solid var(--bd);padding-left:14px;margin-left:5px}
+.tl-i{position:relative;padding-bottom:13px}
+.tl-i::before{content:'';position:absolute;left:-19px;top:5px;width:8px;height:8px;
+  border-radius:50%;background:var(--t);border:2px solid var(--bg)}
+.tl-d{font-size:11px;color:var(--tx3)}
+.back{border:0;background:none;color:var(--t);font-size:12.5px;cursor:pointer;
+  font-family:inherit;padding:0;margin-bottom:10px}
+.proto{background:var(--warn-bg);color:var(--warn-ink);border-radius:var(--r);padding:9px 12px;
+  font-size:12px;margin-bottom:14px;border:1px solid rgba(250,178,25,.35)}
+.empty{color:var(--tx3);font-size:12.5px;padding:18px 0;text-align:center}
+@media(max-width:900px){
+  .shell{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;flex-direction:row;align-items:center;overflow-x:auto}
+  .nav{display:flex;gap:4px;padding:8px}
+  .ns,.who,.ni-n{display:none}
+  .ni{white-space:nowrap}
+  .main{padding:16px}
+  .g2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-t">Escuela de Negocios</div>
+    <div class="brand-s">Administración · Sothysalud IPS</div>
+  </div>
+  <nav class="nav" id="nav"></nav>
+  <div class="who"><strong>Daniel Durán</strong>Administrador</div>
+</aside>
+
+<main class="main">
+  <div class="proto">Prototipo de interfaz con datos de prueba. Nada de lo que ves está conectado a una base de datos todavía.</div>
+  <div id="views"></div>
+</main>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+/* ════════ DATOS DE PRUEBA ════════ */
+var COMERCIALES = [
+  {id:1, nombre:'Laura Jiménez Robayo',  doc:'1.018.447.221', perfil:'Hunter Comercial',   estrellas:4, estado:'aprobado',   puntaje:93, intentos:1, ultimo:'2026-09-14', cert:'ENS-SOT-2026-7221', tipo:'Certificación destacada',  vence:'2027-09-14', correo:'laura.jimenez@sothysaludips.com'},
+  {id:2, nombre:'Andrés Felipe Mora',    doc:'80.332.910',    perfil:'Account Manager',    estrellas:5, estado:'aprobado',   puntaje:100,intentos:1, ultimo:'2026-08-30', cert:'ENS-SOT-2026-2910', tipo:'Distinción Estrella Sirio',vence:'2027-08-30', correo:'andres.mora@sothysaludips.com'},
+  {id:3, nombre:'Katherine Osorio',      doc:'52.884.013',    perfil:'Prospector / Junior',estrellas:2, estado:'formacion',  puntaje:null,intentos:0,ultimo:null,        cert:null,                tipo:null,                       vence:null,         correo:'katherine.osorio@sothysaludips.com'},
+  {id:4, nombre:'Julián Cárdenas Peña',  doc:'1.032.556.740', perfil:'Hunter Comercial',   estrellas:3, estado:'revision',   puntaje:62, intentos:2, ultimo:'2026-10-02', cert:null,                tipo:null,                       vence:null,         correo:'julian.cardenas@sothysaludips.com'},
+  {id:5, nombre:'Diana Marcela Ruiz',    doc:'39.776.185',    perfil:'Alianzas',           estrellas:4, estado:'aprobado',   puntaje:87, intentos:2, ultimo:'2026-07-11', cert:'ENS-SOT-2026-6185', tipo:'Certificación aprobada',   vence:'2027-07-11', correo:'diana.ruiz@sothysaludips.com'},
+  {id:6, nombre:'Camilo Restrepo Vélez', doc:'71.449.028',    perfil:'Líder Comercial',    estrellas:5, estado:'vencido',    puntaje:91, intentos:1, ultimo:'2025-10-08', cert:'ENS-SOT-2025-9028', tipo:'Certificación destacada',  vence:'2026-10-08', correo:'camilo.restrepo@sothysaludips.com'},
+  {id:7, nombre:'Sara Valentina Niño',   doc:'1.014.903.562', perfil:'Prospector / Junior',estrellas:1, estado:'formacion',  puntaje:null,intentos:0,ultimo:null,        cert:null,                tipo:null,                       vence:null,         correo:'sara.nino@sothysaludips.com'},
+  {id:8, nombre:'Óscar Iván Beltrán',    doc:'79.552.134',    perfil:'Hunter Comercial',   estrellas:3, estado:'aprobado',   puntaje:84, intentos:2, ultimo:'2026-10-11', cert:'ENS-SOT-2026-2134', tipo:'Certificación aprobada',   vence:'2027-10-11', correo:'oscar.beltran@sothysaludips.com'}
+];
+
+var ESTADOS = {
+  aprobado: {t:'Aprobado',               c:'chip-ok',      i:'✓'},
+  formacion:{t:'En formación',           c:'chip-n',       i:'◷'},
+  revision: {t:'Revisión administrativa',c:'chip-serious', i:'!'},
+  vencido:  {t:'Reentrenamiento vencido',c:'chip-crit',    i:'×'}
+};
+
+var CERTS_MES = [
+  {m:'Nov 25',n:1},{m:'Dic 25',n:0},{m:'Ene',n:2},{m:'Feb',n:1},{m:'Mar',n:3},{m:'Abr',n:2},
+  {m:'May',n:4},{m:'Jun',n:2},{m:'Jul',n:3},{m:'Ago',n:5},{m:'Sep',n:4},{m:'Oct',n:2}
+];
+
+var MODULOS = [
+  {n:'Formación Sothysalud',   c:8},{n:'Propuesta de valor',  c:8},{n:'El mercado',        c:7},
+  {n:'Normativa SST',          c:6},{n:'Perfiles del equipo', c:6},{n:'Prospección 30 días',c:5},
+  {n:'Playbook de ventas',     c:5},{n:'Manejo de objeciones',c:4},{n:'Scoring de clientes',c:3},
+  {n:'Checklist operativo',    c:3}
+];
+
+var AUDITORIA = [
+  {f:'2026-10-19 16:42', q:'Daniel Durán', a:'Emitió certificado ENS-SOT-2026-2134 a Óscar Iván Beltrán'},
+  {f:'2026-10-11 09:18', q:'Sistema',      a:'Óscar Iván Beltrán aprobó el examen final con 84/100 (intento 2 de 2)'},
+  {f:'2026-10-08 00:00', q:'Sistema',      a:'Certificación de Camilo Restrepo Vélez quedó vencida'},
+  {f:'2026-10-02 14:05', q:'Sistema',      a:'Julián Cárdenas Peña agotó sus intentos — pasa a revisión administrativa'},
+  {f:'2026-09-28 11:30', q:'Daniel Durán', a:'Autorizó intento excepcional para Diana Marcela Ruiz'},
+  {f:'2026-09-14 10:02', q:'Sistema',      a:'Laura Jiménez Robayo aprobó el examen final con 93/100'}
+];
+
+var HERRAMIENTAS = [
+  {i:'🧮', n:'Cotizador comercial',   d:'Sistema Comercial Maestro — tarifas, paquetes y márgenes', e:'Publicada'},
+  {i:'🌐', n:'Sitio web institucional',d:'sothysaludips.com — portafolio y blog',                   e:'Publicada'},
+  {i:'📧', n:'Correo corporativo',    d:'Se entrega tras validación administrativa',                e:'Por perfil'},
+  {i:'⚖️', n:'Base normativa',        d:'Decreto 1072, Resolución 0312, Resolución 1843 de 2025',   e:'Publicada'},
+  {i:'📁', n:'Portafolio interactivo',d:'Pieza institucional para presentar servicios',             e:'Publicada'},
+  {i:'🗂️', n:'CRM de oportunidades',  d:'Registro obligatorio de toda gestión comercial',           e:'Por perfil'}
+];
+
+/* ════════ UTILIDADES ════════ */
+function $(s,r){ return (r||document).querySelector(s); }
+function el(h){ var d=document.createElement('div'); d.innerHTML=h.trim(); return d.firstChild; }
+function chip(k){ var e=ESTADOS[k]; return '<span class="chip '+e.c+'"><span aria-hidden="true">'+e.i+'</span>'+e.t+'</span>'; }
+function fecha(f){
+  if(!f) return '—';
+  var p=f.split('-'), m=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return parseInt(p[2],10)+' '+m[parseInt(p[1],10)-1]+' '+p[0];
+}
+function estrellas(n){ return '★'.repeat(n)+'<span style="color:var(--bd2)">'+'★'.repeat(5-n)+'</span>'; }
+function cuenta(k){ return COMERCIALES.filter(function(c){ return c.estado===k; }).length; }
+
+/* ════════ GRÁFICO ════════ */
+function barras(datos, alto){
+  var W=800, H=alto||210, pt=22, pb=30, pl=34, pr=8;
+  var crudo=Math.max.apply(null,datos.map(function(d){return d.n;}))||1;
+  var max=Math.ceil(crudo/2)*2;                       // par, para que la marca media sea entera
+  var paso=(W-pl-pr)/datos.length, ancho=Math.min(paso*0.56, 34), r=4;
+  var s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Certificaciones emitidas por mes">';
+  for(var g=0; g<=2; g++){
+    var v=max*g/2, y=H-pb-(H-pt-pb)*(g/2);
+    s+='<line class="gl" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'"/>';
+    s+='<text class="al" x="'+(pl-7)+'" y="'+(y+4)+'" text-anchor="end">'+v+'</text>';
+  }
+  datos.forEach(function(d,i){
+    var alt=(H-pt-pb)*(d.n/max), x=pl+paso*i+(paso-ancho)/2, y=H-pb-alt;
+    if(d.n>0){
+      var rr=Math.min(r,alt);                         // extremo superior redondeado, base recta
+      s+='<path class="bar" d="M'+x+' '+(H-pb)+' V'+(y+rr)+' a'+rr+' '+rr+' 0 0 1 '+rr+' -'+rr
+        +' h'+(ancho-2*rr)+' a'+rr+' '+rr+' 0 0 1 '+rr+' '+rr+' V'+(H-pb)+' Z"'
+        +' data-m="'+d.m+'" data-n="'+d.n+'"/>';
+    }
+    s+='<text class="al" x="'+(x+ancho/2)+'" y="'+(H-pb+15)+'" text-anchor="middle">'+d.m+'</text>';
+    if(d.n===crudo) s+='<text class="vl" x="'+(x+ancho/2)+'" y="'+(y-6)+'" text-anchor="middle">'+d.n+'</text>';
+  });
+  s+='<line class="gl" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+(H-pb)+'" y2="'+(H-pb)+'"/>';
+  return s+'</svg>';
+}
+function enganchaTip(raiz){
+  var tip=$('#tip');
+  raiz.querySelectorAll('.bar').forEach(function(b){
+    b.addEventListener('mousemove',function(ev){
+      tip.textContent=b.dataset.m+' · '+b.dataset.n+(b.dataset.n==='1'?' certificación':' certificaciones');
+      tip.style.left=(ev.clientX+12)+'px'; tip.style.top=(ev.clientY-30)+'px'; tip.classList.add('on');
+    });
+    b.addEventListener('mouseleave',function(){ tip.classList.remove('on'); });
+  });
+}
+
+/* ════════ VISTAS ════════ */
+var VISTAS={};
+
+VISTAS.panel=function(){
+  var total=COMERCIALES.length, aprob=cuenta('aprobado');
+  var emitidos=CERTS_MES.reduce(function(a,d){return a+d.n;},0);
+  var atencion=COMERCIALES.filter(function(c){ return c.estado==='revision'||c.estado==='vencido'; });
+  return '<div class="ph"><div class="eyebrow">Panel</div><div class="ptitle">Estado de la fuerza comercial</div>'
+    +'<div class="pdesc">Quién está formado, quién está en riesgo y qué necesita tu decisión hoy.</div></div>'
+    +'<div class="kpis">'
+      +'<div class="kpi"><div class="kpi-n">'+total+'</div><div class="kpi-l">Comerciales registrados</div>'
+        +'<div class="kpi-d" style="color:var(--tx3)">'+cuenta('formacion')+' todavía en formación</div></div>'
+      +'<div class="kpi"><div class="kpi-n">'+aprob+'</div><div class="kpi-l">Certificados vigentes</div>'
+        +'<div class="kpi-d" style="color:var(--ok-ink)"><span aria-hidden="true">✓</span>'+Math.round(aprob/total*100)+'% de la fuerza</div></div>'
+      +'<div class="kpi"><div class="kpi-n">'+cuenta('revision')+'</div><div class="kpi-l">En revisión administrativa</div>'
+        +'<div class="kpi-d" style="color:var(--serious-ink)"><span aria-hidden="true">!</span>Esperan tu decisión</div></div>'
+      +'<div class="kpi"><div class="kpi-n">'+cuenta('vencido')+'</div><div class="kpi-l">Reentrenamiento vencido</div>'
+        +'<div class="kpi-d" style="color:var(--crit-ink)"><span aria-hidden="true">×</span>Requiere recertificar</div></div>'
+    +'</div>'
+    +'<div class="g2">'
+      +'<div class="card"><div class="ct">Certificaciones emitidas por mes</div>'
+        +'<div class="cs">Últimos 12 meses · '+emitidos+' en total</div>'+barras(CERTS_MES)+'</div>'
+      +'<div class="card"><div class="ct">Requieren atención</div><div class="cs">Casos que no avanzan solos</div>'
+        +(atencion.length? atencion.map(function(c){
+            return '<div class="row" data-ir="'+c.id+'" style="cursor:pointer"><div style="flex:1">'
+              +'<div class="row-tx nm">'+c.nombre+'</div><div class="row-sub">'+c.perfil+' · último examen '+fecha(c.ultimo)+'</div></div>'
+              +'<div>'+chip(c.estado)+'</div></div>';
+          }).join('') : '<div class="empty">Nada pendiente.</div>')
+      +'</div>'
+    +'</div>';
+};
+
+VISTAS.comerciales=function(){
+  return '<div class="ph"><div class="eyebrow">Comerciales</div><div class="ptitle">Fuerza comercial</div>'
+    +'<div class="pdesc">Cada comercial con su perfil, escalafón, estado de formación y certificación.</div></div>'
+    +'<div class="filters">'
+      +'<input class="inp" id="q" placeholder="Buscar por nombre o documento" style="min-width:230px">'
+      +'<select class="inp" id="fe"><option value="">Todos los estados</option>'
+        +Object.keys(ESTADOS).map(function(k){return '<option value="'+k+'">'+ESTADOS[k].t+'</option>';}).join('')
+      +'</select>'
+      +'<select class="inp" id="fp"><option value="">Todos los perfiles</option>'
+        +[...new Set(COMERCIALES.map(function(c){return c.perfil;}))].map(function(p){return '<option>'+p+'</option>';}).join('')
+      +'</select>'
+    +'</div>'
+    +'<div class="card" style="padding:15px 6px"><div class="tblwrap"><table class="tbl"><thead><tr>'
+      +'<th>Comercial</th><th>Perfil</th><th>Escalafón</th><th>Estado</th><th>Puntaje</th><th>Intentos</th><th>Último examen</th>'
+    +'</tr></thead><tbody id="tb"></tbody></table></div><div class="empty" id="vacio" style="display:none">Ningún comercial coincide.</div></div>';
+};
+
+function sinTildes(s){ return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
+function pintaTabla(){
+  var q=sinTildes($('#q')&&$('#q').value||''), fe=$('#fe')&&$('#fe').value||'', fp=$('#fp')&&$('#fp').value||'';
+  var f=COMERCIALES.filter(function(c){
+    return (!q || sinTildes(c.nombre).indexOf(q)>=0 || c.doc.replace(/\./g,'').indexOf(q.replace(/\./g,''))>=0)
+        && (!fe || c.estado===fe) && (!fp || c.perfil===fp);
+  });
+  $('#tb').innerHTML=f.map(function(c){
+    return '<tr data-ir="'+c.id+'"><td><div class="nm">'+c.nombre+'</div><div class="sub">'+c.doc+'</div></td>'
+      +'<td>'+c.perfil+'</td><td style="letter-spacing:1px;color:var(--t)">'+estrellas(c.estrellas)+'</td>'
+      +'<td>'+chip(c.estado)+'</td><td>'+(c.puntaje!==null?'<strong>'+c.puntaje+'</strong>/100':'—')+'</td>'
+      +'<td>'+c.intentos+' de 2</td><td>'+fecha(c.ultimo)+'</td></tr>';
+  }).join('');
+  $('#vacio').style.display=f.length?'none':'block';
+}
+
+VISTAS.ficha=function(id){
+  var c=COMERCIALES.filter(function(x){return x.id===id;})[0]; if(!c) return '';
+  var intentos=[];
+  if(c.intentos>=1) intentos.push({f:c.ultimo, t:'Intento 1', d:c.intentos===1?('Aprobado con '+c.puntaje+'/100'):'No aprobado'});
+  if(c.intentos>=2) intentos.push({f:c.ultimo, t:'Intento 2', d:(c.puntaje>=80?'Aprobado con '+c.puntaje+'/100':'No aprobado con '+c.puntaje+'/100')});
+  return '<button class="back" data-volver="1">← Volver a comerciales</button>'
+    +'<div class="ph"><div class="eyebrow">Ficha del comercial</div><div class="ptitle">'+c.nombre+'</div>'
+    +'<div class="pdesc">'+c.perfil+' · '+c.correo+'</div></div>'
+    +'<div class="card"><div class="ct">Datos</div><div class="meta">'
+      +'<div>Documento<strong>'+c.doc+'</strong></div>'
+      +'<div>Perfil comercial<strong>'+c.perfil+'</strong></div>'
+      +'<div>Escalafón<strong style="letter-spacing:1px">'+estrellas(c.estrellas)+'</strong></div>'
+      +'<div>Estado<strong style="margin-top:4px">'+chip(c.estado)+'</strong></div>'
+    +'</div></div>'
+    +'<div class="g2">'
+      +'<div class="card"><div class="ct">Historial del examen</div><div class="cs">Intentos usados: '+c.intentos+' de 2</div>'
+        +(intentos.length?'<div class="tl">'+intentos.map(function(i){
+            return '<div class="tl-i"><div class="row-tx"><strong>'+i.t+'</strong> — '+i.d+'</div><div class="tl-d">'+fecha(i.f)+'</div></div>';
+          }).join('')+'</div>':'<div class="empty">Todavía no ha presentado el examen.</div>')
+      +'</div>'
+      +'<div class="card"><div class="ct">Certificación</div><div class="cs">Vigencia anual</div>'
+        +(c.cert?'<div class="meta"><div>Código<strong>'+c.cert+'</strong></div>'
+            +'<div>Tipo<strong>'+c.tipo+'</strong></div>'
+            +'<div>Vence<strong>'+fecha(c.vence)+'</strong></div></div>'
+            +'<div class="filters" style="margin-top:11px;margin-bottom:0">'
+            +'<button class="btn btn-p btn-sm">Descargar PDF</button>'
+            +'<button class="btn btn-sm">Reenviar por correo</button></div>'
+          :'<div class="empty">Sin certificado emitido.</div>')
+      +'</div>'
+    +'</div>'
+    +(c.estado==='revision'?'<div class="card"><div class="ct">Decisión pendiente</div>'
+      +'<div class="cs">Agotó los dos intentos ordinarios. El sistema no descarta a nadie automáticamente.</div>'
+      +'<div class="filters" style="margin-bottom:0">'
+      +'<button class="btn btn-p btn-sm">Autorizar intento excepcional</button>'
+      +'<button class="btn btn-sm">Validación oral</button>'
+      +'<button class="btn btn-sm">Prueba práctica</button>'
+      +'<button class="btn btn-sm">Banco de talento</button>'
+      +'</div></div>':'');
+};
+
+VISTAS.certificados=function(){
+  var con=COMERCIALES.filter(function(c){return c.cert;});
+  return '<div class="ph"><div class="eyebrow">Certificados</div><div class="ptitle">Emitidos y verificación</div>'
+    +'<div class="pdesc">Cada certificado tiene un código único verificable por un tercero.</div></div>'
+    +'<div class="card"><div class="ct">Verificar un código</div>'
+    +'<div class="cs">Lo mismo que haría una empresa cliente al recibir el certificado de un comercial.</div>'
+    +'<div class="filters" style="margin-bottom:0"><input class="inp" placeholder="ENS-SOT-2026-0000" style="min-width:210px">'
+    +'<button class="btn btn-p">Verificar</button></div></div>'
+    +'<div class="card" style="padding:15px 6px"><div class="tblwrap"><table class="tbl"><thead><tr>'
+    +'<th>Código</th><th>Comercial</th><th>Tipo</th><th>Puntaje</th><th>Vence</th></tr></thead><tbody>'
+    +con.map(function(c){
+      var venc=c.estado==='vencido';
+      return '<tr data-ir="'+c.id+'"><td style="font-family:ui-monospace,monospace;font-size:11.5px">'+c.cert+'</td>'
+        +'<td class="nm">'+c.nombre+'</td><td>'+c.tipo+'</td><td><strong>'+c.puntaje+'</strong>/100</td>'
+        +'<td>'+fecha(c.vence)+(venc?' '+chip('vencido'):'')+'</td></tr>';
+    }).join('')+'</tbody></table></div></div>';
+};
+
+VISTAS.formacion=function(){
+  var total=COMERCIALES.length;
+  return '<div class="ph"><div class="eyebrow">Formación</div><div class="ptitle">Avance por módulo</div>'
+    +'<div class="pdesc">Dónde se quedan los comerciales. Un módulo con avance bajo suele ser un módulo mal explicado.</div></div>'
+    +'<div class="card"><div class="ct">Comerciales que completaron cada módulo</div>'
+    +'<div class="cs">Sobre '+total+' registrados</div>'
+    +MODULOS.map(function(m){
+      var pct=Math.round(m.c/total*100);
+      return '<div class="row"><div style="flex:1"><div class="row-tx">'+m.n+'</div>'
+        +'<div style="height:5px;background:var(--bg3);border-radius:3px;margin-top:5px;overflow:hidden">'
+        +'<div style="height:100%;width:'+pct+'%;background:var(--serie);border-radius:3px"></div></div></div>'
+        +'<div style="width:72px;text-align:right;color:var(--tx3);font-size:11.5px">'+m.c+' de '+total+'</div></div>';
+    }).join('')+'</div>';
+};
+
+VISTAS.reentrenamiento=function(){
+  var cert=COMERCIALES.filter(function(c){return c.vence;})
+    .sort(function(a,b){ return a.vence<b.vence?-1:1; });
+  return '<div class="ph"><div class="eyebrow">Reentrenamientos</div><div class="ptitle">Vencimientos</div>'
+    +'<div class="pdesc">La certificación dura un año. Esta es la lista que evita que alguien venda sin estar vigente.</div></div>'
+    +'<div class="card" style="padding:15px 6px"><div class="tblwrap"><table class="tbl"><thead><tr>'
+    +'<th>Comercial</th><th>Certificado desde</th><th>Vence</th><th>Estado</th><th></th></tr></thead><tbody>'
+    +cert.map(function(c){
+      var venc=c.estado==='vencido';
+      return '<tr data-ir="'+c.id+'"><td class="nm">'+c.nombre+'</td><td>'+fecha(c.ultimo)+'</td>'
+        +'<td>'+fecha(c.vence)+'</td><td>'+chip(venc?'vencido':'aprobado')+'</td>'
+        +'<td style="text-align:right"><button class="btn btn-sm">'+(venc?'Convocar a recertificar':'Programar aviso')+'</button></td></tr>';
+    }).join('')+'</tbody></table></div></div>';
+};
+
+VISTAS.herramientas=function(){
+  return '<div class="ph"><div class="eyebrow">Herramientas</div><div class="ptitle">Lo que el comercial tiene a la mano</div>'
+    +'<div class="pdesc">La administración publica aquí los insumos; el comercial los ve desde su perfil en la Escuela.</div></div>'
+    +'<div class="card"><div class="ct">Insumos publicados</div><div class="cs">Lo marcado «por perfil» se entrega tras validación administrativa</div>'
+    +HERRAMIENTAS.map(function(h){
+      return '<div class="row"><div style="width:22px">'+h.i+'</div><div style="flex:1">'
+        +'<div class="row-tx nm">'+h.n+'</div><div class="row-sub">'+h.d+'</div></div>'
+        +'<div><span class="chip '+(h.e==='Publicada'?'chip-ok':'chip-n')+'">'
+        +(h.e==='Publicada'?'<span aria-hidden="true">✓</span>':'<span aria-hidden="true">◷</span>')+h.e+'</span></div></div>';
+    }).join('')+'</div>';
+};
+
+VISTAS.auditoria=function(){
+  return '<div class="ph"><div class="eyebrow">Auditoría</div><div class="ptitle">Registro de actividad</div>'
+    +'<div class="pdesc">Quién hizo qué y cuándo. Toda emisión, autorización y cambio de estado queda registrado.</div></div>'
+    +'<div class="card"><div class="tl">'
+    +AUDITORIA.map(function(a){
+      return '<div class="tl-i"><div class="row-tx">'+a.a+'</div><div class="tl-d">'+a.f+' · '+a.q+'</div></div>';
+    }).join('')+'</div></div>';
+};
+
+/* ════════ NAVEGACIÓN ════════ */
+var MENU=[
+  {g:'General'},
+  {k:'panel',          i:'▦', t:'Panel'},
+  {k:'comerciales',    i:'👥', t:'Comerciales', n:COMERCIALES.length},
+  {g:'Certificación'},
+  {k:'certificados',   i:'🎓', t:'Certificados', n:COMERCIALES.filter(function(c){return c.cert;}).length},
+  {k:'reentrenamiento',i:'🔁', t:'Reentrenamientos', n:cuenta('vencido')||''},
+  {g:'Contenido'},
+  {k:'formacion',      i:'📘', t:'Formación'},
+  {k:'herramientas',   i:'🧰', t:'Herramientas'},
+  {g:'Sistema'},
+  {k:'auditoria',      i:'🧾', t:'Auditoría'}
+];
+
+function pintaNav(activa){
+  $('#nav').innerHTML=MENU.map(function(m){
+    if(m.g) return '<div class="ns">'+m.g+'</div>';
+    return '<button class="ni'+(m.k===activa?' on':'')+'" data-v="'+m.k+'">'
+      +'<span class="ni-ico" aria-hidden="true">'+m.i+'</span>'+m.t
+      +(m.n?'<span class="ni-n">'+m.n+'</span>':'')+'</button>';
+  }).join('');
+}
+
+var actual='panel';
+function ir(v, arg){
+  actual=v;
+  $('#views').innerHTML=VISTAS[v](arg);
+  pintaNav(v==='ficha'?'comerciales':v);
+  if(v==='comerciales'){
+    pintaTabla();
+    // el texto escucha 'input'; los desplegables, 'change'. Nunca los dos:
+    // un 'change' al perder el foco redibuja la tabla entre mousedown y mouseup
+    // y el clic sobre la fila se pierde.
+    var q=$('#q'); if(q) q.addEventListener('input',pintaTabla);
+    ['fe','fp'].forEach(function(id){
+      var e=$('#'+id); if(e) e.addEventListener('change',pintaTabla);
+    });
+  }
+  if(v==='panel') enganchaTip($('#views'));
+  window.scrollTo(0,0);
+}
+
+document.addEventListener('click',function(ev){
+  var nav=ev.target.closest('[data-v]');        if(nav) return ir(nav.dataset.v);
+  var fila=ev.target.closest('[data-ir]');      if(fila) return ir('ficha', parseInt(fila.dataset.ir,10));
+  if(ev.target.closest('[data-volver]'))        return ir('comerciales');
+});
+
+ir('panel');
+</script>
+</body>
+</html>
