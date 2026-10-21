@@ -1,11 +1,13 @@
 # Escuela de Negocios — Sothysalud IPS
 
-Ruta de formación comercial en una sola página. 19 módulos, examen final
-con dos intentos y generación de certificado.
+Ruta de formación comercial en una sola página: 18 módulos navegables,
+con el módulo de comisiones protegido por clave y una herramienta de
+scoring de clientes.
 
 Publicada en **comercial.sothysaludips.com** (proyecto Vercel
 `escueladenegocios-sothysaludips`). Este `index.html` es el fuente recuperado
-del deployment de producción del 2 de septiembre de 2026, byte por byte.
+del deployment de producción del 2 de septiembre de 2026, con las
+correcciones de la revisión de octubre aplicadas.
 
 ## Estructura
 
@@ -36,25 +38,32 @@ el 96% de los 4 MB del archivo. El código real son unas 182 KB.
 | `page-kit` | 16 · Kit de activación |
 | `page-checklist` | 17 · Checklist operativo |
 
+El módulo 15 no existe en esta versión; la numeración salta del 14 al 16.
+
 ## Funcionamiento
 
 La navegación la maneja `gp(id)`, que alterna la clase `active` entre los
-`.page` y marca el botón del menú; `visited` lleva el progreso sobre 19
-páginas.
+`.page` y marca el botón del menú; `visited` lleva el progreso sobre los
+módulos.
 
-El examen final arranca en `StartFinalExam()`, baraja con `Shuffle()` y se
-recorre con `QRender` / `QAnswer` / `QNext`. Hay un máximo de 2 intentos
-(`MAX_ATTEMPTS`).
+El módulo de comisiones está detrás de una clave (`UnlockPrivate`), y el
+scoring de clientes calcula en vivo sobre los selectores del módulo 13.
 
-Al aprobar, `GenerateCert()` arma el diploma: `GetCertificationType()`
-decide el nivel según el puntaje, `GetCertTemplate()` elige la plantilla
-(`aprobada`, `destacada` o `sirio`) y `GetCertificateCode()` genera el
-código de verificación.
+### Código sin interfaz
 
-El resultado sale por dos vías independientes: `SendCommercialReport()`
-abre el cliente de correo del estudiante con el reporte ya redactado, y
-`TryWebhookNotification()` hace POST a un Google Apps Script que registra
-la aprobación.
+El `<script>` conserva toda la lógica del examen final (`StartFinalExam`,
+`QRender`, `QAnswer`, `QNext`), de la generación de certificados
+(`GenerateCert`, `GetCertTemplate`, `GetCertificateCode`) y del reporte
+comercial (`BuildCommercialReport`, `SendCommercialReport`,
+`TryWebhookNotification`), pero **el HTML de esas pantallas no existe en
+esta versión**: de los 45 elementos que el JavaScript busca por id, 37 no
+están en el documento.
+
+En la práctica eso significa que hoy el sitio no tiene examen, ni
+certificado, ni formulario de datos del estudiante. Las funciones quedan
+como código muerto. Para reactivarlas hay que volver a construir ese
+marcado — los ids que el JS espera son `qz-*`, `cert-*`, `exam-start`,
+`report-text` y `student-*`.
 
 ## Despliegue
 
